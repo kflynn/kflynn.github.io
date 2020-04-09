@@ -1,6 +1,7 @@
 import sys
 
 import csv
+import json
 import math
 import os
 import re
@@ -113,7 +114,7 @@ class Collection:
                 results.append((window_end, dbl_days, mult, week[-1]))
             except ZeroDivisionError:
                 logging.debug("    %8s: steady" % window_end)
-                results.append((window_end, 0, 0, week[-1]))
+                results.append((window_end, math.nan, math.nan, week[-1]))
 
             idx += 1
 
@@ -194,6 +195,28 @@ print('''
 </head>
 
 <body>
+  <H1>COVID-19 Doubling Times</H1>
+  <p>
+    These graphs are generated from the 
+    <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE data</a>, 
+    which is updated daily.
+  </p>
+  <p>
+    The graph shows the doubling time of COVID-19 deaths (red) or confirmed cases (blue),
+    expressed in days, looking at the seven-day window that ended on the date being plotted. 
+    No data are graphed for times during which a given location reported no deaths or cases.
+    Likewise, no point will be plotted if the number was constant over the whole seven-day
+    window.
+  </p>
+  <p>
+    These graphs do <em>not</em> show the number of cases: they show only the doubling times.
+    As such, <em>higher values are "better"</em>... except that the graph will show 
+    negative values when the number of cases actually start decreasing.
+  </p>
+  <p>
+    A final caution: I'm not an epidimiologist, I just think we're not good at intuiting
+    about exponential growth rates. Use with caution.
+  </p>
 ''')
 
 places = list(sorted(Collections.keys()))
@@ -239,8 +262,8 @@ for place_key in places:
                 d_series.append(dbl_days)
                 m_series.append(mult)
             else:
-                d_series.append(0)
-                m_series.append(0)
+                d_series.append(math.nan)
+                m_series.append(math.nan)
 
         dbl_series[datatype] = d_series
         mult_series[datatype] = m_series
@@ -262,7 +285,7 @@ for place_key in places:
                         borderColor: 'rgb(255, 99, 132)',
                         fill: false,
                     }
-        """ % dbl_series["deaths"])
+        """ % json.dumps(dbl_series["deaths"]))
 
         if "confirmed" in dbl_series:
             print("""
@@ -277,9 +300,10 @@ for place_key in places:
                         fill: false,
                         backgroundColor: 'rgb(54, 162, 235)',
                         borderColor: 'rgb(54, 162, 235)',
+                        spanGaps: false
                     }
                 ]
-        """ % dbl_series["confirmed"])
+        """ % json.dumps(dbl_series["confirmed"]))
 
     print("""
 			},
@@ -312,7 +336,7 @@ for place_key in places:
 							labelString: 'Value'
 						},
                         ticks: {
-                            max: 10
+                            max: 20
                         }
 					}]
 				}
