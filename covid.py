@@ -54,7 +54,7 @@ class Collection:
             if datatype in self.data:
                 raise Exception(f"{self.name}: duplicate {datatype} data?")
 
-        # logging.debug(f"{self.name}: loading {datatype}")
+        logging.debug(f"{self.name}: loading {datatype}: {row}")
 
         # OK, good to go. If there's a population here, roll it in.
         if 'Population' in row:
@@ -141,14 +141,13 @@ Collections = {}
 for key in AGGREGATE:
     Collections[key] = Collection(key, aggregator=True)
 
-for datatype, filename in [
-    ( 'confirmed', 'time_series_covid19_confirmed_US.csv' ),
-    ( 'confirmed', 'time_series_covid19_confirmed_global.csv' ),
-    ( 'deaths', 'time_series_covid19_deaths_US.csv' ),
-    ( 'deaths', 'time_series_covid19_deaths_global.csv' ),
-]:
-    path = os.path.join(COVID_DIR, filename)
-    
+for datatype, path in [
+    ( 'confirmed', os.path.join(COVID_DIR, 'time_series_covid19_confirmed_US.csv') ),
+    ( 'confirmed', os.path.join(COVID_DIR, 'time_series_covid19_confirmed_global.csv') ),
+    ( 'deaths', os.path.join(COVID_DIR, 'time_series_covid19_deaths_US.csv') ),
+    ( 'deaths', os.path.join(COVID_DIR, 'time_series_covid19_deaths_global.csv') ),
+    ( 'hospitalizations', 'hospitalizations.csv' )
+]:    
     with open(path, 'r', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
 
@@ -309,7 +308,10 @@ for place_key in places:
     dbl_series = {}
     mult_series = {}
 
+    series_count = 0
+
     for datatype in collection.data.keys():
+        series_count += 1
         info = collection.data[datatype][7]
         idict = { x[0]: x for x in info }
 
@@ -364,7 +366,29 @@ for place_key in places:
                     }
         """ % (json.dumps(mult_series["deaths"]), json.dumps(dbl_series["deaths"])))
 
-        if "confirmed" in mult_series:
+        series_count -= 1
+
+        if series_count > 0:
+            print("""
+                    ,
+            """)
+        
+    if "hospitalizations" in mult_series:
+        print("""
+                    {
+                        label: 'Doubling time (hospitalizations)',
+                        data: %s,
+                        rawData: %s,
+                        fill: false,
+                        backgroundColor: 'rgb(255, 159, 64)',
+                        borderColor: 'rgb(255, 159, 64)',
+                        spanGaps: false
+                    }
+        """ % (json.dumps(mult_series["hospitalizations"]), json.dumps(dbl_series["hospitalizations"])))
+
+        series_count -= 1
+
+        if series_count > 0:
             print("""
                     ,
             """)
@@ -380,7 +404,6 @@ for place_key in places:
                         borderColor: 'rgb(54, 162, 235)',
                         spanGaps: false
                     }
-                ]
         """ % (json.dumps(mult_series["confirmed"]), json.dumps(dbl_series["confirmed"])))
 
 				# tooltips: {
@@ -393,6 +416,7 @@ for place_key in places:
 				# },
 
     print("""
+                ]
 			},
 			options: {
 				responsive: true,
