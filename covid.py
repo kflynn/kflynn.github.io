@@ -30,56 +30,72 @@ TRACK = {
     'United Kingdom'
 }
 
+AGGREGATE = {
+    'Massachusetts',
+    'New York',
+    'California',
+    'Texas'
+}
+
 class Collection:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, aggregator=False) -> None:
         self.name = name
         self.id = re.sub(r'[^A-Za-z0-9]', '_', self.name).lower()
-        self.data = {}
-        self.population = None
+        self.raw_data = {}      # Raw counts
+        self.data = {}          # Windowed data
         self.valid_dates = {}
 
+        self.population = 0
+        self.is_aggregator = aggregator
+
     def load(self, datatype: str, row) -> None:
-        # Given a row of data, run the window analysis on it and save the results.
-        if not self.population and ('Population' in row):
-            self.population = int(row['Population'])
+        if not self.is_aggregator:
+            # We shouldn't already have an entry for this data type...
+            if datatype in self.data:
+                raise Exception(f"{self.name}: duplicate {datatype} data?")
+
+        # logging.debug(f"{self.name}: loading {datatype}")
+
+        # OK, good to go. If there's a population here, roll it in.
+        if 'Population' in row:
+            self.population += int(row['Population'])
+
+        # Figure out where we're saving stuff.
+        if datatype not in self.raw_data:
+            self.raw_data[datatype] = {}
+
+        raw_data = self.raw_data[datatype]
 
         # Extract the dates and counts from the row.
-        counts = []
-
         for k in row.keys():
             if k[0].isdigit():
-                counts.append((k, int(row[k])))
+                m = re.match(r'^(\d+)/(\d+)/(\d+)$', k)
 
-        # We shouldn't already have an entry for this data type...
-        if datatype in self.data:
-            raise Exception(f"{self.name}: duplicate {datatype} data?")
+                if not m:
+                    raise Exception(f"ill-formatted date {k} in {self.name}")
 
-        self.data[datatype] = {}
+                date_key = "20%02d%02d%02d" % (int(m.group(3)), int(m.group(1)), int(m.group(2)))
 
-        logging.debug(f"{self.name}: loading {datatype}")
+                if date_key not in raw_data:
+                    raw_data[date_key] = [k, 0]
 
-        self.data[datatype][7] = self.windows(counts, 7)
-        self.data[datatype][14] = self.windows(counts, 14)
-        self.data[datatype][21] = self.windows(counts, 21)
-        
-        # XXX: This shouldn't involve a separate loop, but I don't want to
-        # refactor everything right now.
+                raw_data[date_key][1] += int(row[k])
+                self.valid_dates[date_key] = k
 
-        for window_size in [ 7, 14, 21 ]:
-            info = self.data[datatype][window_size]
+    def analyze(self):
+        for datatype in self.raw_data.keys():
+            self.data[datatype] = {}
 
-            if info:
-                for d, _, _, _ in info:
-                    m = re.match(r'^(\d+)/(\d+)/(\d+)$', d)
+            self.data[datatype][7] = self.windows(self.raw_data[datatype], 7)
+            self.data[datatype][14] = self.windows(self.raw_data[datatype], 14)
+            self.data[datatype][21] = self.windows(self.raw_data[datatype], 21)
 
-                    if not m:
-                        raise Exception(f"ill-formatted date {d} in {place_key}")
-                    
-                    date_key = "20%02d%02d%02d" % (int(m.group(3)), int(m.group(1)), int(m.group(2)))
+    def windows(self, raw_data, window_size):
+        raw_keys = list(sorted(raw_data.keys()))
+        counts = [ raw_data[k] for k in raw_keys ]
 
-                    self.valid_dates[date_key] = d
+        logging.debug(f"Analyzing {self.name}, raw_data {raw_data}, counts {counts}")
 
-    def windows(self, counts, window_size):
         while len(counts) and (counts[0][1] == 0):
             counts.pop(0)
 
@@ -122,6 +138,9 @@ class Collection:
 
 Collections = {}
 
+for key in AGGREGATE:
+    Collections[key] = Collection(key, aggregator=True)
+
 for datatype, filename in [
     ( 'confirmed', 'time_series_covid19_confirmed_US.csv' ),
     ( 'confirmed', 'time_series_covid19_confirmed_global.csv' ),
@@ -133,18 +152,19 @@ for datatype, filename in [
     with open(path, 'r', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
 
-        first = True
-
         for row in reader:
             key_elements = []
+            state = None
 
             if 'Admin2' in row:
                 key_elements.append(row['Admin2'])
             
             if 'Province_State' in row:
                 key_elements.append(row['Province_State'])
+                state = row['Province_State']
             elif 'Province/State' in row:
                 key_elements.append(row['Province/State'])
+                state = row['Province/State']
 
             if 'Country/Region' in row:
                 country = row['Country/Region']
@@ -155,22 +175,22 @@ for datatype, filename in [
             place_key = ", ".join([x for x in key_elements if x])
 
             if place_key in TRACK:
-                
-                if not first:
-                    logging.debug("")
-
                 if not place_key in Collections:
                     Collections[place_key] = Collection(place_key)
 
                 collection = Collections[place_key]
                 collection.load(datatype, row)
 
-                first = False
+            if state and (state in AGGREGATE):
+                collection = Collections[state]
+                collection.load(datatype, row)
 
 all_valid_dates = {}
 
 for place_key in sorted(Collections.keys()):
     collection = Collections[place_key]
+
+    collection.analyze()
 
     for dk, d in collection.valid_dates.items():
         all_valid_dates[dk] = d
@@ -210,8 +230,8 @@ print('''
   </p>
   <p>
     These graphs do <em>not</em> show the number of cases: they show only the doubling times.
-    As such, <em>higher values are "better"</em>... except that the graph will show 
-    negative values when the number of cases actually start decreasing.
+    Lower values are better. Once the number starts actually decreasing over time, the graph
+    will show halving times (and, again, lower is better).
   </p>
   <p>
     A final caution: I'm not an epidimiologist, I just think we're not good at intuiting
@@ -237,6 +257,18 @@ print('''
 	<br>
 	<br>
 	<script>
+        var ticks = [ -4.000, -2.000, -1.000, -0.286, 0, 0.286,  1.000,  2.000,  4.000 ];
+        var labels = [
+            "halve in 12 hours",
+            "halve in 1 day",
+            "halve in 2 days",
+            "halve in 7 days",
+            "flat",
+            "double in 7 days",
+            "double in 2 days",
+            "double in 1 day",
+            "double in 12 hours"
+        ];
 ''')
 
 for place_key in places:
@@ -260,7 +292,7 @@ for place_key in places:
                 _, dbl_days, mult, count = idict[raw_date]
 
                 d_series.append(dbl_days)
-                m_series.append(mult)
+                m_series.append(2 *  math.log(mult) / math.log(2))
             else:
                 d_series.append(math.nan)
                 m_series.append(math.nan)
@@ -269,33 +301,35 @@ for place_key in places:
         mult_series[datatype] = m_series
 
     print("""
+        var %s_ticks = [];
+        var %s_labels = [];
 		var %s_config = {
 			type: 'line',
 			data: {
                 labels: [ %s ],
 				datasets: [
-    """ % (place_id, stringified_dates))
+    """ % (place_id, place_id, place_id, stringified_dates))
 
-    if "deaths" in  dbl_series:
+    if "deaths" in mult_series:
         print("""
                     {
-                        label: 'Doubling Times (deaths)',
+                        label: 'Doubling time (deaths)',
                         data: %s,
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
                         fill: false,
                     }
-        """ % json.dumps(dbl_series["deaths"]))
+        """ % json.dumps(mult_series["deaths"]))
 
-        if "confirmed" in dbl_series:
+        if "confirmed" in mult_series:
             print("""
                     ,
             """)
         
-    if "confirmed" in dbl_series:
+    if "confirmed" in mult_series:
         print("""
                     {
-                        label: 'Doubling Times (cases)',
+                        label: 'Doubling time (cases)',
                         data: %s,
                         fill: false,
                         backgroundColor: 'rgb(54, 162, 235)',
@@ -303,7 +337,16 @@ for place_key in places:
                         spanGaps: false
                     }
                 ]
-        """ % json.dumps(dbl_series["confirmed"]))
+        """ % json.dumps(mult_series["confirmed"]))
+
+				# tooltips: {
+				# 	mode: 'index',
+				# 	intersect: false,
+				# },
+				# hover: {
+				# 	mode: 'nearest',
+				# 	intersect: true
+				# },
 
     print("""
 			},
@@ -313,14 +356,24 @@ for place_key in places:
 					display: true,
 					text: '%s'
 				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+
+                            mult = 2 ** (tooltipItem.value / 2.0);
+                            dbl_time = Math.log(2) / Math.log(mult);
+                            label += Math.round(dbl_time * 100) / 100;
+                            label += " days";
+        
+                            return label;
+                        }
+                    }
+                },
 				scales: {
 					xAxes: [{
 						display: true,
@@ -336,13 +389,40 @@ for place_key in places:
 							labelString: 'Value'
 						},
                         ticks: {
-                            max: 20
+							callback: function(value, index, values) {
+								return %s_labels[index];
+							}										
+                        },
+                        afterBuildTicks: function(scale) {
+							%s_ticks = [];
+							%s_labels = [];
+
+							if (scale.min > 0) {
+								scale.min = 0;
+							}
+
+							if (scale.max < 2) {
+								scale.max = 2;
+							}
+							
+							for (var i = 0; i < ticks.length; i++) {
+								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+									%s_ticks.push(ticks[i]);
+									%s_labels.push(labels[i]);
+								}
+							}
+
+							scale.ticks = %s_ticks;
+                            return;
+                        },
+                        beforeUpdate: function(oScale) {
+                            return;
                         }
 					}]
 				}
 			}
 		};
-    """ % place_key)
+    """ % (place_key, place_id, place_id, place_id, place_id, place_id, place_id))
 
 print('''
 		window.onload = function() {
