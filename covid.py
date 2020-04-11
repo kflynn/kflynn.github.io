@@ -24,7 +24,7 @@ TRACK = {
     'Denton, Texas',
     'San Francisco, California',
     'Santa Clara, California',
-    'San Mateo, California',
+    'Los Angeles, California',
     'Spain',
     'Italy',
     'United Kingdom'
@@ -193,7 +193,8 @@ for place_key in sorted(Collections.keys()):
     collection.analyze()
 
     for dk, d in collection.valid_dates.items():
-        all_valid_dates[dk] = d
+        if dk >= "20200301":
+            all_valid_dates[dk] = d
 
 stringified_dates = ", ".join([f'"{all_valid_dates[x]}"' for x in sorted(all_valid_dates.keys())])
 
@@ -328,9 +329,8 @@ for place_key in places:
 
                 y = l2mult * l2sign
 
-                if True or (y < 1):
-                    # Square root to try linearizing
-                    y = y ** 0.5
+                # Square root to even the Y-axis out better.
+                y = y ** 0.5
 
                 y *= l2sign
 
