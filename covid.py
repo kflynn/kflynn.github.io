@@ -257,17 +257,47 @@ print('''
 	<br>
 	<br>
 	<script>
-        var ticks = [ -4.000, -2.000, -1.000, -0.286, 0, 0.286,  1.000,  2.000,  4.000 ];
+        var ticks = [ 
+            -2.000,
+            -1.414,
+            -1.000,
+            -0.707,
+            -0.577,
+            -0.447,
+            -0.378,
+            -0.266,
+            -0.190,
+             0.000,
+             0.190,
+             0.266,
+             0.378,
+             0.447,
+             0.577,
+             0.707,
+             1.000,
+             1.414,
+             2.000
+        ];
         var labels = [
+            "halve in 6 hours",
             "halve in 12 hours",
             "halve in 1 day",
             "halve in 2 days",
+            "halve in 3 days",
+            "halve in 5 days",
             "halve in 7 days",
+            "halve in 14 days",
+            "halve in 28 days",
             "flat",
+            "double in 28 days",
+            "double in 14 days",
             "double in 7 days",
+            "double in 5 days",
+            "double in 3 days",
             "double in 2 days",
             "double in 1 day",
-            "double in 12 hours"
+            "double in 12 hours",
+            "double in 6 hours"
         ];
 ''')
 
@@ -292,7 +322,19 @@ for place_key in places:
                 _, dbl_days, mult, count = idict[raw_date]
 
                 d_series.append(dbl_days)
-                m_series.append(2 *  math.log(mult) / math.log(2))
+
+                l2mult = math.log(mult) / math.log(2)
+                l2sign = -1 if (l2mult < 0) else 1
+
+                y = l2mult * l2sign
+
+                if True or (y < 1):
+                    # Square root to try linearizing
+                    y = y ** 0.5
+
+                y *= l2sign
+
+                m_series.append(y)
             else:
                 d_series.append(math.nan)
                 m_series.append(math.nan)
@@ -315,11 +357,12 @@ for place_key in places:
                     {
                         label: 'Doubling time (deaths)',
                         data: %s,
+                        rawData: %s,
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
                         fill: false,
                     }
-        """ % json.dumps(mult_series["deaths"]))
+        """ % (json.dumps(mult_series["deaths"]), json.dumps(dbl_series["deaths"])))
 
         if "confirmed" in mult_series:
             print("""
@@ -331,13 +374,14 @@ for place_key in places:
                     {
                         label: 'Doubling time (cases)',
                         data: %s,
+                        rawData: %s,
                         fill: false,
                         backgroundColor: 'rgb(54, 162, 235)',
                         borderColor: 'rgb(54, 162, 235)',
                         spanGaps: false
                     }
                 ]
-        """ % json.dumps(mult_series["confirmed"]))
+        """ % (json.dumps(mult_series["confirmed"]), json.dumps(dbl_series["confirmed"])))
 
 				# tooltips: {
 				# 	mode: 'index',
@@ -359,15 +403,18 @@ for place_key in places:
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, data) {
-                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var datasetIndex = tooltipItem.datasetIndex;
+                            var itemIndex = tooltipItem.index;
+                            var dataset = data.datasets[datasetIndex];
+                            var dblTime = dataset.rawData[itemIndex];
+                            
+                            var label = dataset.label || '';
 
                             if (label) {
                                 label += ': ';
                             }
 
-                            mult = 2 ** (tooltipItem.value / 2.0);
-                            dbl_time = Math.log(2) / Math.log(mult);
-                            label += Math.round(dbl_time * 100) / 100;
+                            label += Math.round(dblTime * 100) / 100;
                             label += " days";
         
                             return label;
@@ -401,8 +448,8 @@ for place_key in places:
 								scale.min = 0;
 							}
 
-							if (scale.max < 2) {
-								scale.max = 2;
+							if (scale.max < 1) {
+								scale.max = 1;
 							}
 							
 							for (var i = 0; i < ticks.length; i++) {
