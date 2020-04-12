@@ -315,16 +315,15 @@ for place_key in places:
     collection = Collections[place_key]
     place_id = collection.id
 
+    raw_series = {}
     dbl_series = {}
     mult_series = {}
 
-    series_count = 0
-
     for datatype in collection.data.keys():
-        series_count += 1
         info = collection.data[datatype][7]
         idict = { x[0]: x for x in info }
 
+        r_series = []
         d_series = []
         m_series = []
 
@@ -334,6 +333,7 @@ for place_key in places:
             if raw_date in idict:
                 _, dbl_days, mult, count = idict[raw_date]
 
+                r_series.append(count)
                 d_series.append(dbl_days)
 
                 l2mult = math.log(mult) / math.log(2)
@@ -348,9 +348,11 @@ for place_key in places:
 
                 m_series.append(y)
             else:
+                r_series.append(math.nan)
                 d_series.append(math.nan)
                 m_series.append(math.nan)
 
+        raw_series[datatype] = r_series
         dbl_series[datatype] = d_series
         mult_series[datatype] = m_series
 
@@ -364,7 +366,16 @@ for place_key in places:
 				datasets: [
     """ % (place_id, place_id, place_id, stringified_dates))
 
+    first = True
+
     if "deaths" in mult_series:
+        if not first:
+            print("""
+                    ,
+            """)
+
+        first = False
+
         print("""
                     {
                         label: 'Doubling time (deaths)',
@@ -377,15 +388,15 @@ for place_key in places:
                         yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["deaths"]), json.dumps(dbl_series["deaths"])))
-
-        series_count -= 1
-
-        if series_count > 0:
+        
+    if "hospitalizations" in mult_series:
+        if not first:
             print("""
                     ,
             """)
-        
-    if "hospitalizations" in mult_series:
+
+        first = False
+
         print("""
                     {
                         label: 'Doubling time (hospitalizations)',
@@ -398,15 +409,15 @@ for place_key in places:
                         yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["hospitalizations"]), json.dumps(dbl_series["hospitalizations"])))
-
-        series_count -= 1
-
-        if series_count > 0:
+        
+    if "confirmed" in mult_series:
+        if not first:
             print("""
                     ,
             """)
-        
-    if "confirmed" in mult_series:
+
+        first = False
+
         print("""
                     {
                         label: 'Doubling time (cases)',
@@ -419,6 +430,28 @@ for place_key in places:
                         yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["confirmed"]), json.dumps(dbl_series["confirmed"])))
+
+    # Come back to deaths for the count.
+    if "deaths" in mult_series:
+        if not first:
+            print("""
+                    ,
+            """)
+
+        first = False
+
+        print("""
+                    {
+                        label: 'Total deaths',
+                        data: %s,
+                        rawData: %s,
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        """ % (json.dumps(raw_series["deaths"]), json.dumps(raw_series["deaths"])))
 
 				# tooltips: {
 				# 	mode: 'index',
@@ -448,13 +481,18 @@ for place_key in places:
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -467,45 +505,56 @@ for place_key in places:
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return %s_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return %s_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                %s_ticks = [];
+                                %s_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        %s_ticks.push(ticks[i]);
+                                        %s_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = %s_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							%s_ticks = [];
-							%s_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									%s_ticks.push(ticks[i]);
-									%s_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = %s_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
