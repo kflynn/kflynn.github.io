@@ -28,7 +28,8 @@ TRACK = {
     'British Columbia, Canada',
     'Spain',
     'Italy',
-    'United Kingdom'
+    'United Kingdom',
+    'US'
 }
 
 AGGREGATE = {
@@ -170,9 +171,6 @@ for datatype, path in [
 
             if 'Country/Region' in row:
                 country = row['Country/Region']
-
-                if country == 'US':
-                    country = None
 
                 if country:
                     key_elements.append(country)

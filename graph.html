@@ -121,6 +121,11 @@
     
 
 	<div style="width:100%;">
+		<canvas id="us-canvas"></canvas>
+	</div>
+    
+
+	<div style="width:100%;">
 		<canvas id="united_kingdom-canvas"></canvas>
 	</div>
     
@@ -208,6 +213,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1, 4, 4, 7, 7, 8, 10, 10, 13, 13, 13, 14, 14, 17, 17, 19, 24, 24, 31, 31, 38, 38, 38, 39, 43, 48, 50, 58],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1, 4, 4, 7, 7, 8, 10, 10, 13, 13, 13, 14, 14, 17, 17, 19, 24, 24, 31, 31, 38, 38, 38, 39, 43, 48, 50, 58],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -226,13 +246,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -245,45 +270,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return british_columbia__canada_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return british_columbia__canada_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                british_columbia__canada_ticks = [];
+                                british_columbia__canada_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        british_columbia__canada_ticks.push(ticks[i]);
+                                        british_columbia__canada_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = british_columbia__canada_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							british_columbia__canada_ticks = [];
-							british_columbia__canada_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									british_columbia__canada_ticks.push(ticks[i]);
-									british_columbia__canada_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = british_columbia__canada_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -325,6 +361,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2, 4, 4, 4, 3, 5, 7, 12, 16, 18, 24, 25, 30, 39, 50, 65, 81, 94, 110, 124, 146, 173, 199, 238, 265, 289, 348, 380, 432, 495, 544, 583, 605],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2, 4, 4, 4, 3, 5, 7, 12, 16, 18, 24, 25, 30, 39, 50, 65, 81, 94, 110, 124, 146, 173, 199, 238, 265, 289, 348, 380, 432, 495, 544, 583, 605],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -343,13 +394,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -362,45 +418,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return california_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return california_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                california_ticks = [];
+                                california_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        california_ticks.push(ticks[i]);
+                                        california_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = california_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							california_ticks = [];
-							california_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									california_ticks.push(ticks[i]);
-									california_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = california_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -442,6 +509,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1, 4, 5, 8, 9, 12, 19, 21, 25, 26, 30, 38, 54, 61, 64, 80, 101, 109, 139, 179, 218, 259, 339, 375, 407, 503, 557, 654],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1, 4, 5, 8, 9, 12, 19, 21, 25, 26, 30, 38, 54, 61, 64, 80, 101, 109, 139, 179, 218, 259, 339, 375, 407, 503, 557, 654],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -460,13 +542,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -479,45 +566,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return canada_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return canada_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                canada_ticks = [];
+                                canada_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        canada_ticks.push(ticks[i]);
+                                        canada_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = canada_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							canada_ticks = [];
-							canada_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									canada_ticks.push(ticks[i]);
-									canada_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = canada_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -559,6 +657,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 4, 5, 6, 6, 7, 7, 7, 7, 7, 9, 10],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 4, 5, 6, 6, 7, 7, 7, 7, 7, 9, 10],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -577,13 +690,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -596,45 +714,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return denton__texas_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return denton__texas_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                denton__texas_ticks = [];
+                                denton__texas_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        denton__texas_ticks.push(ticks[i]);
+                                        denton__texas_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = denton__texas_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							denton__texas_ticks = [];
-							denton__texas_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									denton__texas_ticks.push(ticks[i]);
-									denton__texas_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = denton__texas_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -676,6 +805,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 3, 3, 4, 5, 9, 9, 9, 12, 15, 21, 22, 24, 22, 27, 32, 38, 47],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 3, 3, 4, 5, 9, 9, 9, 12, 15, 21, 22, 24, 22, 27, 32, 38, 47],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -694,13 +838,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -713,45 +862,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return district_of_columbia__district_of_columbia_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return district_of_columbia__district_of_columbia_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                district_of_columbia__district_of_columbia_ticks = [];
+                                district_of_columbia__district_of_columbia_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        district_of_columbia__district_of_columbia_ticks.push(ticks[i]);
+                                        district_of_columbia__district_of_columbia_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = district_of_columbia__district_of_columbia_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							district_of_columbia__district_of_columbia_ticks = [];
-							district_of_columbia__district_of_columbia_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									district_of_columbia__district_of_columbia_ticks.push(ticks[i]);
-									district_of_columbia__district_of_columbia_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = district_of_columbia__district_of_columbia_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -793,6 +953,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [34, 52, 79, 107, 148, 197, 233, 366, 463, 631, 827, 827, 1266, 1441, 1809, 2158, 2503, 2978, 3405, 4032, 4825, 5476, 6077, 6820, 7503, 8215, 9134, 10023, 10779, 11591, 12428, 13155, 13915, 14681, 15362, 15887, 16523, 17127, 17669, 18279, 18849, 19468],
+                        rawData: [34, 52, 79, 107, 148, 197, 233, 366, 463, 631, 827, 827, 1266, 1441, 1809, 2158, 2503, 2978, 3405, 4032, 4825, 5476, 6077, 6820, 7503, 8215, 9134, 10023, 10779, 11591, 12428, 13155, 13915, 14681, 15362, 15887, 16523, 17127, 17669, 18279, 18849, 19468],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -811,13 +986,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -830,45 +1010,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return italy_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return italy_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                italy_ticks = [];
+                                italy_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        italy_ticks.push(ticks[i]);
+                                        italy_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = italy_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							italy_ticks = [];
-							italy_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									italy_ticks.push(ticks[i]);
-									italy_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = italy_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -910,6 +1101,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1, 1, 2, 2, 2, 5, 7, 11, 13, 21, 26, 26, 32, 44, 54, 64, 78, 89, 93, 132, 147, 169, 198, 223, 242, 244],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1, 1, 2, 2, 2, 5, 7, 11, 13, 21, 26, 26, 32, 44, 54, 64, 78, 89, 93, 132, 147, 169, 198, 223, 242, 244],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -928,13 +1134,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -947,45 +1158,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return los_angeles__california_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return los_angeles__california_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                los_angeles__california_ticks = [];
+                                los_angeles__california_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        los_angeles__california_ticks.push(ticks[i]);
+                                        los_angeles__california_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = los_angeles__california_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							los_angeles__california_ticks = [];
-							los_angeles__california_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									los_angeles__california_ticks.push(ticks[i]);
-									los_angeles__california_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = los_angeles__california_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1042,6 +1264,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 25, 35, 44, 48, 56, 89, 122, 154, 192, 216, 231, 260, 356, 433, 503, 599, 686],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 25, 35, 44, 48, 56, 89, 122, 154, 192, 216, 231, 260, 356, 433, 503, 599, 686],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1060,13 +1297,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1079,45 +1321,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return massachusetts_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return massachusetts_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                massachusetts_ticks = [];
+                                massachusetts_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        massachusetts_ticks.push(ticks[i]);
+                                        massachusetts_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = massachusetts_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							massachusetts_ticks = [];
-							massachusetts_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									massachusetts_ticks.push(ticks[i]);
-									massachusetts_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = massachusetts_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1159,6 +1412,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 5, 6, 8, 17, 20, 28, 38, 38, 41, 47, 68, 80, 80, 80, 137],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 5, 6, 8, 17, 20, 28, 38, 38, 41, 47, 68, 80, 80, 80, 137],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1177,13 +1445,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1196,45 +1469,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return middlesex__massachusetts_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return middlesex__massachusetts_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                middlesex__massachusetts_ticks = [];
+                                middlesex__massachusetts_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        middlesex__massachusetts_ticks.push(ticks[i]);
+                                        middlesex__massachusetts_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = middlesex__massachusetts_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							middlesex__massachusetts_ticks = [];
-							middlesex__massachusetts_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									middlesex__massachusetts_ticks.push(ticks[i]);
-									middlesex__massachusetts_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = middlesex__massachusetts_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1276,6 +1560,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 46, 60, 117, 158, 210, 285, 385, 527, 883, 1063, 1342, 1714, 2176, 2738, 3594, 4290, 4951, 4698, 5489, 6268, 7067, 7867, 8627],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 46, 60, 117, 158, 210, 285, 385, 527, 883, 1063, 1342, 1714, 2176, 2738, 3594, 4290, 4951, 4698, 5489, 6268, 7067, 7867, 8627],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1294,13 +1593,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1313,45 +1617,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return new_york_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return new_york_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                new_york_ticks = [];
+                                new_york_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        new_york_ticks.push(ticks[i]);
+                                        new_york_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = new_york_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							new_york_ticks = [];
-							new_york_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									new_york_ticks.push(ticks[i]);
-									new_york_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = new_york_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1393,6 +1708,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 29, 45, 63, 99, 131, 199, 281, 366, 672, 776, 914, 1096, 1374, 1762, 2243, 2630, 3048, 3485, 4009, 4571, 5150, 5820, 6367],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 29, 45, 63, 99, 131, 199, 281, 366, 672, 776, 914, 1096, 1374, 1762, 2243, 2630, 3048, 3485, 4009, 4571, 5150, 5820, 6367],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1411,13 +1741,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1430,45 +1765,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return new_york__new_york_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return new_york__new_york_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                new_york__new_york_ticks = [];
+                                new_york__new_york_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        new_york__new_york_ticks.push(ticks[i]);
+                                        new_york__new_york_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = new_york__new_york_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							new_york__new_york_ticks = [];
-							new_york__new_york_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									new_york__new_york_ticks.push(ticks[i]);
-									new_york__new_york_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = new_york__new_york_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1510,6 +1856,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 6, 7, 7, 7, 8, 8, 9, 9, 10, 10, 13, 13],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 6, 7, 7, 7, 8, 8, 9, 9, 10, 10, 13, 13],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1528,13 +1889,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1547,45 +1913,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return san_francisco__california_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return san_francisco__california_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                san_francisco__california_ticks = [];
+                                san_francisco__california_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        san_francisco__california_ticks.push(ticks[i]);
+                                        san_francisco__california_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = san_francisco__california_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							san_francisco__california_ticks = [];
-							san_francisco__california_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									san_francisco__california_ticks.push(ticks[i]);
-									san_francisco__california_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = san_francisco__california_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1627,6 +2004,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2, 4, 6, 6, 8, 8, 8, 10, 16, 17, 19, 20, 25, 25, 28, 30, 32, 36, 36, 39, 39, 39, 43, 46, 46, 47, 50],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2, 4, 6, 6, 8, 8, 8, 10, 16, 17, 19, 20, 25, 25, 28, 30, 32, 36, 36, 39, 39, 39, 43, 46, 46, 47, 50],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1645,13 +2037,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1664,45 +2061,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return santa_clara__california_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return santa_clara__california_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                santa_clara__california_ticks = [];
+                                santa_clara__california_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        santa_clara__california_ticks.push(ticks[i]);
+                                        santa_clara__california_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = santa_clara__california_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							santa_clara__california_ticks = [];
-							santa_clara__california_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									santa_clara__california_ticks.push(ticks[i]);
-									santa_clara__california_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = santa_clara__california_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1744,6 +2152,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 28, 35, 54, 55, 133, 195, 289, 342, 533, 623, 830, 1043, 1375, 1772, 2311, 2808, 3647, 4365, 5138, 5982, 6803, 7716, 8464, 9387, 10348, 11198, 11947, 12641, 13341, 14045, 14792, 15447, 16081, 16606],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 28, 35, 54, 55, 133, 195, 289, 342, 533, 623, 830, 1043, 1375, 1772, 2311, 2808, 3647, 4365, 5138, 5982, 6803, 7716, 8464, 9387, 10348, 11198, 11947, 12641, 13341, 14045, 14792, 15447, 16081, 16606],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1762,13 +2185,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1781,45 +2209,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return spain_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return spain_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                spain_ticks = [];
+                                spain_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        spain_ticks.push(ticks[i]);
+                                        spain_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = spain_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							spain_ticks = [];
-							spain_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									spain_ticks.push(ticks[i]);
-									spain_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = spain_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1861,6 +2300,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2, 2, 3, 3, 5, 6, 13, 19, 21, 26, 27, 31, 40, 48, 48, 48, 79],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2, 2, 3, 3, 5, 6, 13, 19, 21, 26, 27, 31, 40, 48, 48, 48, 79],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1879,13 +2333,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -1898,45 +2357,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return suffolk__massachusetts_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return suffolk__massachusetts_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                suffolk__massachusetts_ticks = [];
+                                suffolk__massachusetts_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        suffolk__massachusetts_ticks.push(ticks[i]);
+                                        suffolk__massachusetts_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = suffolk__massachusetts_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							suffolk__massachusetts_ticks = [];
-							suffolk__massachusetts_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									suffolk__massachusetts_ticks.push(ticks[i]);
-									suffolk__massachusetts_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = suffolk__massachusetts_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -1978,6 +2448,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 9, 12, 15, 21, 26, 30, 37, 45, 54, 66, 77, 100, 116, 136, 150, 160, 189, 210, 238, 266],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 9, 12, 15, 21, 26, 30, 37, 45, 54, 66, 77, 100, 116, 136, 150, 160, 189, 210, 238, 266],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -1996,13 +2481,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -2015,45 +2505,204 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return texas_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                texas_ticks = [];
+                                texas_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        texas_ticks.push(ticks[i]);
+                                        texas_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = texas_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
+                        },
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
+                        }
+                    ]
+				}
+			}
+		};
+    
+
+        var us_ticks = [];
+        var us_labels = [];
+		var us_config = {
+			type: 'line',
+			data: {
+                labels: [ "3/1/20", "3/2/20", "3/3/20", "3/4/20", "3/5/20", "3/6/20", "3/7/20", "3/8/20", "3/9/20", "3/10/20", "3/11/20", "3/12/20", "3/13/20", "3/14/20", "3/15/20", "3/16/20", "3/17/20", "3/18/20", "3/19/20", "3/20/20", "3/21/20", "3/22/20", "3/23/20", "3/24/20", "3/25/20", "3/26/20", "3/27/20", "3/28/20", "3/29/20", "3/30/20", "3/31/20", "4/1/20", "4/2/20", "4/3/20", "4/4/20", "4/5/20", "4/6/20", "4/7/20", "4/8/20", "4/9/20", "4/10/20", "4/11/20" ],
+				datasets: [
+    
+
+                    {
+                        label: 'Doubling time (deaths)',
+                        data: [NaN, NaN, NaN, NaN, NaN, 0.7965922129146552, 0.825374949265518, 0.5488404324964897, 0.5247343290624462, 0.4739766702100269, 0.5139653848138602, 0.5024229912516873, 0.494490648787096, 0.4765448701127574, 0.5029659207909648, 0.5167262353961554, 0.5139653848138602, 0.5100187830649767, 0.5900942492654722, 0.6021973424328907, 0.617091959904176, 0.6184001721252136, 0.6280453825396913, 0.6558558433971777, 0.6104270444858061, 0.6203307171294783, 0.6277641286061976, 0.6165110008962363, 0.5981929012952387, 0.5883031623960161, 0.5830455294422502, 0.5739102398914151, 0.5636519698364277, 0.5487168175081577, 0.5429599981372346, 0.5309650277216452, 0.4961913622588969, 0.48634719443706015, 0.4672962706851355, 0.4504246502648408, 0.436759532380107, 0.4260396783996001],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, 1.5758972102231612, 1.4679032527093563, 3.319768533990675, 3.631792647654824, 4.451291838916363, 3.785578521428744, 3.961512132682159, 4.089628264618189, 4.403443236262313, 3.9529641933111774, 3.745234156577465, 3.785578521428744, 3.8443919453698774, 2.8718201307185627, 2.757543237766034, 2.626033269726997, 2.6149343884381984, 2.535233390005886, 2.3247872517096666, 2.6836907365761378, 2.5986837240821754, 2.537505594044198, 2.6309848001988025, 2.794586070627802, 2.8893332416908972, 2.941677512653335, 3.0360719031665706, 3.147588441227153, 3.3212644581539377, 3.3920662874683014, 3.547056987821868, 4.061641618061892, 4.227729283808565, 4.5794715974372835, 4.928964610646173, 5.242219665817515, 5.5093441692386085],
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "doubling-axis"
+                    }
+        
+
+                    ,
+            
+
+                    {
+                        label: 'Doubling time (cases)',
+                        data: [0.29917331199419456, 0.3962920854924461, 0.4182808138075622, 0.4763030417242418, 0.555976713666433, 0.5694968774112683, 0.6379130460010438, 0.6327319658395838, 0.6197726765837421, 0.6691061804820878, 0.6533890530530244, 0.666602011666859, 0.6374949398409603, 0.6319665994903935, 0.6564265478126441, 0.6153633794990709, 0.6225655953421144, 0.6091713207981855, 0.6655046597508057, 0.6857106473122293, 0.6917525136124522, 0.6885703623900027, 0.6796577856323439, 0.6816154902283283, 0.6135264635414545, 0.5945570799585644, 0.575831839720021, 0.5579705391674491, 0.5298134449387814, 0.5148494549139702, 0.5027217458647776, 0.4739425210749704, 0.45857817962165204, 0.4438396739418083, 0.43438780354188194, 0.42003348998451967, 0.40050352859267424, 0.3857766536954957, 0.3687092954150798, 0.3520490236593061, 0.33787943376102797, 0.32738655445736325],
+                        rawData: [11.172601308841807, 6.367503642848734, 5.715630056619417, 4.407915800231243, 3.2350931921626165, 3.083310811005888, 2.457406665630997, 2.4978160308365367, 2.603365517268891, 2.2336232270368717, 2.342374287075693, 2.250436484744748, 2.4606311423551332, 2.5038698380538524, 2.320746618065562, 2.6408072564673546, 2.580059767343812, 2.69476626585392, 2.2578641015196927, 2.1267586802271055, 2.089770086031458, 2.1091299970380195, 2.1648081166896262, 2.1523906505747745, 2.6566442356616657, 2.8288693479921294, 3.0158424529083887, 3.2120142429603993, 3.5624932475255564, 3.7725889247418993, 3.9568050820466216, 4.451933322791541, 4.755248617934087, 5.076305600235033, 5.299620290211362, 5.668030288864431, 6.2342943935291295, 6.719363203763758, 7.355832422886922, 8.068516873226695, 8.759442873102609, 9.329928627462284],
+                        backgroundColor: 'rgb(54, 162, 235)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "doubling-axis"
+                    }
+        
+
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, 14, 17, 21, 22, 28, 36, 40, 47, 54, 63, 85, 108, 118, 200, 244, 307, 417, 557, 706, 942, 1209, 1581, 2026, 2467, 2978, 3873, 4757, 5926, 7087, 8407, 9619, 10783, 12722, 14695, 16478, 18586, 20463],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, 14, 17, 21, 22, 28, 36, 40, 47, 54, 63, 85, 108, 118, 200, 244, 307, 417, 557, 706, 942, 1209, 1581, 2026, 2467, 2978, 3873, 4757, 5926, 7087, 8407, 9619, 10783, 12722, 14695, 16478, 18586, 20463],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
+                ]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'US'
+				},
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var datasetIndex = tooltipItem.datasetIndex;
+                            var itemIndex = tooltipItem.index;
+                            var dataset = data.datasets[datasetIndex];
+                            var dblTime = dataset.rawData[itemIndex];
+                            
+                            var label = dataset.label || '';
+
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
+                            }
+
+                            return label;
+                        }
+                    }
+                },
+				scales: {
+					xAxes: [{
 						display: true,
-                        position: "left",
 						scaleLabel: {
 							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return texas_labels[index];
-							}										
+							labelString: 'Day'
+						}
+					}],
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return us_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                us_ticks = [];
+                                us_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        us_ticks.push(ticks[i]);
+                                        us_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = us_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							texas_ticks = [];
-							texas_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									texas_ticks.push(ticks[i]);
-									texas_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = texas_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -2095,6 +2744,21 @@
                     }
         
 
+                    ,
+            
+
+                    {
+                        label: 'Total deaths',
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 8, 8, 8, 21, 21, 55, 55, 71, 137, 177, 233, 281, 335, 422, 465, 578, 759, 1019, 1228, 1408, 1789, 2352, 2921, 3605, 4313, 4934, 5373, 6159, 7097, 7978, 8958, 9875],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 8, 8, 8, 21, 21, 55, 55, 71, 137, 177, 233, 281, 335, 422, 465, 578, 759, 1019, 1228, 1408, 1789, 2352, 2921, 3605, 4313, 4934, 5373, 6159, 7097, 7978, 8958, 9875],
+                        backgroundColor: 'rgb(201, 203, 207)',
+                        borderColor: 'rgb(201, 203, 207)',
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "count-axis"
+                    }
+        
+
                 ]
 			},
 			options: {
@@ -2113,13 +2777,18 @@
                             
                             var label = dataset.label || '';
 
-                            if (label) {
-                                label += ': ';
+                            if (label == 'Total deaths') {
+                                label += ": " + dblTime;
+                            }
+                            else {
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                label += Math.round(dblTime * 100) / 100;
+                                label += " days";
                             }
 
-                            label += Math.round(dblTime * 100) / 100;
-                            label += " days";
-        
                             return label;
                         }
                     }
@@ -2132,45 +2801,56 @@
 							labelString: 'Day'
 						}
 					}],
-					yAxes: [{
-                        id: "doubling-axis",
-						display: true,
-                        position: "left",
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						},
-                        ticks: {
-							callback: function(value, index, values) {
-								return united_kingdom_labels[index];
-							}										
+					yAxes: [
+                        {
+                            id: "doubling-axis",
+                            display: true,
+                            position: "left",
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Value'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return united_kingdom_labels[index];
+                                }										
+                            },
+                            afterBuildTicks: function(scale) {
+                                united_kingdom_ticks = [];
+                                united_kingdom_labels = [];
+
+                                if (scale.min > 0) {
+                                    scale.min = 0;
+                                }
+
+                                if (scale.max < 1) {
+                                    scale.max = 1;
+                                }
+                                
+                                for (var i = 0; i < ticks.length; i++) {
+                                    if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
+                                        united_kingdom_ticks.push(ticks[i]);
+                                        united_kingdom_labels.push(labels[i]);
+                                    }
+                                }
+
+                                scale.ticks = united_kingdom_ticks;
+                                return;
+                            },
+                            beforeUpdate: function(oScale) {
+                                return;
+                            }
                         },
-                        afterBuildTicks: function(scale) {
-							united_kingdom_ticks = [];
-							united_kingdom_labels = [];
-
-							if (scale.min > 0) {
-								scale.min = 0;
-							}
-
-							if (scale.max < 1) {
-								scale.max = 1;
-							}
-							
-							for (var i = 0; i < ticks.length; i++) {
-								if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
-									united_kingdom_ticks.push(ticks[i]);
-									united_kingdom_labels.push(labels[i]);
-								}
-							}
-
-							scale.ticks = united_kingdom_ticks;
-                            return;
-                        },
-                        beforeUpdate: function(oScale) {
-                            return;
+                        {
+                            id: "count-axis",
+                            display: true,
+                            position: "right",
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Total'
+                            }
                         }
-					}]
+                    ]
 				}
 			}
 		};
@@ -2241,6 +2921,10 @@
 
 			var texas_ctx = document.getElementById('texas-canvas').getContext('2d');
 			var texas_chart = new Chart(texas_ctx, texas_config);
+    
+
+			var us_ctx = document.getElementById('us-canvas').getContext('2d');
+			var us_chart = new Chart(us_ctx, us_config);
     
 
 			var united_kingdom_ctx = document.getElementById('united_kingdom-canvas').getContext('2d');
