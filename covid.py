@@ -373,6 +373,8 @@ for place_key in places:
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
                         fill: false,
+                        spanGaps: false,
+                        yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["deaths"]), json.dumps(dbl_series["deaths"])))
 
@@ -389,10 +391,11 @@ for place_key in places:
                         label: 'Doubling time (hospitalizations)',
                         data: %s,
                         rawData: %s,
-                        fill: false,
                         backgroundColor: 'rgb(255, 159, 64)',
                         borderColor: 'rgb(255, 159, 64)',
-                        spanGaps: false
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["hospitalizations"]), json.dumps(dbl_series["hospitalizations"])))
 
@@ -409,10 +412,11 @@ for place_key in places:
                         label: 'Doubling time (cases)',
                         data: %s,
                         rawData: %s,
-                        fill: false,
                         backgroundColor: 'rgb(54, 162, 235)',
                         borderColor: 'rgb(54, 162, 235)',
-                        spanGaps: false
+                        fill: false,
+                        spanGaps: false,
+                        yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["confirmed"]), json.dumps(dbl_series["confirmed"])))
 
@@ -464,7 +468,9 @@ for place_key in places:
 						}
 					}],
 					yAxes: [{
+                        id: "doubling-axis",
 						display: true,
+                        position: "left",
 						scaleLabel: {
 							display: true,
 							labelString: 'Value'
