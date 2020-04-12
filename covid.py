@@ -443,9 +443,9 @@ for place_key in places:
                         label: 'Total deaths',
                         data: %s,
                         rawData: %s,
-                        backgroundColor: 'rgb(201, 203, 207)',
-                        borderColor: 'rgb(201, 203, 207)',
-                        fill: false,
+                        backgroundColor: 'rgb(240, 240, 240)',
+                        borderColor: 'rgb(240, 240, 240)',
+                        fill: true,
                         spanGaps: false,
                         yAxisID: "count-axis"
                     }
