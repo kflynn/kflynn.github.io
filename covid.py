@@ -25,12 +25,14 @@ TRACK = {
     'San Francisco, California',
     'Santa Clara, California',
     'Los Angeles, California',
+    'British Columbia, Canada',
     'Spain',
     'Italy',
     'United Kingdom'
 }
 
 AGGREGATE = {
+    'Canada',
     'Massachusetts',
     'New York',
     'California',
@@ -154,6 +156,7 @@ for datatype, path in [
         for row in reader:
             key_elements = []
             state = None
+            country = None
 
             if 'Admin2' in row:
                 key_elements.append(row['Admin2'])
@@ -168,7 +171,10 @@ for datatype, path in [
             if 'Country/Region' in row:
                 country = row['Country/Region']
 
-                if country != 'US':
+                if country == 'US':
+                    country = None
+
+                if country:
                     key_elements.append(country)
 
             place_key = ", ".join([x for x in key_elements if x])
@@ -182,6 +188,10 @@ for datatype, path in [
 
             if state and (state in AGGREGATE):
                 collection = Collections[state]
+                collection.load(datatype, row)
+
+            if country and (country in AGGREGATE):
+                collection = Collections[country]
                 collection.load(datatype, row)
 
 all_valid_dates = {}
