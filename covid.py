@@ -221,31 +221,10 @@ print('''
 	</style>
 </head>
 
-<body>
-  <H1>COVID-19 Doubling Times</H1>
-  <p>
-    These graphs are generated from the 
-    <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE data</a>, 
-    which is updated daily.
-  </p>
-  <p>
-    The graph shows the doubling time of COVID-19 deaths (red) or confirmed cases (blue),
-    expressed in days, looking at the seven-day window that ended on the date being plotted. 
-    No data are graphed for times during which a given location reported no deaths or cases.
-    Likewise, no point will be plotted if the number was constant over the whole seven-day
-    window.
-  </p>
-  <p>
-    These graphs do <em>not</em> show the number of cases: they show only the doubling times.
-    Lower values are better. Once the number starts actually decreasing over time, the graph
-    will show halving times (and, again, lower is better).
-  </p>
-  <p>
-    A final caution: I'm not an epidimiologist, I just think we're not good at intuiting
-    about exponential growth rates. Use with caution. If you have questions or other 
-    feedback, you can reach me via email at <a href="mailto:covid@kodachi.com">&lt;covid@kodachi.com&gt;</a>.
-  </p>
 ''')
+
+with open("intro.html") as intro:
+    print(intro.read())
 
 places = list(sorted(Collections.keys()))
 

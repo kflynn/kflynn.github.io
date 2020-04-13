@@ -1,0 +1,65 @@
+<body style="font-size: 1.2rem">
+  <H1 style="font-family: sans-serif">COVID-19 Doubling Times</H1>
+
+  <hr/>
+
+  <div style="max-width: 45em;">
+    <p>
+        I see a lot of graphs of cumulative COVID-19 cases over time. While they definitely 
+        play well on TV with their dramatic upward curve, what I want from data visualization
+        is to improve my situational awareness: are things getting better? are they getting
+        worse? is that light up ahead the end of a tunnel, or a train? Graphing cumulative
+        counts doesn't seem to help much with that, because the counts can keep growing for
+        a long time even while we're bringing the situation under control.
+    </p>
+    
+    <p>
+        What felt more useful to me was the rate of change, rather than the absolute number. 
+        We humans aren't great at looking at a raw-count graph and knowing the rate, though, 
+        especially as the numbers get large. So I assembled these graphs centered around the
+        rates, rather than the counts:
+
+        <ul>
+        <li><span style="color: rgb(255, 99, 132)">Red lines</span> show the doubling time of deaths from COVID-19.</li>
+        <li><span style="color: rgb(54, 162, 235)">Blue lines</span> show the doubling time of confirmed COVID-19 cases.</li>
+        <li>For Massachusetts, the <span style="color: rgb(255, 159, 64)">orange line</span> shows the doubling time of COVID-19 hospitalizations.</li>
+        <li>The grey background shows the count of deaths, for context.</li>
+        </ul>
+    </p>
+
+    <p>
+        <i>Doubling time</i> is calculated over the seven-day window that ended on the date
+        being plotted. The higher the value, the faster the number is doubling, so 
+        <strong>lower values are better</strong>. Once the number starts actually decreasing over
+        time, the graph will show halving times (and, again, lower is better).
+    </p>
+
+    <p>
+        Two final cautions: first, I'm not an epidemiologist, I just think we're not good at intuiting
+        about exponential growth rates. Second, when the numbers are small, the rates are very likely
+        to be much less stable and thus much less useful for reasoning about. Use with caution.
+        If you have questions or other feedback, you can reach me via email at
+        <a style="text-decoration: none" href="mailto:covid@kodachi.com">&lt;covid@kodachi.com&gt;</a>.
+    </p>
+  </div>
+
+  <hr/>
+
+  <div style="max-width: 45em; font-size: 1.0rem;">
+    <p>
+      The fine print:
+
+      <ul>
+        <li>No data are graphed for times during which a given location reported no deaths or cases.</li>
+        <li>No point will be plotted if the number was constant over the whole seven-day window.</li>
+        <li>The primary data source is the <a style="text-decoration: none" href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE data</a>, 
+            which is updated daily.</li>
+        <li>Massachusetts hospitalization data is from <a style="text-decoration: none" href="https://www.mass.gov/info-details/covid-19-cases-quarantine-and-monitoring">ma.gov</a>,
+            also updated daily.</li>
+        <li>I would love hospitalization data for other regions, but I don't have it.</li>
+      </ul>
+    </p>
+  </div>
+
+  <hr/>
+
