@@ -212,7 +212,6 @@ print('''
 <head>
 	<title>Doubling Times</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-	<!-- <script src="../../utils.js"></script> -->
 	<style>
 	canvas{
 		-moz-user-select: none;
@@ -243,7 +242,8 @@ print('''
   </p>
   <p>
     A final caution: I'm not an epidimiologist, I just think we're not good at intuiting
-    about exponential growth rates. Use with caution.
+    about exponential growth rates. Use with caution. If you have questions or other 
+    feedback, you can reach me via email at <a href="mailto:covid@kodachi.com">&lt;covid@kodachi.com&gt;</a>.
   </p>
 ''')
 
