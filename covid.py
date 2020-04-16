@@ -41,27 +41,22 @@ AGGREGATE = {
 }
 
 class Collection:
-    def __init__(self, name: str, aggregator=False) -> None:
+    def __init__(self, name: str, edits=None, aggregator=False) -> None:
         self.name = name
+        self.edits = edits
         self.id = re.sub(r'[^A-Za-z0-9]', '_', self.name).lower()
         self.raw_data = {}      # Raw counts
         self.data = {}          # Windowed data
         self.valid_dates = {}
-
-        self.population = 0
         self.is_aggregator = aggregator
 
-    def load(self, datatype: str, row) -> None:
+    def load(self, datatype: str, datapoints) -> None:
         if not self.is_aggregator:
             # We shouldn't already have an entry for this data type...
             if datatype in self.data:
                 raise Exception(f"{self.name}: duplicate {datatype} data?")
 
-        logging.debug(f"{self.name}: loading {datatype}: {row}")
-
-        # OK, good to go. If there's a population here, roll it in.
-        if 'Population' in row:
-            self.population += int(row['Population'])
+        logging.debug(f"{self.name}: loading {datatype}: {datapoints}")
 
         # Figure out where we're saving stuff.
         if datatype not in self.raw_data:
@@ -69,35 +64,36 @@ class Collection:
 
         raw_data = self.raw_data[datatype]
 
-        # Extract the dates and counts from the row.
-        for k in row.keys():
-            if k[0].isdigit():
-                m = re.match(r'^(\d+)/(\d+)/(\d+)$', k)
+        for date_key, raw_date, value in datapoints:
+            if date_key not in raw_data:
+                raw_data[date_key] = [ raw_date, 0 ]
 
-                if not m:
-                    raise Exception(f"ill-formatted date {k} in {self.name}")
-
-                date_key = "20%02d%02d%02d" % (int(m.group(3)), int(m.group(1)), int(m.group(2)))
-
-                if date_key not in raw_data:
-                    raw_data[date_key] = [k, 0]
-
-                raw_data[date_key][1] += int(row[k])
-                self.valid_dates[date_key] = k
+            raw_data[date_key][1] += value
+            self.valid_dates[date_key] = raw_date
 
     def analyze(self):
+        logger = logging.debug
+
         for datatype in self.raw_data.keys():
+            # if self.id.endswith('massachusetts') and (datatype == 'hospitalizations'):
+            #     logger = logging.info
+
+            logger(f"ANALYZE: {self.name} {datatype}")
+
             self.data[datatype] = {}
 
-            self.data[datatype][7] = self.windows(self.raw_data[datatype], 7)
-            self.data[datatype][14] = self.windows(self.raw_data[datatype], 14)
-            self.data[datatype][21] = self.windows(self.raw_data[datatype], 21)
+            self.data[datatype][7] = self.windows(self.raw_data[datatype], 7, logger=logger)
+            self.data[datatype][14] = self.windows(self.raw_data[datatype], 14, logger=logger)
+            self.data[datatype][21] = self.windows(self.raw_data[datatype], 21, logger=logger)
 
-    def windows(self, raw_data, window_size):
+        # logger(f"DUMP: {self.name}")
+        # logger(json.dumps(self.data, indent=4, sort_keys=True))
+
+    def windows(self, raw_data, window_size, logger=logging.debug):
         raw_keys = list(sorted(raw_data.keys()))
         counts = [ raw_data[k] for k in raw_keys ]
 
-        logging.debug(f"Analyzing {self.name}, raw_data {raw_data}, counts {counts}")
+        logger(f" {window_size}: raw_data {raw_data}, counts {counts}")
 
         while len(counts) and (counts[0][1] == 0):
             counts.pop(0)
@@ -108,7 +104,7 @@ class Collection:
                 counts[i] = (counts[i][0], counts[i-1][1])
 
         if len(counts) < window_size:
-            logging.debug(f"{self.name}: too little data for {window_size}-day windows")
+            logger(f"{self.name}: too little data for {window_size}-day windows")
             return None
 
         window_offset = window_size - 1
@@ -116,7 +112,7 @@ class Collection:
 
         results = []
 
-        logging.debug(f"  {window_size}-day windows:")
+        logger(f"  {window_size}-day windows:")
 
         while idx < len(counts):
             window_end = counts[idx][0]
@@ -128,16 +124,36 @@ class Collection:
 
             try:
                 dbl_days = math.log(2) / math.log(mult)
-                logging.debug("    %8s: %5.2f days (mult %.4f, [%s])" % 
+                logger("    %8s: %5.2f days (mult %.4f, [%s])" %
                               (window_end, dbl_days, mult, ", ".join(map(str, week))))
                 results.append((window_end, dbl_days, mult, week[-1]))
             except ZeroDivisionError:
-                logging.debug("    %8s: steady" % window_end)
+                logger("    %8s: steady" % window_end)
                 results.append((window_end, math.nan, math.nan, week[-1]))
 
             idx += 1
 
         return results
+
+edits = {}
+
+with open("edits.csv", "r", newline="") as csvfile:
+    reader = csv.DictReader(csvfile)
+
+    for row in reader:
+        datatype = row['datatype']
+
+        if datatype not in edits:
+            edits[datatype] = {}
+
+        edt = edits[datatype]
+
+        key = f"{row['key1']}, {row['key2']}"
+
+        if key not in edt:
+            edt[key] = {}
+
+        edt[key][row['date']] = int(row['value'])
 
 Collections = {}
 
@@ -150,7 +166,7 @@ for datatype, path in [
     ( 'deaths', os.path.join(COVID_DIR, 'time_series_covid19_deaths_US.csv') ),
     ( 'deaths', os.path.join(COVID_DIR, 'time_series_covid19_deaths_global.csv') ),
     ( 'hospitalizations', 'hospitalizations.csv' )
-]:    
+]:
     with open(path, 'r', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
 
@@ -161,7 +177,7 @@ for datatype, path in [
 
             if 'Admin2' in row:
                 key_elements.append(row['Admin2'])
-            
+
             if 'Province_State' in row:
                 key_elements.append(row['Province_State'])
                 state = row['Province_State']
@@ -177,20 +193,43 @@ for datatype, path in [
 
             place_key = ", ".join([x for x in key_elements if x])
 
+            # Extract the dates and counts from the row.
+            datapoints = []
+
+            for k in row.keys():
+                if k[0].isdigit():
+                    m = re.match(r'^(\d+)/(\d+)/(\d+)$', k)
+
+                    if not m:
+                        raise Exception(f"ill-formatted date {k} in {place_key}")
+
+                    date_key = "20%02d%02d%02d" % (int(m.group(3)), int(m.group(1)), int(m.group(2)))
+
+                    # Why int(float())? Because sometimes there's a `.0` thrown in. Sigh.
+                    value = int(float(row[k]))
+
+                    edt = edits.get(datatype, {}).get(place_key)
+
+                    if edt:
+                        if date_key in edt:
+                            value = edt[date_key]
+
+                    datapoints.append((date_key, k, value))
+
             if place_key in TRACK:
                 if not place_key in Collections:
                     Collections[place_key] = Collection(place_key)
 
                 collection = Collections[place_key]
-                collection.load(datatype, row)
+                collection.load(datatype, datapoints)
 
             if state and (state in AGGREGATE):
                 collection = Collections[state]
-                collection.load(datatype, row)
+                collection.load(datatype, datapoints)
 
             if country and (country in AGGREGATE):
                 collection = Collections[country]
-                collection.load(datatype, row)
+                collection.load(datatype, datapoints)
 
 all_valid_dates = {}
 
@@ -244,7 +283,7 @@ print('''
 	<br>
 	<br>
 	<script>
-        var ticks = [ 
+        var ticks = [
             -2.000,
             -1.414,
             -1.000,
@@ -298,11 +337,17 @@ for place_key in places:
 
     for datatype in collection.data.keys():
         info = collection.data[datatype][7]
+
+        if not info:
+            continue
+        
         idict = { x[0]: x for x in info }
 
         r_series = []
         d_series = []
         m_series = []
+
+        logging.debug(f"GENERATE: {place_key} {datatype}")
 
         for d in sorted(all_valid_dates.keys()):
             raw_date = all_valid_dates[d]
@@ -365,7 +410,7 @@ for place_key in places:
                         yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["deaths"]), json.dumps(dbl_series["deaths"])))
-        
+
     if "hospitalizations" in mult_series:
         if not first:
             print("""
@@ -386,7 +431,7 @@ for place_key in places:
                         yAxisID: "doubling-axis"
                     }
         """ % (json.dumps(mult_series["hospitalizations"]), json.dumps(dbl_series["hospitalizations"])))
-        
+
     if "confirmed" in mult_series:
         if not first:
             print("""
@@ -455,7 +500,7 @@ for place_key in places:
                             var itemIndex = tooltipItem.index;
                             var dataset = data.datasets[datasetIndex];
                             var dblTime = dataset.rawData[itemIndex];
-                            
+
                             var label = dataset.label || '';
 
                             if (label == 'Total deaths') {
@@ -494,7 +539,7 @@ for place_key in places:
                             ticks: {
                                 callback: function(value, index, values) {
                                     return %s_labels[index];
-                                }										
+                                }
                             },
                             afterBuildTicks: function(scale) {
                                 %s_ticks = [];
@@ -507,7 +552,7 @@ for place_key in places:
                                 if (scale.max < 1) {
                                     scale.max = 1;
                                 }
-                                
+
                                 for (var i = 0; i < ticks.length; i++) {
                                     if ((ticks[i] >= scale.min) && (ticks[i] <= scale.max)) {
                                         %s_ticks.push(ticks[i]);
