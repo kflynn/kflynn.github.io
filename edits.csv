@@ -5,3 +5,13 @@ date,datatype,key1,key2,value
 20200414,deaths,Middlesex,Massachusetts,186
 20200414,deaths,Suffolk,Massachusetts,121
 20200414,deaths,Unassigned,Massachusetts,141
+20200416,deaths,Berkshire,Massachusetts,24
+20200416,deaths,Bristol,Massachusetts,63
+20200416,deaths,Essex,Massachusetts,159
+20200416,deaths,Hampden,Massachusetts,161
+20200416,deaths,Middlesex,Massachusetts,258
+20200416,deaths,Norfolk,Massachusetts,173
+20200416,deaths,Plymouth,Massachusetts,93
+20200416,deaths,Suffolk,Massachusetts,164
+20200416,deaths,Unassigned,Massachusetts,16
+20200416,deaths,Worcester,Massachusetts,84
