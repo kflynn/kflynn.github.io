@@ -206,7 +206,10 @@ for datatype, path in [
                     date_key = "20%02d%02d%02d" % (int(m.group(3)), int(m.group(1)), int(m.group(2)))
 
                     # Why int(float())? Because sometimes there's a `.0` thrown in. Sigh.
-                    value = int(float(row[k]))
+                    try:
+                        value = int(float(row[k]))
+                    except ValueError:
+                        logging.error(f"{path}\nbad row {row}")
 
                     edt = edits.get(datatype, {}).get(place_key)
 
@@ -340,7 +343,7 @@ for place_key in places:
 
         if not info:
             continue
-        
+
         idict = { x[0]: x for x in info }
 
         r_series = []
