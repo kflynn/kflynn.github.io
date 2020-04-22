@@ -1,61 +1,123 @@
+#!/usr/bin/env python3
+
 import sys
 
-import csv
-import json
-import math
-import os
-import re
+Hospitals = {}
+Current_Batch = []
+Current_Index = 0
 
-import logging
+state="need hospital name header"
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s covid %(levelname)s: %(message)s',
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+for line in sys.stdin:
+	line = line.strip()
 
-total_hosp = {}
-icu_hosp = {}
+	if not line:
+		break
 
-with open(sys.argv[1], "r", newline="") as csvfile:
-    reader = csv.reader(csvfile)
+	# print("%-30s %s" % (state, line))
 
-    for row in reader:
-        print([ "'%s'" % x for x in row ])
-        raw_date, hospital, county, zip, total, icu = list(row)
+	if state == "need hospital name header":
+		if line == "Hospital Name":
+			state = "read hospital names"
+			Current_Batch = []
+		else:
+			raise Exception(f"Need hospital name header, got {line}")
 
-        m = re.match(r'^(\d+)/(\d+)/(\d+)$', raw_date)
+	elif state == "read hospital names":
+		if line == "Hospital county":
+			state = "need and zip code"
+		elif line in Hospitals:
+			raise Exception(f"Duplicate hospital {line}")
+		else:
+			Hospitals[line] = {}
+			Current_Batch.append(line)
 
-        if not m:
-            raise Exception(f"ill-formatted date {raw_date} in {sys.argv[1]}")
+	elif state == "need and zip code":
+		if line == "and zip code":
+			state = "read county and zip"
+			Current_Index = 0
+		else:
+			raise Exception(f"Need 'and zip code', got {line}")
 
-        formatted = "%d/%d/%02d" % (int(m.group(1)), int(m.group(2)), int(m.group(3)) % 100)
+	elif state == "read county and zip":
+		if line == "Hospitalized Total COVID":
+			state = "need patients"
+		else:
+			(county, zipcode) = line.split('-')
 
-        th = total_hosp.setdefault(formatted, {})
-        ti = icu_hosp.setdefault(formatted, {})
+			hospital = Current_Batch[Current_Index]
+			Hospitals[hospital]["county"] = county.strip()
+			Current_Index += 1
 
-        if county not in th:
-            th[county] = 0
-        
-        th[county] += int(total)
+	elif state == "need patients":
+		if line == "patients - suspected and":
+			state = "need confirmed"
+		else:
+			raise Exception(f"Need 'patients - suspected and', got {line}")
 
-        if county not in ti:
-            ti[county] = 0
-        
-        ti[county] += int(icu)
+	elif state == "need confirmed":
+		if line == "confirmed (including ICU)":
+			state = "read confirmed"
+			Current_Index = 0
+		else:
+			raise Exception(f"Need 'confirmed (including ICU)', got {line}")
 
-        if "MA" not in th:
-            th["MA"] = 0
-        
-        th["MA"] += int(total)
+	elif state == "read confirmed":
+		if line == "Hospitalized COVID Patients in":
+			state = "need ICU"
+		else:
+			hospital = Current_Batch[Current_Index]
+			Hospitals[hospital]["confirmed"] = int(line)
+			Current_Index += 1
 
-        if "MA" not in ti:
-            ti["MA"] = 0
-        
-        ti["MA"] += int(icu)
+	elif state == "need ICU":
+		if line == "ICU - suspected and confirmed":
+			state = "read ICU"
+			Current_Index = 0
+		else:
+			raise Exception(f"Need 'ICU - suspected and confirmed', got {line}")
 
-print("==== total")
-print(total_hosp)
+	elif state == "read ICU":
+		if line.startswith("Massachusetts Department of Public Health"):
+			state = "skip page break"
+		else:
+			hospital = Current_Batch[Current_Index]
+			Hospitals[hospital]["ICU"] = int(line)
+			Current_Index += 1
 
-print("==== ICU")
-print(icu_hosp)
+	elif state == "skip page break":
+		if line.startswith("COVID Patient Census by Hospital"):
+			state = "skip page break count"
+		else:
+			raise Exception(f"Need 'COVID Patient Census by Hospital...', got {line}")
+
+
+	elif state == "skip page break count":
+		state = "need hospital name header"
+
+counts_by_county = {}
+total = 0
+
+print("---- hospitals")
+for hospital in sorted(Hospitals.keys()):
+	county = Hospitals[hospital]["county"]
+	confirmed = Hospitals[hospital]["confirmed"]
+
+	if county not in counts_by_county:
+		counts_by_county[county] = 0
+
+	counts_by_county[county] += confirmed
+	total += confirmed
+
+	print(f"{hospital} ({county}): {confirmed}")
+
+print("---- counties")
+for county in sorted(counts_by_county.keys()):
+	print(f"{county}: {counts_by_county[county]}")
+
+middlesex = counts_by_county['Middlesex']
+suffolk = counts_by_county['Suffolk']
+
+print(f"---- total {total}")
+print(f"Massachusetts without Middlesex and Suffolk: {total - (middlesex + suffolk)}")
+
