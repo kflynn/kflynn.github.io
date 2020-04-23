@@ -21,7 +21,7 @@ with open(sys.argv[1], "r", newline="") as csvfile:
     reader = csv.reader(csvfile)
 
     for row in reader:
-        print([ "'%s'" % x for x in row ])
+        logging.debug([ "'%s'" % x for x in row ])
         raw_date, hospital, county, zip, total, icu = list(row)
 
         m = re.match(r'^(\d+)/(\d+)/(\d+)$', raw_date)

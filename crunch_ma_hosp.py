@@ -98,7 +98,7 @@ for line in sys.stdin:
 counts_by_county = {}
 total = 0
 
-print("---- hospitals")
+# print("---- hospitals")
 for hospital in sorted(Hospitals.keys()):
 	county = Hospitals[hospital]["county"]
 	confirmed = Hospitals[hospital]["confirmed"]
@@ -109,7 +109,7 @@ for hospital in sorted(Hospitals.keys()):
 	counts_by_county[county] += confirmed
 	total += confirmed
 
-	print(f"{hospital} ({county}): {confirmed}")
+# 	print(f"{hospital} ({county}): {confirmed}")
 
 print("---- counties")
 for county in sorted(counts_by_county.keys()):
