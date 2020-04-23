@@ -74,6 +74,21 @@ date,datatype,key1,key2,value
 20200418,deaths,Suffolk,Massachusetts,194
 20200418,deaths,Worcester,Massachusetts,101
 20200418,deaths,Unassigned,Massachusetts,106
+20200421,deaths,Barnstable,Massachusetts,21
+20200421,deaths,Berkshire,Massachusetts,27
+20200421,deaths,Bristol,Massachusetts,87
+20200421,deaths,Dukes and Nantucket,Massachusetts,1
+20200421,deaths,Essex,Massachusetts,209
+20200421,deaths,Franklin,Massachusetts,26
+20200421,deaths,Hampden,Massachusetts,211
+20200421,deaths,Hampshire,Massachusetts,7
+20200421,deaths,Middlesex,Massachusetts,372
+20200421,deaths,Nantucket,Massachusetts,0
+20200421,deaths,Norfolk,Massachusetts,244
+20200421,deaths,Plymouth,Massachusetts,131
+20200421,deaths,Suffolk,Massachusetts,236
+20200421,deaths,Worcester,Massachusetts,114
+20200421,deaths,Unassigned,Massachusetts,20
 20200420,deaths,Barnstable,Massachusetts,21
 20200420,deaths,Berkshire,Massachusetts,28
 20200420,deaths,Bristol,Massachusetts,88
@@ -88,4 +103,34 @@ date,datatype,key1,key2,value
 20200420,deaths,Plymouth,Massachusetts,134
 20200420,deaths,Suffolk,Massachusetts,263
 20200420,deaths,Worcester,Massachusetts,117
-20200420,deaths,Unassigned,Massachusetts,106
+20200420,deaths,Unassigned,Massachusetts,8
+20200421,deaths,Barnstable,Massachusetts,22
+20200421,deaths,Berkshire,Massachusetts,29
+20200421,deaths,Bristol,Massachusetts,96
+20200421,deaths,Dukes and Nantucket,Massachusetts,1
+20200421,deaths,Essex,Massachusetts,245
+20200421,deaths,Franklin,Massachusetts,29
+20200421,deaths,Hampden,Massachusetts,244
+20200421,deaths,Hampshire,Massachusetts,10
+20200421,deaths,Middlesex,Massachusetts,428
+20200421,deaths,Nantucket,Massachusetts,0
+20200421,deaths,Norfolk,Massachusetts,290
+20200421,deaths,Plymouth,Massachusetts,141
+20200421,deaths,Suffolk,Massachusetts,285
+20200421,deaths,Worcester,Massachusetts,133
+20200421,deaths,Unassigned,Massachusetts,8
+20200422,deaths,Barnstable,Massachusetts,27
+20200422,deaths,Berkshire,Massachusetts,31
+20200422,deaths,Bristol,Massachusetts,104
+20200422,deaths,Dukes and Nantucket,Massachusetts,1
+20200422,deaths,Essex,Massachusetts,271
+20200422,deaths,Franklin,Massachusetts,30
+20200422,deaths,Hampden,Massachusetts,271
+20200422,deaths,Hampshire,Massachusetts,14
+20200422,deaths,Middlesex,Massachusetts,494
+20200422,deaths,Nantucket,Massachusetts,0
+20200422,deaths,Norfolk,Massachusetts,312
+20200422,deaths,Plymouth,Massachusetts,157
+20200422,deaths,Suffolk,Massachusetts,318
+20200422,deaths,Worcester,Massachusetts,143
+20200422,deaths,Unassigned,Massachusetts,9
