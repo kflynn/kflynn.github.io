@@ -81,14 +81,17 @@
         <li>Massachusetts and Johns Hopkins either don't have a proper data channel, or possibly John Hopkins
             lags Massachusetts by a day? I've reached out to the Massachusetts Department of Health about this,
             and will comment here as I learn more.</li>
+        <li>Before 13 April 2020, Massachusetts reported only confirmed cases in the hospitalization counts.
+            On 13 April 2020, they started including presumed positive COVID patients as well. This manifests
+            as a significant jump in the graphs.</li>
+        <li>Massachusetts quietly restated their hospitalization counts when they released their new dashboard
+            on 20 April 2020. The numbers graphed for Massachusetts reflect the restating.</li>
         <li>Massachusetts started reporting hospitalizations by county as of 14 April 2020, but the first week
-            has been... really tough to be sure of the data quality. The Middlesex
-            and Suffolk graphs started showing rates for hospitalizations on 20 April 2020; I'll comment here
-            as I learn more about data quality.</li>
-        <li>In particular, the bump in Massachusetts hospitalizations was badly overstated from 14 to 19 April
-            might not be real. I fixed it on 20 April, and am still looking into how real it is. The sharp drop
-            on 20 April looks much more likely to be real -- hospitalizations slowed a lot over the weekend
-            of 18-19 April. The question is whether they'll continue dropping.</li>
+            has been really tough to be sure of the data quality. In particular, Middlesex and Suffolk data for
+            17 and 18 April are missing entirely.</li>
+        <li>The sharp drop in Massachusetts hospitalizations on 20 April is surreal, but so far looks real based
+            on other information I have from Partners Health -- anecdotally, their hospitalizations slowed a lot
+            over the weekend of 18-19 April. I'm still keeping an eye on that.</li>
         <li>I would love hospitalization data for other regions, but I don't have it.</li>
       </ul>
     </p>
@@ -1297,8 +1300,8 @@
 
                     {
                         label: 'Doubling time (hospitalizations)',
-                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 0.5922185210171911, 0.6322643667130434, 0.6096853860013641, 0.6248189334315285, 0.5644264530474488, 0.5476771173958505, 0.45830044230124845, 0.5652147179720878, 0.6108992911928319, 0.6193362027643853, 0.6240278022712935, 0.6149225409714352, 0.6387390955413261, 0.5226281133883185, 0.4995308700225168, 0.4940762874636947, 0.4865612320947228, 0.4721872232737897, 0.4364365322146757, 0.422927711029296, 0.40027781978315885, 0.3774441490872052, 0.38144346965718684, 0.3848628904051969, 0.37611428137830727, 0.3428940052231197, 0.4455959290099233, 0.4197371709157603, 0.39388712994575126, 0.37014787320038856, 0.35420290054890585, 0.34004528384768784, 0.11069597931729036, 0.12323662095581062, 0.12418330523104736],
-                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2.8512547989960115, 2.501511980036708, 2.6902239179879066, 2.5614839421593323, 3.1389563797932762, 3.3338864815652367, 4.76101387614744, 3.1302071248651537, 2.6795431650444645, 2.6070362256381605, 2.567982865177053, 2.644595007939227, 2.4510546917169456, 3.6611242201401, 4.0075166568518465, 4.096490744812381, 4.224010556615475, 4.485093870340659, 5.249981914228361, 5.590719667912223, 6.241327168387606, 7.019312939297742, 6.872893775992375, 6.751308067460237, 7.069038573408187, 8.505115487164058, 5.036369336598792, 5.676035957278398, 6.445497118779664, 7.298766722614744, 7.9706873345644595, 8.64821520443665, 81.60867119059485, 65.84464133708848, 64.84456340701584],
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 0.5922185210171911, 0.6322643667130434, 0.6096853860013641, 0.6248189334315285, 0.5644264530474488, 0.5476771173958505, 0.45830044230124845, 0.5652147179720878, 0.6108992911928319, 0.6193362027643853, 0.6240278022712935, 0.6149225409714352, 0.6387390955413261, 0.5226281133883185, 0.4995308700225168, 0.4940762874636947, 0.4865612320947228, 0.5158476741897189, 0.5062935613769561, 0.46512346829277035, 0.4418341569945126, 0.4346048959565452, 0.4297239785499285, 0.37187495190404535, 0.32127893873871344, 0.3150486299966148, 0.3933884562275241, 0.3584715446733575, 0.3316275753319745, 0.31981919422592875, 0.3117785182945943, 0.30468161948539824, 0.14180884066994542, 0.12824733581339864, 0.14658992481840563, NaN],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 2.8512547989960115, 2.501511980036708, 2.6902239179879066, 2.5614839421593323, 3.1389563797932762, 3.3338864815652367, 4.76101387614744, 3.1302071248651537, 2.6795431650444645, 2.6070362256381605, 2.567982865177053, 2.644595007939227, 2.4510546917169456, 3.6611242201401, 4.0075166568518465, 4.096490744812381, 4.224010556615475, 3.758002342326147, 3.901172832457802, 4.622357104924743, 5.122493619086824, 5.294327114605354, 5.415278842095938, 7.231129615672524, 9.688030265891992, 10.074994301863866, 6.461848575882082, 7.781989231393855, 9.09282282256385, 9.776669868614677, 10.28744727698862, 10.772276427114114, 49.72712911167018, 60.79996036397894, 46.53628985000355, NaN],
                         backgroundColor: 'rgb(255, 159, 64)',
                         borderColor: 'rgb(255, 159, 64)',
                         fill: false,
@@ -1460,8 +1463,8 @@
 
                     {
                         label: 'Doubling time (hospitalizations)',
-                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 0.12851659333545631, 0.11027299547722293, 0.15838853123546034],
-                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 60.54546097505773, 82.23593905510609, 39.86139900271388],
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 0.15451331779692853, 0.14454390187037258, NaN],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 41.88593012736238, 47.863059037218235, NaN],
                         backgroundColor: 'rgb(255, 159, 64)',
                         borderColor: 'rgb(255, 159, 64)',
                         fill: false,
@@ -2363,8 +2366,8 @@
 
                     {
                         label: 'Doubling time (hospitalizations)',
-                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 0.19148623706481413, 0.17119668775973093, 0.15007886711383023],
-                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 27.272494971633254, 34.12002056397658, 44.39774521055405],
+                        data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 0.18969034165134366, 0.19926343162136242, NaN],
+                        rawData: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 27.791344805328116, 25.185164362245626, NaN],
                         backgroundColor: 'rgb(255, 159, 64)',
                         borderColor: 'rgb(255, 159, 64)',
                         fill: false,
