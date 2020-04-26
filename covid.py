@@ -17,6 +17,7 @@ logging.basicConfig(
 COVID_DIR = os.environ.get("COVID_DIR") or "../COVID-19/csse_covid_19_data/csse_covid_19_time_series"
 
 TRACK = {
+    'Jefferson, Alabama',
     'Middlesex, Massachusetts',
     'Suffolk, Massachusetts',
     'New York, New York',
@@ -27,12 +28,12 @@ TRACK = {
     'Los Angeles, California',
     'British Columbia, Canada',
     'Spain',
-    'Italy',
     'United Kingdom',
     'US'
 }
 
 AGGREGATE = {
+    'Alabama',
     'Canada',
     'Massachusetts',
     'New York',
