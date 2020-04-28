@@ -178,4 +178,34 @@ date,datatype,key1,key2,value
 20200425,deaths,Plymouth,Massachusetts,212
 20200425,deaths,Suffolk,Massachusetts,391
 20200425,deaths,Worcester,Massachusetts,183
-20200425,deaths,Unassigned,Massachusetts,14
+20200425,deaths,Unassigned,Massachusetts,13
+20200426,deaths,Barnstable,Massachusetts,37
+20200426,deaths,Berkshire,Massachusetts,31
+20200426,deaths,Bristol,Massachusetts,134
+20200426,deaths,Dukes and Nantucket,Massachusetts,1
+20200426,deaths,Essex,Massachusetts,350
+20200426,deaths,Franklin,Massachusetts,33
+20200426,deaths,Hampden,Massachusetts,327
+20200426,deaths,Hampshire,Massachusetts,24
+20200426,deaths,Middlesex,Massachusetts,670
+20200426,deaths,Nantucket,Massachusetts,0
+20200426,deaths,Norfolk,Massachusetts,418
+20200426,deaths,Plymouth,Massachusetts,230
+20200426,deaths,Suffolk,Massachusetts,424
+20200426,deaths,Worcester,Massachusetts,206
+20200426,deaths,Unassigned,Massachusetts,14
+20200427,deaths,Barnstable,Massachusetts,39
+20200427,deaths,Berkshire,Massachusetts,31
+20200427,deaths,Bristol,Massachusetts,137
+20200427,deaths,Dukes and Nantucket,Massachusetts,1
+20200427,deaths,Essex,Massachusetts,359
+20200427,deaths,Franklin,Massachusetts,33
+20200427,deaths,Hampden,Massachusetts,337
+20200427,deaths,Hampshire,Massachusetts,26
+20200427,deaths,Middlesex,Massachusetts,700
+20200427,deaths,Nantucket,Massachusetts,0
+20200427,deaths,Norfolk,Massachusetts,429
+20200427,deaths,Plymouth,Massachusetts,240
+20200427,deaths,Suffolk,Massachusetts,448
+20200427,deaths,Worcester,Massachusetts,215
+20200427,deaths,Unassigned,Massachusetts,8
