@@ -76,8 +76,8 @@ class Collection:
         logger = logging.debug
 
         for datatype in self.raw_data.keys():
-            # if self.id.endswith('massachusetts') and (datatype == 'hospitalizations'):
-            #     logger = logging.info
+            if self.id.endswith('massachusetts') and (datatype == 'hospitalizations'):
+                logger = logging.info
 
             logger(f"ANALYZE: {self.name} {datatype}")
 
@@ -124,13 +124,20 @@ class Collection:
             mult = (week[-1] / week[0]) ** (1 / (window_size - 1))
 
             try:
-                dbl_days = math.log(2) / math.log(mult)
-                logger("    %8s: %5.2f days (mult %.4f, [%s])" %
-                              (window_end, dbl_days, mult, ", ".join(map(str, week))))
-                results.append((window_end, dbl_days, mult, week[-1]))
+                verb = "double"
+
+                if mult < 1: 
+                    verb = "halve"
+                    days = math.log(.5) / math.log(mult)
+                else:
+                    days = math.log(2) / math.log(mult)
+
+                logger("    %8s: %5.2f days to %s (mult %.4f, [%s])" %
+                              (window_end, days, verb, mult, ", ".join(map(str, week))))
+                results.append((window_end, days, verb, mult, week[-1]))
             except ZeroDivisionError:
                 logger("    %8s: steady" % window_end)
-                results.append((window_end, math.nan, math.nan, week[-1]))
+                results.append((window_end, math.nan, "", math.nan, week[-1]))
 
             idx += 1
 
@@ -336,7 +343,7 @@ for place_key in places:
     place_id = collection.id
 
     raw_series = {}
-    dbl_series = {}
+    lbl_series = {}
     mult_series = {}
 
     for datatype in collection.data.keys():
@@ -348,7 +355,7 @@ for place_key in places:
         idict = { x[0]: x for x in info }
 
         r_series = []
-        d_series = []
+        l_series = []
         m_series = []
 
         logging.debug(f"GENERATE: {place_key} {datatype}")
@@ -357,10 +364,13 @@ for place_key in places:
             raw_date = all_valid_dates[d]
 
             if raw_date in idict:
-                _, dbl_days, mult, count = idict[raw_date]
+                _, days, verb, mult, count = idict[raw_date]
 
                 r_series.append(count)
-                d_series.append(dbl_days)
+
+                label = "%s in %.2f days" % (verb, days)
+
+                l_series.append(label)
 
                 l2mult = math.log(mult) / math.log(2)
                 l2sign = -1 if (l2mult < 0) else 1
@@ -375,11 +385,11 @@ for place_key in places:
                 m_series.append(y)
             else:
                 r_series.append(math.nan)
-                d_series.append(math.nan)
+                l_series.append(None)
                 m_series.append(math.nan)
 
         raw_series[datatype] = r_series
-        dbl_series[datatype] = d_series
+        lbl_series[datatype] = l_series
         mult_series[datatype] = m_series
 
     print("""
@@ -405,15 +415,16 @@ for place_key in places:
         print("""
                     {
                         label: 'Doubling time (deaths)',
+                        datasetName: "Deaths",
                         data: %s,
-                        rawData: %s,
+                        labelData: %s,
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
                         fill: false,
                         spanGaps: false,
                         yAxisID: "doubling-axis"
                     }
-        """ % (json.dumps(mult_series["deaths"]), json.dumps(dbl_series["deaths"])))
+        """ % (json.dumps(mult_series["deaths"]), json.dumps(lbl_series["deaths"])))
 
     if "hospitalizations" in mult_series:
         if not first:
@@ -426,15 +437,16 @@ for place_key in places:
         print("""
                     {
                         label: 'Doubling time (hospitalizations)',
+                        datasetName: "Hospitalizations",
                         data: %s,
-                        rawData: %s,
+                        labelData: %s,
                         backgroundColor: 'rgb(255, 159, 64)',
                         borderColor: 'rgb(255, 159, 64)',
                         fill: false,
                         spanGaps: false,
                         yAxisID: "doubling-axis"
                     }
-        """ % (json.dumps(mult_series["hospitalizations"]), json.dumps(dbl_series["hospitalizations"])))
+        """ % (json.dumps(mult_series["hospitalizations"]), json.dumps(lbl_series["hospitalizations"])))
 
     if "confirmed" in mult_series:
         if not first:
@@ -447,15 +459,16 @@ for place_key in places:
         print("""
                     {
                         label: 'Doubling time (cases)',
+                        datasetName: "Cases",
                         data: %s,
-                        rawData: %s,
+                        labelData: %s,
                         backgroundColor: 'rgb(54, 162, 235)',
                         borderColor: 'rgb(54, 162, 235)',
                         fill: false,
                         spanGaps: false,
                         yAxisID: "doubling-axis"
                     }
-        """ % (json.dumps(mult_series["confirmed"]), json.dumps(dbl_series["confirmed"])))
+        """ % (json.dumps(mult_series["confirmed"]), json.dumps(lbl_series["confirmed"])))
 
     # Come back to deaths for the count.
     if "deaths" in mult_series:
@@ -469,8 +482,9 @@ for place_key in places:
         print("""
                     {
                         label: 'Total deaths',
+                        datasetName: "Total deaths",
                         data: %s,
-                        rawData: %s,
+                        labelData: %s,
                         backgroundColor: 'rgb(240, 240, 240)',
                         borderColor: 'rgb(240, 240, 240)',
                         fill: true,
@@ -503,23 +517,11 @@ for place_key in places:
                             var datasetIndex = tooltipItem.datasetIndex;
                             var itemIndex = tooltipItem.index;
                             var dataset = data.datasets[datasetIndex];
-                            var dblTime = dataset.rawData[itemIndex];
+                            var label = dataset.labelData[itemIndex];
 
-                            var label = dataset.label || '';
+                            var dslabel = dataset.datasetName;
 
-                            if (label == 'Total deaths') {
-                                label += ": " + dblTime;
-                            }
-                            else {
-                                if (label) {
-                                    label += ': ';
-                                }
-
-                                label += Math.round(dblTime * 100) / 100;
-                                label += " days";
-                            }
-
-                            return label;
+                            return dslabel + ": " + label;
                         }
                     }
                 },
