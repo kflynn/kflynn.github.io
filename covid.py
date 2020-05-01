@@ -34,6 +34,7 @@ TRACK = {
 
 AGGREGATE = {
     'Alabama',
+    'Georgia',
     'Canada',
     'Massachusetts',
     'New York',
