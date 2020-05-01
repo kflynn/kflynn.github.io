@@ -77,8 +77,8 @@ class Collection:
         logger = logging.debug
 
         for datatype in self.raw_data.keys():
-            if self.id.endswith('massachusetts') and (datatype == 'hospitalizations'):
-                logger = logging.info
+            # if self.id.endswith('massachusetts') and (datatype == 'hospitalizations'):
+            #     logger = logging.info
 
             logger(f"ANALYZE: {self.name} {datatype}")
 
