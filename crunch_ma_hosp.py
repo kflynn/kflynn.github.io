@@ -80,6 +80,8 @@ for line in sys.stdin:
 	elif state == "read ICU":
 		if line.startswith("Massachusetts Department of Public Health"):
 			state = "skip page break"
+		elif line.startswith("Occupancy/ availability as reported"):
+			state = "skip page break 2"
 		else:
 			hospital = Current_Batch[Current_Index]
 			Hospitals[hospital]["ICU"] = int(line)
@@ -91,6 +93,13 @@ for line in sys.stdin:
 		else:
 			raise Exception(f"Need 'COVID Patient Census by Hospital...', got {line}")
 
+	elif state == "skip page break 2":
+		if line.startswith("updates where possible"):
+			state = "skip page break count"
+		elif line[0].isdigit():
+			state = "need hospital name header"
+		else:
+			raise Exception(f"Need 'updates where possible...', got {line}")
 
 	elif state == "skip page break count":
 		state = "need hospital name header"
