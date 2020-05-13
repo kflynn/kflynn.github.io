@@ -206,6 +206,13 @@ for datatype, path in [
             datapoints = []
 
             for k in row.keys():
+                try:
+                    if k[0].isdigit():
+                        x = True
+                except:
+                    sys.stderr.write(f"{path} has bad key '{k}' in row '{row}'\n")
+                    continue
+
                 if k[0].isdigit():
                     m = re.match(r'^(\d+)/(\d+)/(\d+)$', k)
 
