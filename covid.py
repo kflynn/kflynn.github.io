@@ -29,7 +29,8 @@ TRACK = {
     'British Columbia, Canada',
     'Spain',
     'United Kingdom',
-    'US'
+    'US',
+    'Brazil'
 }
 
 AGGREGATE = {
