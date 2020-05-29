@@ -4,7 +4,21 @@ from openpyxl import load_workbook
 
 def crunch_path(path: str) -> None:
     wb = load_workbook(path)
-    sheet = wb['Hospital COVID census']
+    sheet = None
+
+    try:
+        sheet = wb['Hospital COVID census']
+    except KeyError:
+        pass
+
+    if not sheet:
+        try:
+            sheet = wb['Hospital COVID Census']
+        except KeyError:
+            pass
+
+    if not sheet:
+        raise Exception(f"{path} has no Hospital COVID Census sheet")
 
     for cell_id, wanted in [
         ( "A1", "Hospital Name" ),
@@ -12,8 +26,11 @@ def crunch_path(path: str) -> None:
         ( "C1", "Hospitalized Total COVID patients - suspected and confirmed (including ICU)" ),
         ( "D1", "Hospitalized COVID patients in ICU - suspected and confirmed" )
     ]:
-        if sheet[cell_id].value != wanted:
-            raise Exception(f"Cell {cell_id} should be {wanted} but is {sheet[cell_id].value}")
+        cell_name = sheet[cell_id].value.lower().replace('\n', ' ').replace('  ', ' ')
+        wanted = wanted.lower()
+
+        if cell_name != wanted:
+            raise Exception(f"Cell {cell_id} should be '{wanted}' but is '{cell_name}'")
 
     counties = {}
     massachusetts = 0
@@ -21,6 +38,10 @@ def crunch_path(path: str) -> None:
 
     for row in sheet[2:sheet.max_row]:
         name = row[0].value
+
+        if not name:
+            continue
+            
         c_and_z = row[1].value
         confirmed = row[2].value
         icu = row[3].value
