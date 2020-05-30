@@ -22,7 +22,6 @@ def crunch_path(path: str) -> None:
 
     for cell_id, wanted in [
         ( "A1", "Hospital Name" ),
-        ( "B1", "Hospital County and Zip Code" ),
         ( "C1", "Hospitalized Total COVID patients - suspected and confirmed (including ICU)" ),
         ( "D1", "Hospitalized COVID patients in ICU - suspected and confirmed" )
     ]:
@@ -31,6 +30,15 @@ def crunch_path(path: str) -> None:
 
         if cell_name != wanted:
             raise Exception(f"Cell {cell_id} should be '{wanted}' but is '{cell_name}'")
+
+    have_zip = True
+
+    cell_name = sheet["B1"].value.lower()
+
+    if cell_name == "hospital county":
+        have_zip = False
+    elif cell_name != "hospital county and zip code":
+        raise Exception(f"Cell B1 should be 'Hospital County' but is '{cell_name}'")
 
     counties = {}
     massachusetts = 0
@@ -41,16 +49,19 @@ def crunch_path(path: str) -> None:
 
         if not name:
             continue
-            
+
         c_and_z = row[1].value
         confirmed = row[2].value
         icu = row[3].value
 
         # print(f"{name} ({c_and_z}): {confirmed}, {icu} ICU")
 
-        county, zip = c_and_z.split('-')
-        county = county.strip()
-        zip = zip.strip()
+        county = c_and_z
+
+        if have_zip:
+            county, zip = c_and_z.split('-')
+            county = county.strip()
+            zip = zip.strip()
 
         if county not in counties:
             counties[county] = 0
