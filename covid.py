@@ -40,7 +40,8 @@ AGGREGATE = {
     'Massachusetts',
     'New York',
     'California',
-    'Texas'
+    'Texas',
+    'Tennessee'
 }
 
 class Collection:
