@@ -25,13 +25,13 @@ def dash_path(then: datetime.datetime.date) -> str:
     return os.path.join("ma.gov", "%s-raw" % date_key(then))
 
 def dash_url(then: datetime.datetime.date) -> str:
-    return then.strftime("https://www.mass.gov/doc/covid-19-raw-data-%b-%d-%Y/download").lower()
+    return f"https://www.mass.gov/doc/covid-19-raw-data-{then:%B}-{then.day}-{then.year}/download".lower()
 
 def pdf_path(then: datetime.datetime.date) -> str:
     return os.path.join("ma.gov", "covid-19-dashboard-%d-%d-%d.pdf" % (then.month, then.day, then.year))
 
 def pdf_url(then: datetime.datetime.date) -> str:
-    return then.strftime("https://www.mass.gov/doc/covid-19-dashboard-%b-%d-%Y/download").lower()
+    return f"https://www.mass.gov/doc/covid-19-dashboard-{then:%B}-{then.day}-{then.year}/download".lower()
 
 now = datetime.datetime.date(datetime.datetime.now())
 cur = now
@@ -65,7 +65,7 @@ while cur <= now:
         with open(pdf_path(cur), "wb") as raw_out:
             raw_out.write(resp.content)
     else:
-        sys.stdout.write(f" failed {r.status_code}")
+        sys.stdout.write(f" failed {resp.status_code} -- {pdf_url(cur)}")
         sys.stdout.flush()
 
     sys.stdout.write("; pulling dash... ")
@@ -89,18 +89,28 @@ while cur <= now:
 
         os.chdir(curdir)
     else:
-        sys.stdout.write(f" failed {r.status_code}")
+        sys.stdout.write(f" failed {resp.status_code}")
         sys.stdout.flush()
 
     sys.stdout.write("; crunching dash:\n")
     sys.stdout.flush()
 
-    spreadsheet_glob = os.path.join(dash_path(cur), "External dashboard *.xlsx")
+    found = False
 
-    pathnames = glob.glob(spreadsheet_glob)
+    for glob_els in [
+        [ dash_path(cur), "HospCensusBedAvailable.xlsx" ],
+        [ dash_path(cur), "COVID-19 Dashboard*", "External dashboard *.xlsx" ],
+        [ dash_path(cur), "External dashboard *.xlsx" ],
+    ]:
+        spreadsheet_glob = os.path.join(*glob_els)
+        pathnames = glob.glob(spreadsheet_glob)
 
-    if len(pathnames) != 1:
-        raise Exception("no such file: %s" % spreadsheet_glob)
+        if len(pathnames) == 1:
+            found = True
+            break
+
+    if not found:
+        raise Exception(f"no dashboard found for {date_key(cur)}")
 
     crunch_path(pathnames[0])
 
