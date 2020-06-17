@@ -17,31 +17,34 @@ logging.basicConfig(
 COVID_DIR = os.environ.get("COVID_DIR") or "../COVID-19/csse_covid_19_data/csse_covid_19_time_series"
 
 TRACK = {
-    'Jefferson, Alabama',
-    'Middlesex, Massachusetts',
-    'Suffolk, Massachusetts',
-    'New York, New York',
-    'District of Columbia, District of Columbia',
+    'Brazil',
+    'British Columbia, Canada',
     'Denton, Texas',
+    'District of Columbia, District of Columbia',
+    'India',
+    'Jefferson, Alabama',
+    'Los Angeles, California',
+    'Middlesex, Massachusetts',
+    'New York, New York',
     'San Francisco, California',
     'Santa Clara, California',
-    'Los Angeles, California',
-    'British Columbia, Canada',
     'Spain',
+    'Suffolk, Massachusetts',
     'United Kingdom',
     'US',
-    'Brazil'
 }
 
 AGGREGATE = {
     'Alabama',
-    'Georgia',
+    'Arizona',
+    'California',
     'Canada',
+    'Florida',
+    'Georgia',
     'Massachusetts',
     'New York',
-    'California',
     'Texas',
-    'Tennessee'
+    'Tennessee',
 }
 
 class Collection:
