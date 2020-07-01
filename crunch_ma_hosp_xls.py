@@ -1,5 +1,8 @@
 import sys
 
+import glob
+import os
+
 from openpyxl import load_workbook
 
 def crunch_path(path: str) -> None:
@@ -72,14 +75,41 @@ def crunch_path(path: str) -> None:
         if (county != "Middlesex") and (county != "Suffolk"):
             ma_other += confirmed
 
-    print("---- counties")
+    # print("---- counties")
 
-    for county in sorted(counties.keys()):
-        print("%s: %d" % (county, counties[county]))
+    # for county in sorted(counties.keys()):
+    #     print("%s: %d" % (county, counties[county]))
 
-    print("---- total %d" % massachusetts)
+    # print("---- total %d" % massachusetts)
 
-    print("Massachusetts without Middlesex and Suffolk: %d" % ma_other)
+    # print("Massachusetts without Middlesex and Suffolk: %d" % ma_other)
+
+    counties['Other'] = ma_other
+    counties['Total'] = massachusetts
+
+    return counties
+
+
+def crunch_xls(base_path: str):
+    found = False
+
+    for glob_els in [
+        [ base_path, "HospCensusBedAvailable.xlsx" ],
+        [ base_path, "COVID-19 Dashboard*", "External dashboard *.xlsx" ],
+        [ base_path, "External dashboard *.xlsx" ],
+    ]:
+        spreadsheet_glob = os.path.join(*glob_els)
+        pathnames = glob.glob(spreadsheet_glob)
+
+        if len(pathnames) == 1:
+            found = True
+            break
+
+    if not found:
+        return None
+
+    return crunch_path(pathnames[0])
+
 
 if __name__ == "__main__":
     crunch_path(sys.argv[1])
