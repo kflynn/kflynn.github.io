@@ -1,0 +1,23 @@
+<html><head><title>Certification</title></head>
+<body>
+    <script type="text/javascript">
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            var myParam = urlParams.get('icp_hsid');
+
+            console.log(myParam);
+
+            if (!myParam || myParam === "" || myParam === null || myParam === undefined) {
+                myParam = "<b>not found</b>";
+            }
+
+            document.getElementById("HSID").innerHTML = myParam;
+        });
+    </script>
+
+    <p>You did it!</p>
+
+    <p>And your HubSpot ID is <span id="HSID">{icp_hsid}</span>.</p>
+</body>
+</html>
+
