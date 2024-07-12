@@ -3,19 +3,25 @@
     <script type="text/javascript">
         window.addEventListener('load', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            var myParam = urlParams.get('icp_hsid');
+            var hsid = urlParams.get('icp_hsid');
+            var name = urlParams.get('icp_name');
 
-            console.log(myParam);
+            console.log(`hsid: ${hsid}, name ${name}`);
 
-            if (!myParam || myParam === "" || myParam === null || myParam === undefined) {
-                myParam = "<b>not found</b>";
+            if (!hsid || hsid === "" || hsid === null || hsid === undefined) {
+                hsid = "<b>not found</b>";
             }
 
-            document.getElementById("HSID").innerHTML = myParam;
+            if (!name || name === "" || name === null || name === undefined) {
+                name = "<b>unknown</b>";
+            }
+
+            document.getElementById("NAME").innerHTML = name;
+            document.getElementById("HSID").innerHTML = hsid;
         });
     </script>
 
-    <p>You did it!</p>
+    <p>You did it, <span id="NAME">{icp_name}</span>!</p>
 
     <p>And your HubSpot ID is <span id="HSID">{icp_hsid}</span>.</p>
 </body>
