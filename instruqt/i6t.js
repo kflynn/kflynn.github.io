@@ -71,6 +71,8 @@ function loadIframe() {
     const queryParams = new URLSearchParams(window.location.search);
     let doRedirect = false;
 
+    console.log(`Handling iFrame...`);
+
     if (!i6tName) {
         i6tMainDiv.innerHTML = `
             <p><span style="red">Error: Name not set!</span></p>
@@ -93,6 +95,8 @@ function loadIframe() {
 
     let i6tPosition = getPosition();
 
+    console.log(`Name ${i6tName} @ position ${i6tPosition}`);
+
     // Do we have an icp_i6t_completed query parameter?
     const icpi6tCompleted = queryParams.get("icp_i6t_completed");
 
@@ -102,6 +106,8 @@ function loadIframe() {
         i6tcompleted = parseInt(icpi6tCompleted);
         i6tPosition = i6tcompleted + 1;
         setPosition(i6tPosition);
+
+        console.log(`Position now ${i6tPosition}`);
 
         // ...and remember that we should do a redirect.
         doRedirect = true;
@@ -130,6 +136,8 @@ function loadIframe() {
     const trackInfo = tracks[i6tPosition];
 
     if (trackInfo.done) {
+        console.log("All done!");
+
         i6tBannerDiv.innerHTML = "<h2>Congratulations!</h2>";
         i6tMainDiv.innerHTML = `
             <p>Congratulations, ${i6tName}! You've completed all the tracks!</p>
@@ -154,6 +162,8 @@ function loadIframe() {
 
         return;
     }
+
+    console.log(`Loading track ${i6tPosition}...`);
 
     i6tBannerDiv.innerHTML = `<h2>Hi ${i6tName}!</h2>`
     // i6tBannerDiv.innerHTML += `<p>You're on track ${i6tPosition} of ${tracks.length - 1}.</p>`;
