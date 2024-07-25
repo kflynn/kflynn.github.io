@@ -172,9 +172,9 @@ function loadIframe() {
         <p>Loading from ${trackInfo.slug}...</p>
     `;
 
-    const finishURL = new URL(`${window.top.location.origin}/sm101.html`);
-    finishURL.searchParams.append("icp_name", i6tName);
-    finishURL.searchParams.append("icp_i6t_completed", i6tPosition.toString())
+    const finishURL = new URL(window.top.location.href);
+    finishURL.searchParams.set("icp_name", i6tName);
+    finishURL.searchParams.set("icp_i6t_completed", i6tPosition.toString())
 
     console.log(`Finish URL: ${finishURL.toString()}`);
 
@@ -238,6 +238,8 @@ function prepPage() {
     const i6tName = getCookie("i6t-name");
 
     if (!i6tName) {
+        console.log(`Brand new session!`);
+
         const nameForm = document.createElement("form");
         nameForm.innerHTML = `
             <label for="name">Enter your name:</label>
