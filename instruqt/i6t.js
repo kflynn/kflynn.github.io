@@ -162,9 +162,11 @@ function loadIframe() {
         <p>Loading from ${trackInfo.slug}...</p>
     `;
 
-    const finishURL = new URL(`${window.location.origin}/sm101.html`);
+    const finishURL = new URL(`${window.top.location.origin}/sm101.html`);
     finishURL.searchParams.append("icp_name", i6tName);
     finishURL.searchParams.append("icp_i6t_completed", i6tPosition.toString())
+
+    console.log(`Finish URL: ${finishURL.toString()}`);
 
     const trackSlug = trackInfo.slug;
     const baseFrameURL = `https://play.instruqt.com/embed/buoyant/tracks/${trackSlug}`;
