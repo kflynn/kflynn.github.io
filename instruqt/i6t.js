@@ -2,8 +2,8 @@
 
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
@@ -12,7 +12,7 @@ function getCookie(cname) {
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
 
-    for (let i = 0; i <ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -240,6 +240,25 @@ function prepPage() {
     if (!i6tName) {
         console.log(`Brand new session!`);
 
+        const params = new URLSearchParams(window.location.search);
+
+        if ([...params].length > 0) {
+            const container = document.createElement("div");
+            const p = document.createElement("p");
+            p.textContent = "Query Parameters";
+            container.appendChild(p);
+
+            const ul = document.createElement("ul");
+            params.forEach((value, key) => {
+                const li = document.createElement("li");
+                li.textContent = `${key}: ${value}`;
+                ul.appendChild(li);
+            });
+
+            container.appendChild(ul);
+            i6tMainDiv.appendChild(container);
+        }
+
         const nameForm = document.createElement("form");
         nameForm.innerHTML = `
             <label for="name">Enter your name:</label>
@@ -247,7 +266,7 @@ function prepPage() {
             <button type="submit">Submit</button>
         `;
 
-        nameForm.addEventListener("submit", function(event) {
+        nameForm.addEventListener("submit", function (event) {
             event.preventDefault();
             const nameInput = document.getElementById("name");
             const name = nameInput.value;
