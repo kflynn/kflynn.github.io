@@ -240,6 +240,25 @@ function prepPage() {
     if (!i6tName) {
         console.log(`Brand new session!`);
 
+        const params = new URLSearchParams(window.location.search);
+
+        if ([...params].length > 0) {
+            const container = document.createElement("div");
+            const p = document.createElement("p");
+            p.textContent = "Query Parameters";
+            container.appendChild(p);
+
+            const ul = document.createElement("ul");
+            params.forEach((value, key) => {
+                const li = document.createElement("li");
+                li.textContent = `${key}: ${value}`;
+                ul.appendChild(li);
+            });
+
+            container.appendChild(ul);
+            i6tMainDiv.appendChild(container);
+        }
+
         const nameForm = document.createElement("form");
         nameForm.innerHTML = `
             <label for="name">Enter your name:</label>
