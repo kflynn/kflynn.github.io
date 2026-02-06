@@ -8,9 +8,9 @@ set -o errexit
 git -C "$CSSEDIR" fetch
 git -C "$CSSEDIR" pull
 
-python3 covid.py > graph.html
+python3 covid.py > index.html
 
-git add graph.html
+git add index.html
 git commit -m "Graph as of CSSE commit $(git -C "$CSSEDIR" rev-parse HEAD^{commit})"
 
 git push
