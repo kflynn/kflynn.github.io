@@ -1,0 +1,46 @@
+name: Build and publish Pages branch
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deployed-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
+
+      - name: Build site with Jekyll
+        run: |
+          if [ -f Gemfile ]; then
+            bundle exec jekyll build --destination public
+          else
+            gem install jekyll webrick --no-document
+            jekyll build --destination public
+          fi
+
+      - name: Publish public/ to deployed-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: deployed-pages
+          force_orphan: true
