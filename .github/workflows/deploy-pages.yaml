@@ -4,40 +4,75 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: deployed-pages
+  group: pages-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
-  publish:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup Zola
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        uses: taiki-e/install-action@v2
         with:
-          ruby-version: 3.2
-          bundler-cache: true
+          tool: zola
 
-      - name: Build site with Jekyll
+      - name: Build site with Zola
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
+        env:
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          if [ -f Gemfile ]; then
-            bundle exec jekyll build --destination public
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            if [ -f CNAME ]; then
+              # CNAME usually stores only the host name.
+              CUSTOM_DOMAIN="$(head -n 1 CNAME | tr -d '[:space:]')"
+              BASE_ROOT="https://${CUSTOM_DOMAIN}"
+            else
+              CONFIG_BASE_URL="$(sed -n 's/^base_url\s*=\s*"\(.*\)"\s*$/\1/p' zola.toml | head -n 1)"
+              if [ -n "$CONFIG_BASE_URL" ]; then
+                BASE_ROOT="${CONFIG_BASE_URL%/}"
+              else
+                BASE_ROOT="https://${REPOSITORY_OWNER}.github.io/${REPOSITORY_NAME}"
+              fi
+            fi
+
+            BASE_URL="${BASE_ROOT}/pr/${PR_NUMBER}/"
+            zola build --output-dir public --base-url "$BASE_URL"
           else
-            gem install jekyll webrick --no-document
-            jekyll build --destination public
+            zola build --output-dir public
           fi
 
+          # Keep custom domain support if CNAME is present at repo root.
+          if [ -f CNAME ]; then
+            cp CNAME public/CNAME
+          fi
+
+          touch public/.nojekyll
+
       - name: Write deploy metadata
+        if: github.event_name != 'pull_request' || github.event.action != 'closed'
         env:
           REPOSITORY: ${{ github.repository }}
           COMMIT_SHA: ${{ github.sha }}
@@ -54,10 +89,68 @@ jobs:
           }
           EOF
 
-      - name: Publish public/ to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
-          force_orphan: true
+      - name: Deploy to gh-pages (root for main, /pr/<number>/ for PR)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          REMOTE_URL="https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+          WORKDIR="$(mktemp -d)"
+
+          if git ls-remote --exit-code --heads "$REMOTE_URL" gh-pages >/dev/null 2>&1; then
+            git clone --depth 1 --branch gh-pages "$REMOTE_URL" "$WORKDIR"
+          else
+            git clone --depth 1 "$REMOTE_URL" "$WORKDIR"
+            (
+              cd "$WORKDIR"
+              git checkout --orphan gh-pages
+              git rm -rf . >/dev/null 2>&1 || true
+              touch .nojekyll
+              git add .nojekyll
+              git commit -m "Initialize gh-pages"
+              git push origin gh-pages
+            )
+          fi
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            TARGET_DIR="$WORKDIR/pr/${PR_NUMBER}"
+
+            if [ "${{ github.event.action }}" = "closed" ]; then
+              rm -rf "$TARGET_DIR"
+            else
+              rm -rf "$TARGET_DIR"
+              mkdir -p "$TARGET_DIR"
+              rsync -a --delete public/ "$TARGET_DIR/"
+            fi
+          else
+            # Deploy main site to root while preserving PR previews under /pr.
+            rsync -a --delete --exclude 'pr/' public/ "$WORKDIR/"
+          fi
+
+          touch "$WORKDIR/.nojekyll"
+
+          (
+            cd "$WORKDIR"
+            if [ -n "$(git status --porcelain)" ]; then
+              git add -A
+              if [ "${{ github.event_name }}" = "pull_request" ]; then
+                if [ "${{ github.event.action }}" = "closed" ]; then
+                  git commit -m "Remove PR #${PR_NUMBER} preview"
+                else
+                  git commit -m "Deploy PR #${PR_NUMBER} preview from ${COMMIT_SHA}"
+                fi
+              else
+                git commit -m "Deploy site from ${COMMIT_SHA}"
+              fi
+              git push origin gh-pages
+            else
+              echo "No changes to publish."
+            fi
+          )
