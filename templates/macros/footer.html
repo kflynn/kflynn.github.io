@@ -51,7 +51,16 @@
             commitLinkEl.removeAttribute('href');
         }
 
-        fetch('{{ get_url(path="deploy-meta.json") }}', { cache: 'no-store' })
+        var deployMetaPath;
+        try {
+            var configuredRootPath = new URL('{{ get_url(path="/") }}').pathname;
+            configuredRootPath = configuredRootPath.replace(/\/+$/, '');
+            deployMetaPath = (configuredRootPath ? configuredRootPath : '') + '/deploy-meta.json';
+        } catch (error) {
+            deployMetaPath = '/deploy-meta.json';
+        }
+
+        fetch(deployMetaPath, { cache: 'no-store' })
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error('missing deploy metadata');
