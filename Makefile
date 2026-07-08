@@ -1,16 +1,18 @@
-all: serve
+.PHONY: serve build clean firmware
 
-RUBY=3.2.2
+serve:
+	zola serve --drafts
 
-check-ruby:
-	@if [ $$(ruby --version | cut -d' ' -f2) != $(RUBY) ]; then \
-		echo "Ruby version is not $(RUBY)"; \
-		echo "Maybe you need 'chruby ruby-$(RUBY)'"; \
-		exit 1; \
-	fi
+serve-prod:
+	zola serve
 
-serve: check-ruby
-	bundle exec jekyll serve
+build:
+	zola build
 
-clean: check-ruby
-	bundle exec jekyll clean
+clean:
+	rm -rf public/
+
+# Regenerate firmware index from static/firmware/ contents.
+# Re-runs automatically when any file in static/firmware/ changes.
+firmware: $(wildcard static/firmware/*)
+	python3 scripts/gen-firmware.py

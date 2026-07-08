@@ -1,0 +1,40 @@
+{% macro header(grid_size) %}
+{% if config.extra.banner %}
+<div id="banner">
+    <img src="{{ get_url(path=config.extra.banner) }}" alt="site banner" style="width:100%;display:block;">
+</div>
+{% endif %}
+<header id="header" class="section">
+    <section class="container {{ grid_size }}">
+        <div class="columns header-grid-row">
+            <div class="column col-8 col-md-12 header-home-col">
+                {{ menu::home() }}
+            </div>
+
+            <div class="column col-4 hide-md header-menu-col">
+                <nav class="dropmenu animated {% if config.extra.hamburger_menu -%} hide-md {%- endif -%}">
+                    {%- if config.languages -%}
+                    {# TODO #}
+                    {{ lang::langswitcher() }}
+                    {%- endif -%}
+
+                    {% if config.extra.main_menu -%}
+                    {{ menu::items(menu=config.extra.main_menu) }}
+                    {% endif -%}
+                </nav>
+            </div>
+        </div>
+    </section>
+</header>
+
+{% if config.extra.hamburger_menu %}
+<div class="mobile-menu">
+    <div class="button_container" id="toggle" onclick="openOverlay()">
+        <span class="top"></span>
+        <span class="middle"></span>
+        <span class="bottom"></span>
+    </div>
+</div><!--./mobile-menu-->
+{% endif %}
+
+{% endmacro header %}

@@ -1,0 +1,104 @@
+{% macro footer(grid_size) %}
+<section id="footer" class="bg-gray">
+    <div style="width: 100%; max-width: none; padding-left: .4rem; padding-right: .4rem;">
+        {{ social_buttons::social_buttons() }}
+        <div class="columns">
+            {% if config.extra.footer_tagline %}
+            <div class="column col-12 col-mx-auto" style="text-align: center;">
+                {{ config.extra.footer_tagline }}
+            </div>
+            {% endif %}
+            {% if config.extra.footer_credit %}
+            <div class="column col-12 col-mx-auto" style="text-align: center;">
+                {{ config.extra.footer_credit | safe }}
+                &nbsp;|&nbsp;
+                Last deploy: <span id="deploy-date">loading...</span>
+                (<a id="deploy-commit-link" href="#">commit <span id="deploy-commit">loading...</span></a>)
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<script type="module">
+    if (document.querySelector('.mermaid')) {
+        const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+        mermaid.initialize({ startOnLoad: false });
+        await mermaid.run({ querySelector: '.mermaid' });
+    }
+</script>
+<script>
+    (function () {
+        var dateEl = document.getElementById('deploy-date');
+        var commitEl = document.getElementById('deploy-commit');
+        var commitLinkEl = document.getElementById('deploy-commit-link');
+
+        if (!dateEl || !commitEl || !commitLinkEl) {
+            return;
+        }
+
+        function formatDisplayDate(value) {
+            var parsed = new Date(value);
+            if (isNaN(parsed.getTime())) {
+                return null;
+            }
+            return parsed.toISOString().replace('T', ' ').replace('.000Z', 'Z');
+        }
+
+        function setFallback() {
+            var localDate = formatDisplayDate(document.lastModified) || formatDisplayDate(new Date()) || 'not deployed yet';
+            dateEl.textContent = localDate;
+            commitEl.textContent = 'local-dev';
+            commitLinkEl.removeAttribute('href');
+        }
+
+        var deployMetaPath;
+        try {
+            var configuredRootPath = new URL('{{ get_url(path="/") }}').pathname;
+            configuredRootPath = configuredRootPath.replace(/\/+$/, '');
+            deployMetaPath = (configuredRootPath ? configuredRootPath : '') + '/deploy-meta.json';
+        } catch (error) {
+            deployMetaPath = '/deploy-meta.json';
+        }
+
+        fetch(deployMetaPath, { cache: 'no-store' })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('missing deploy metadata');
+                }
+                return response.json();
+            })
+            .then(function (meta) {
+                var deployedAt = formatDisplayDate(meta.deployed_at) || formatDisplayDate(new Date()) || 'not deployed yet';
+                var shortSha = meta.commit_short || 'local-dev';
+                var commitUrl = meta.commit_url || '';
+
+                dateEl.textContent = deployedAt;
+                commitEl.textContent = shortSha;
+
+                if (commitUrl) {
+                    commitLinkEl.href = commitUrl;
+                } else {
+                    commitLinkEl.removeAttribute('href');
+                }
+            })
+            .catch(function () {
+                setFallback();
+            });
+    })();
+
+    document.querySelectorAll('pre').forEach(function (pre) {
+        var btn = document.createElement('button');
+        btn.className = 'copy-code-btn';
+        btn.textContent = 'Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(btn);
+        btn.addEventListener('click', function () {
+            var code = pre.querySelector('code') || pre;
+            navigator.clipboard.writeText(code.innerText).then(function () {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+            });
+        });
+    });
+</script>
+{% endmacro footer %}
