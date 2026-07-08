@@ -358,7 +358,16 @@ actually before 2020.)</em></p>
             commitLinkEl.removeAttribute('href');
         }
 
-        fetch('https://kodachi.com/pr/9/deploy-meta.json', { cache: 'no-store' })
+        var deployMetaPath;
+        try {
+            var configuredRootPath = new URL('https://kodachi.com/pr/9').pathname;
+            configuredRootPath = configuredRootPath.replace(/\/+$/, '');
+            deployMetaPath = (configuredRootPath ? configuredRootPath : '') + '/deploy-meta.json';
+        } catch (error) {
+            deployMetaPath = '/deploy-meta.json';
+        }
+
+        fetch(deployMetaPath, { cache: 'no-store' })
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error('missing deploy metadata');
