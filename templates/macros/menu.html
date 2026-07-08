@@ -36,7 +36,7 @@
 {% macro mobile() %}
 <div class="mobile-container">
         <div class="overlay" id="overlay">
-            <div style="padding: 1rem;">
+            <div class="overlay-home">
               {{ menu::home() }}
             </div>
             <nav class="overlay-menu">
@@ -55,9 +55,11 @@
       // Open overlay
       if (overlay.classList.contains("open")) {
           overlay.classList.remove("open");
+          overlay.style.maxHeight = "0px";
       }
       else {
           overlay.classList.add("open");
+          overlay.style.maxHeight = overlay.scrollHeight + "px";
       }
 
       // Button transition
