@@ -64,6 +64,54 @@ a {
     }
 }
 
+// Header alignment: use the same grid geometry as cards/sidebar.
+#header .header-grid-row {
+    align-items: center;
+}
+
+#header .header-home-col .site-logo {
+    padding-left: 0;
+    padding-right: 0;
+    text-transform: lowercase;
+}
+
+#header .header-menu-col {
+    text-align: right;
+}
+
+#header .header-menu-col nav > ul {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+#header .header-menu-col nav > ul > li {
+    list-style: none;
+}
+
+#header .header-menu-col nav > ul > li > a {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (max-width: 1279px) {
+    #header > .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    #header .header-home-col .site-logo {
+        padding-left: 8px;
+        margin-left: 8px;
+    }
+    #header .header-menu-col nav > ul > li:last-child > a {
+        margin-right: 8px;
+    }
+}
+
 // RSS / syndicate button in sidebar
 .syndicate .btn {
     // background: $primary;
