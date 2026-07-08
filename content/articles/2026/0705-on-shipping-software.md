@@ -1,28 +1,35 @@
----
-layout: single
-title:  On Shipping Software
-author: Flynn
-categories: computing
-tags: [craft of computing, best practices, cat herding, time, features, dates, releases, release management]
-cover:  "/assets/test.jpg"
----
++++
+date = 2026-07-05
+title = "On Shipping Software"
 
-_There are two kinds of software: software that ships, and software that's irrelevant._
+[taxonomies]
+categories = ["craft of computing"]
+tags = ["best practices", "cat herding", "release management"]
++++
 
-# On Shipping Software
+_There are two kinds of software: software that ships, and software
+that's irrelevant._
+
+<!-- more -->
+----
 
 If you're producing software, you need to get it out into the world.
-However you do that - publishing container images, posting binaries for download, mailing out DVDs - you'll have to do it more than once.
-And, every time, you'll have to decide how you'll decide when it's ready to go out.
+However you do that - publishing container images, posting binaries for
+download, mailing out DVDs - you'll have to do it more than once. And,
+every time, you'll have to decide when it's ready to go out.
 
 There are fundamentally two ways to do that:
 
-1. You can get all your features finished, and ship whenever that happens.
+1. You can get all your features finished, and ship whenever that
+   happens.
 2. You can pick a time to ship, and ship whatever's ready at that time.
 
-On the face of it, it seems obvious that #1 is the way to go: after all, shipping something that's incomplete seems silly, right?
-As it turns out, though, there's absolutely a place for choosing a date and shipping whatever is ready, rather than waiting to ship until a feature set is finished.
-It all gets back to to the old engineering truth that I'll call the _Engineering Uncertainty Principle_[^1].
+On the face of it, it seems obvious that #1 is the way to go: after all,
+shipping something that's incomplete seems silly, right? As it turns out,
+though, there's absolutely a place for choosing a date and shipping
+whatever is ready, rather than waiting to ship until a feature set is
+finished. It all gets back to to an old engineering truth that I'll call
+the _Engineering Uncertainty Principle_[^1].
 
 [^1]: Wikipedia covers this, sort of, as the [Project Management Triangle](https://en.wikipedia.org/wiki/Project_management_triangle). That's the more abstract version that deals with project management in general rather than focusing on engineering like I want to do here.
 

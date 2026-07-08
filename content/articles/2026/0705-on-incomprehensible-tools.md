@@ -1,15 +1,17 @@
----
-layout: single
-title:  On Incomprehensible Tools
-author: Flynn
-categories: theory-of-computing
-tags:   [shoggoth, llm, ai, comprehensibility, crystal ball]
-# cover:  "/assets/instacode.png"
-quote: |
-  _I saw a shoggoth — it changed shape... I can’t stand it... I won’t stand it._
-  <br/>
-  (H. P. Lovecraft, _The Thing on the Doorstep_, 1933)
----
++++
+date = 2026-07-05
+title = "On Incomprehensible Tools"
+
+[taxonomies]
+categories = [ "theory of computing", "crystal ball" ]
+tags = [ "shoggoth", "llm", "ai", "comprehensibility" ]
++++
+
+_I saw a shoggoth - it changed shape... I can't stand it... I won't stand it._
+_(H. P. Lovecraft, "The Thing on the Doorstep", 1933)_
+
+<!-- more -->
+----
 
   _...the shoggoths of the sea, reproducing by fission and acquiring a dangerous degree of accidental intelligence, presented for a time a formidable problem._ -- H. P. Lovecraft, _At the Mountains of Madness_, 1931
 
