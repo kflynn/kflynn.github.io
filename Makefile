@@ -1,6 +1,9 @@
 .PHONY: serve build clean firmware
 
 serve:
+	zola serve --drafts
+
+serve-prod:
 	zola serve
 
 build:
