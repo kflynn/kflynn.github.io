@@ -75,7 +75,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         env:
           REPOSITORY: ${{ github.repository }}
-          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
         run: |
           SHORT_SHA="${COMMIT_SHA:0:7}"
           DEPLOYED_AT="$(date -u +'%Y-%m-%d %H:%M:%SZ')"
@@ -93,7 +93,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
-          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
