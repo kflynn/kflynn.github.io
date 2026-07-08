@@ -1,6 +1,7 @@
 +++
 date = 2026-07-05
 title = "On Shipping Software"
+draft = true
 
 [taxonomies]
 categories = ["craft of computing"]

@@ -1,6 +1,7 @@
 +++
 date = 2026-07-05
 title = "On Incomprehensible Tools"
+draft = true
 
 [taxonomies]
 categories = [ "theory of computing", "crystal ball" ]
