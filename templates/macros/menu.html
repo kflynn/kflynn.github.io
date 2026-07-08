@@ -4,11 +4,11 @@
 
 {% if num > 0 -%}
 <ul>
-  {%- for menu_item in menu -%}
+    {%- for menu_item in menu -%}
     <li>
         <a href="{{ get_url(path=menu_item.url) }}">{{ menu_item.name }}</a>
     </li>
-  {%- endfor-%}
+    {%- endfor-%}
 </ul>
 {% endif %}
 {% endmacro items %}
@@ -19,12 +19,12 @@
 
 {% if num > 0 -%}
 <ul class="tree treemenu treemenu-root">
-  {%- for menu_item in menu -%}
+    {%- for menu_item in menu -%}
     <li class="tree-empty">
-      <span class="toggler"></span>
-      <a href="{{ get_url(path=menu_item.url) }}">{{ menu_item.name }}</a>
+        <span class="toggler"></span>
+        <a href="{{ get_url(path=menu_item.url) }}">{{ menu_item.name }}</a>
     </li>
-  {%- endfor-%}
+    {%- endfor-%}
 </ul>
 {% endif %}
 {% endmacro items %}
@@ -35,40 +35,40 @@
 
 {% macro mobile() %}
 <div class="mobile-container">
-        <div class="overlay" id="overlay">
-            <div class="overlay-home">
-              {{ menu::home() }}
-            </div>
-            <nav class="overlay-menu">
-              {% if config.extra.main_menu -%}
-                {{ menu::mobile_items(menu=config.extra.main_menu) }}
-              {% endif -%}
-            </nav>
+    <div class="overlay" id="overlay">
+        <div class="overlay-home">
+            {{ menu::home() }}
         </div>
+        <nav class="overlay-menu">
+            {% if config.extra.main_menu -%}
+            {{ menu::mobile_items(menu=config.extra.main_menu) }}
+            {% endif -%}
+        </nav>
     </div>
+</div>
 
 <script type="text/javascript">
-  var overlay = document.getElementById('overlay');
-  var toggle = document.getElementById('toggle');
+    var overlay = document.getElementById('overlay');
+    var toggle = document.getElementById('toggle');
 
-  function openOverlay(){
-      // Open overlay
-      if (overlay.classList.contains("open")) {
-          overlay.classList.remove("open");
-          overlay.style.maxHeight = "0px";
-      }
-      else {
-          overlay.classList.add("open");
-          overlay.style.maxHeight = overlay.scrollHeight + "px";
-      }
+    function openOverlay() {
+        // Open overlay
+        if (overlay.classList.contains("open")) {
+            overlay.classList.remove("open");
+            overlay.style.maxHeight = "0px";
+        }
+        else {
+            overlay.classList.add("open");
+            overlay.style.maxHeight = overlay.scrollHeight + "px";
+        }
 
-      // Button transition
-      if (toggle.classList.contains("active")) {
-          toggle.classList.remove("active");
-      }
-      else {
-          toggle.classList.add("active");
-      }
+        // Button transition
+        if (toggle.classList.contains("active")) {
+            toggle.classList.remove("active");
+        }
+        else {
+            toggle.classList.add("active");
+        }
     }
 </script>
 {% endmacro mobile %}
