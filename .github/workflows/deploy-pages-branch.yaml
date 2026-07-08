@@ -37,6 +37,23 @@ jobs:
             jekyll build --destination public
           fi
 
+      - name: Write deploy metadata
+        env:
+          REPOSITORY: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          SHORT_SHA="${COMMIT_SHA:0:7}"
+          DEPLOYED_AT="$(date -u +'%Y-%m-%d %H:%M:%SZ')"
+          COMMIT_URL="https://github.com/${REPOSITORY}/commit/${COMMIT_SHA}"
+          cat > public/deploy-meta.json <<EOF
+          {
+            "deployed_at": "${DEPLOYED_AT}",
+            "commit": "${COMMIT_SHA}",
+            "commit_short": "${SHORT_SHA}",
+            "commit_url": "${COMMIT_URL}"
+          }
+          EOF
+
       - name: Publish public/ to deployed-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
