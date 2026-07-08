@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{% block content %}
+<article>
+    <h1>{{ section.title }}</h1>
+    {% if section.content %}
+    <div class="section-intro">{{ section.content | safe }}</div>
+    {% endif %}
+
+    <table class="firmware-table">
+        <thead>
+            <tr>
+                <th>File</th>
+                <th>Date</th>
+                <th>Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in section.extra.files %}
+            <tr>
+                <td><a href="/firmware/{{ file.name }}"><code>{{ file.name }}</code></a></td>
+                <td>{{ file.date }}</td>
+                <td>{{ file.size }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</article>
+{% endblock content %}

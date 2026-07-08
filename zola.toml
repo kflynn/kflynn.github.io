@@ -1,0 +1,76 @@
+# The URL the site will be built for
+base_url = "https://kodachi.com/"
+
+# Theme
+theme = "zhuia"
+# theme = "zolastrap"
+
+# Whether to generate a RSS feed automatically
+generate_feeds = true
+feed_filenames = ["rss.xml"]
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+taxonomies = [
+    {name = "tags"},
+    {name = "categories"},
+]
+
+[markdown]
+bottom_footnotes = true
+
+[markdown.highlighting]
+theme = "vitesse-light"
+
+[extra]
+grid_size = "grid-lg"
+katex = true
+author = "Flynn"
+show_author = true
+show_tags = true
+show_categories = true
+read_more_prompt = "read more"
+read_post_prompt = "read post"
+banner = "KnH4V-4x1.jpg"
+custom_css = true
+logo_image = "./logo.svg"
+hamburger_menu = true
+
+main_menu = [
+              {url="/tags/", name="tags"},
+              {url="/categories/", name="categories"},
+              {url="/about", name="about"},
+]
+
+social_links = []
+date_format = "%Y-%m-%d"
+themes = false
+schemes = false
+theme = "litera"
+
+search = 'Search'
+tag = 'Posts by Topic'
+tags = 'Posts by Topics'
+
+links = [
+	{title = 'Articles', url = '/'},
+	{title = 'Categories', url = 'categories/'},
+	{title = 'Topics', url = 'tags/'},
+	{title = 'About', url = 'about/'},
+	{title = 'Github', url = 'https://github.com/marcodpt/zolastrap'},
+]
+
+footer_credit = 'Powered by <a href="https://www.getzola.org/">Zola</a> using the <a href="https://github.com/gicrisf/zhuia">Zhuia</a> theme'
+
+[extra.sidebar]
+active = true
+author_bio = "Welcome to my parlor, said the spider to the fly..."
+author_avatar = "flynn-avatar.png"  # relative to static/
+text_snippet="<italic>Unless otherwise stated, explicitly, I'm speaking only for myself here, not any organization I'm a part of.</italic>"
+popular_tags=false
+archive=false
+related_posts=false #TODO

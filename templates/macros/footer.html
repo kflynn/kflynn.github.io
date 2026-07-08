@@ -1,0 +1,42 @@
+{% macro footer(grid_size) %}
+<section id="footer" class="bg-gray">
+    <div class="container {{ grid_size }}">
+        {{ social_buttons::social_buttons() }}
+        <div class="columns">
+            {% if config.extra.footer_tagline %}
+            <div class="column col-6 col-lg-12 col-mx-auto" style="text-align: center;">
+                {{ config.extra.footer_tagline }}
+            </div>
+            {% endif %}
+            {% if config.extra.footer_credit %}
+            <div class="column col-6 col-lg-12 col-mx-auto" style="text-align: center;">
+                {{ config.extra.footer_credit | safe }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<script type="module">
+    if (document.querySelector('.mermaid')) {
+        const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+        mermaid.initialize({ startOnLoad: false });
+        await mermaid.run({ querySelector: '.mermaid' });
+    }
+</script>
+<script>
+    document.querySelectorAll('pre').forEach(function (pre) {
+        var btn = document.createElement('button');
+        btn.className = 'copy-code-btn';
+        btn.textContent = 'Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(btn);
+        btn.addEventListener('click', function () {
+            var code = pre.querySelector('code') || pre;
+            navigator.clipboard.writeText(code.innerText).then(function () {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+            });
+        });
+    });
+</script>
+{% endmacro footer %}
