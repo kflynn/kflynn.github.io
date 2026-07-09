@@ -26,54 +26,91 @@ There are fundamentally two ways to do that:
 2. You can pick a time to ship, and ship whatever's ready at that time.
 
 On the face of it, it seems obvious that #1 is the way to go: after all,
-shipping something that's incomplete seems silly, right? As it turns out,
-though, there's absolutely a place for choosing a date and shipping
-whatever is ready, rather than waiting to ship until a feature set is
-finished. It all gets back to to an old engineering truth that I'll call
-the _Engineering Uncertainty Principle_[^1].
+shipping something that's incomplete seems silly, right? Well, not so
+fast! It all gets back to to an old engineering truth that I'll call the
+_Engineering Uncertainty Principle_[^1].
 
-[^1]: Wikipedia covers this, sort of, as the [Project Management Triangle](https://en.wikipedia.org/wiki/Project_management_triangle). That's the more abstract version that deals with project management in general rather than focusing on engineering like I want to do here.
+[^1]: Wikipedia covers this, sort of, as the [Project Management
+    Triangle](https://en.wikipedia.org/wiki/Project_management_triangle).
+    That's the more abstract version that deals with project management
+    in general rather than focusing on engineering like I want to do
+    here.
 
-## Good, Fast, or Cheap
+## Good, Fast, and Cheap
 
 The Engineering Uncertainty Principle is usually phrased as follows:
 
 > In engineering, we get to pick only two of "good", "fast", and "cheap".
 
-If you want something good, and you want it fast, you'll need to be prepared to pay for it.
-If you want something quickly and you're not able to pay much for it, it's not likely to be high-quality.
+If you want something good, and you want it fast, you'll need to be
+prepared to pay for it. If you want something quickly and you're not able
+to pay much for it, it's not likely to be high-quality.
 
 Really, though, those three terms are shorthand for talking about
-_predictability_. The Engineering Uncertainty Principle would be better phrased as:
+_predictability_. The Engineering Uncertainty Principle would be better
+phrased as:
 
-> In engineering, we get to pick only two of predictable quality, predictable time to completion, and predictable cost.
+> In engineering, we get to pick only two of predictable quality,
+> predictable time to completion, and predictable cost.
 
-Fundamentally, this is another facet of Murphy's Law: you're going to have something go wrong, and that's why you can't predict all three things at once.
+Fundamentally, this is another facet of Murphy's Law: you're going to
+have something go wrong, and that's why you can't predict all three
+things at once. Also, in all cases, we're talking more about not
+exceeding some threshold than we are about any absolute numbers.
+Predictable cost, for example, doesn't necessarily mean that the project
+is cheap: it means that we didn't spend more than we planned to.[^2]
 
-In all cases, we're talking more about not exceeding some threshold than we are about any absolute numbers.
-Predictable cost, for example, doesn't necessarily mean that the project is cheap: it means that we didn't spend more than we planned to.
-(Obviously, spending  _less_ than we planned is pretty much always OK.)
+[^2]: Obviously, spending  _less_ than we planned is pretty much always OK.
 
+But you still only get two: if you need both predictable cost and
+predictable quality, you won't be able to predict the delivery date. If
+you need both predictable quality and a predictable delivery date, then
+you won't be able to predict what the cost will be.
 
-Conversely, if you need both predictable quality and a predictable delivery date, then you won't be able to predict what the cost will be.
-Treat this as a law of nature: you only get two.
-
-This all ties into releases because choosing to ship only when everything is finished is choosing predictable quality (so you can't have both predictable time and predictable cost), and choosing to ship whatever is ready on a given date is choosing predictable time (so you can't have both predictable quality and predictable cost).
+This all ties into releases because choosing to ship only when everything
+is finished means that you're choosing predictable quality, so you only
+get one of predictable time and predictable cost. Choosing to ship
+whatever is ready on a given date is choosing predictable time, so you
+only get one of predictable cost and predictable quality.
 
 ## Volunteer Projects
 
-For projects staffed by volunteers, though, the project has already chosen to have a predictable cost: by definition, anything that gets done by the volunteer staff must have a cost of zero.
-That, in turn, means that a volunteer project that wants to ship when the features are done has already chosen the which two things can be predicted!
-Since you're required predictable quality and predictable cost, you _cannot_ also predict when you'll be able to ship.
-It's simply not possible.
+Here's the big problem: projects staffed by volunteers have already
+chosen to have a predictable cost. So you've _already picked two_ in a
+volunteer project:
+
+- if you choose to ship only when everything is ready, you can't know how long it'll take.
+- if you choose to ship on a specific date, you can't predict the quality.
 
 So we're doomed, right? Not quite.
 
-## Unpredictable Quality != Low Quality
+The saving grace here is that being unable to predict the quality doesn't
+mean that you have to ship bad code. You can still set a quality bar, and
+then simply not ship anything that doesn't meet the bar; basically, you
+can finesse quality by being willing to drop things if they're not
+ready.[^3]
 
-Being unable to predict the quality doesn't mean that you have to ship
+[^3]: We're assuming that you're past the very early days of not yet
+    having an MVP. The "M" stands for "minimum"; it usually doesn't make
+    sense before you reach the minimum bar for a functioning product.
 
+This turns out to be a really powerful idea once you get used to it: it's
+a way you can ship frequently and still keep up the quality of the things
+you ship, which leads us to the final point in favor of shipping what's
+ready on a given date.
 
+## Why Bother Shipping Frequently?
 
+Shipping is the way you get feedback on your software. Remember: there's
+software that ships, and software that's irrelevant. It fundamentally
+doesn't matter what kind of cool stuff you've written if no one ever sees
+it -- and, likewise, if you write something and the first time a real
+user has a chance to offer feedback is a year later after you've
+forgotten everything about it, what's the point?
 
+This is the same idea as tightening up your inner development loop: ship
+frequently so your users can tell you what they like and what they don't,
+and guide your product that way. For that, nothing beats shipping based
+on time instead of based on features.
 
+---
