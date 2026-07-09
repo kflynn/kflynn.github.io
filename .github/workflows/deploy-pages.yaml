@@ -131,7 +131,7 @@ jobs:
             fi
           else
             # Deploy main site to root while preserving PR previews under /pr.
-            rsync -a --delete --exclude 'pr/' public/ "$WORKDIR/"
+            rsync -a --delete --exclude '.git/' --exclude 'pr/' public/ "$WORKDIR/"
           fi
 
           touch "$WORKDIR/.nojekyll"
