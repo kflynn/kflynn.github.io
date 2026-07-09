@@ -76,10 +76,9 @@ only get one of predictable cost and predictable quality.
 
 Here's the big problem: projects staffed by volunteers have already
 chosen to have a predictable cost. So you've _already picked two_ in a
-volunteer project:
-
-- if you choose to ship only when everything is ready, you can't know how long it'll take.
-- if you choose to ship on a specific date, you can't predict the quality.
+volunteer project: if you choose to ship only when everything is ready,
+you can't know how long it'll take, and if you choose to ship on a
+specific date, you can't predict the quality.
 
 So we're doomed, right? Not quite.
 
