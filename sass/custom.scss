@@ -217,6 +217,13 @@ a {
     color: $primary;
 }
 
+// Keep wrapped list lines aligned with item text, not bullet markers.
+.card-body ul,
+.card-body ol {
+    list-style-position: outside;
+    padding-left: 1.2rem;
+}
+
 // Fenced code blocks: undo Spectre's pink label styling on <code> inside <pre>
 pre {
     overflow-x: auto;
