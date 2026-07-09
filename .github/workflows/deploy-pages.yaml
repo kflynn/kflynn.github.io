@@ -18,8 +18,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: pages-${{ github.event.pull_request.number || github.ref_name }}
-  cancel-in-progress: true
+  group: gh-pages
+  cancel-in-progress: false
 
 jobs:
   deploy:
