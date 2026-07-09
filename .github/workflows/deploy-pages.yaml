@@ -64,9 +64,17 @@ jobs:
             zola build --output-dir public
           fi
 
-          # Keep custom domain support if CNAME is present at repo root.
+          # Keep custom domain support for branch-based GitHub Pages publishing.
           if [ -f CNAME ]; then
             cp CNAME public/CNAME
+          else
+            CONFIG_BASE_URL="$(sed -n 's/^base_url\s*=\s*"\(.*\)"\s*$/\1/p' zola.toml | head -n 1)"
+            if [ -n "$CONFIG_BASE_URL" ]; then
+              CONFIG_HOST="$(printf '%s' "$CONFIG_BASE_URL" | sed -E 's#^[a-zA-Z]+://##' | sed -E 's#/.*$##')"
+              if [ -n "$CONFIG_HOST" ]; then
+                printf '%s\n' "$CONFIG_HOST" > public/CNAME
+              fi
+            fi
           fi
 
           touch public/.nojekyll
