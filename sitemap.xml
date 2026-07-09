@@ -28,6 +28,10 @@
         <loc>https://www.kodachi.com/articles/2026/</loc>
     </url>
     <url>
+        <loc>https://www.kodachi.com/articles/2026/0705-on-shipping-software/</loc>
+        <lastmod>2026-07-05</lastmod>
+    </url>
+    <url>
         <loc>https://www.kodachi.com/categories/</loc>
     </url>
     <url>
@@ -49,10 +53,16 @@
         <loc>https://www.kodachi.com/tags/best-practices/</loc>
     </url>
     <url>
+        <loc>https://www.kodachi.com/tags/cat-herding/</loc>
+    </url>
+    <url>
         <loc>https://www.kodachi.com/tags/kubernetes/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/tags/linkerd/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/tags/release-management/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/tags/wisdom-of-the-ages/</loc>

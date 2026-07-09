@@ -27,6 +27,15 @@ of the Emissary-ingress API gateway. He is most easily found as
 </description>
       </item>
       <item>
+          <title>On Shipping Software</title>
+          <pubDate>Sun, 05 Jul 2026 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/articles/2026/0705-on-shipping-software/</link>
+          <guid>https://www.kodachi.com/articles/2026/0705-on-shipping-software/</guid>
+          <description xml:base="https://www.kodachi.com/articles/2026/0705-on-shipping-software/">&lt;p&gt;&lt;em&gt;There are two kinds of software: software that ships, and software
+that&#x27;s irrelevant.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;</description>
+      </item>
+      <item>
           <title>On Scaling Nodes and Startup Races</title>
           <pubDate>Thu, 08 Feb 2024 00:00:00 +0000</pubDate>
           <author>Unknown</author>
