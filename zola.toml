@@ -64,7 +64,7 @@ links = [
 	{title = 'Github', url = 'https://github.com/marcodpt/zolastrap'},
 ]
 
-footer_credit = 'Powered by <a href="https://www.getzola.org/">Zola</a> using the <a href="https://github.com/gicrisf/zhuia">Zhuia</a> theme'
+footer_credit = 'Powered by <a href="https://www.getzola.org/">Zola</a> using a modified <a href="https://github.com/kflynn/zhuia">Zhuia</a> theme'
 
 [extra.sidebar]
 active = true

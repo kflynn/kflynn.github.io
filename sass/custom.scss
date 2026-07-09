@@ -224,6 +224,13 @@ a {
     padding-left: 1.2rem;
 }
 
+// Title-card blurbs in listing views.
+.blog-listing .card-body {
+    font-style: italic;
+    font-size: 90%;
+    padding-top: 0.2rem;
+}
+
 // Fenced code blocks: undo Spectre's pink label styling on <code> inside <pre>
 pre {
     overflow-x: auto;
