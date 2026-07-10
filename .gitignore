@@ -1,3 +1,4 @@
 __pycache__
 deploy-meta.json
 public/
+static/processed_images/

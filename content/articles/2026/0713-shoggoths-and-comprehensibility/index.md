@@ -2,6 +2,9 @@
 date = 2026-07-13
 title = "Shoggoths and Comprehensibility"
 
+[extra]
+cover_image = "shoggoth-cover.jpg"
+
 [taxonomies]
 categories = [ "theory of computing", "crystal ball" ]
 tags = [ "shoggoth", "llm", "pi", "comprehensibility" ]
@@ -126,5 +129,9 @@ I'm saying is that knowing you're interacting with a nonhuman
 pseudointelligence that does not, and cannot, really have your best
 interests at heart is critical to getting useful results out of them
 without getting burned.
+
+---
+
+_Cover image by [Nottsuo](https://www.deviantart.com/nottsuo/art/Shoggoth-594261203); thanks!_
 
 ---
