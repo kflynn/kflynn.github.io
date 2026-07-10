@@ -2,6 +2,9 @@
 date = 2026-07-10
 title = '"AI" is a Terrible Name'
 
+[extra]
+cover_image = "cover-brain.jpg"
+
 [taxonomies]
 categories = [ "theory of computing", "crystal ball" ]
 tags = [ "shoggoth", "llm", "ai", "pi", "naming is hard" ]
@@ -86,6 +89,12 @@ recovering from surgery (🤦‍♂️). But I've wanted something better than
 
 A constant reminder that these things are only mimicking intelligence
 would be a good thing.
+
+----
+_[Cover image] original by [Steve A Johnson] on Unsplash_
+
+[Cover image]: https://unsplash.com/photos/a-computer-circuit-board-with-a-brain-on-it-_0iV9LmPDn0
+[Steve A Johnson]: https://unsplash.com/@steve_j
 
 ----
 
