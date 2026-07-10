@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+  <head>
+    <title>On Scaling Nodes and Startup Races - </title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="What really happens when all your nodes die?"/>
+
+    <meta property="og:title" content=" -&nbsp;On Scaling Nodes and Startup Races" />
+    <meta property="og:type" content="website"/><meta property="og:url" content="https:&#x2F;&#x2F;www.kodachi.com&#x2F;pr&#x2F;19&#x2F;articles&#x2F;2024&#x2F;0208-on-scaling-nodes-and-startup-races&#x2F;"/><meta property="og:description" content=""/>
+
+
+    <meta name="twitter:card" content="summary">
+
+
+    <link rel="stylesheet" href="https://www.kodachi.com/pr/19/spectre/spectre.css">
+    <link rel="stylesheet" href="https://www.kodachi.com/pr/19/theme.css"><link rel="stylesheet" href="https://www.kodachi.com/pr/19/custom.css">
+    
+<link rel="alternate" type="application/rss+xml" title=" RSS" href="https://www.kodachi.com/pr/19/rss.xml">
+        
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script>
+        function doRenderMath() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+                {left: "\\begin{align}", right: "\\end{align}", display: true},
+                {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+                {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+                {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+                {left: "\\[", right: "\\]", display: true}
+                ]
+            });
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="doRenderMath()"></script>
+
+      </head>
+  <body id="top" class="sticky-footer"><div id="page-wrapper">
+
+<div id="banner">
+    <img src="https://www.kodachi.com/pr/19/KnH4V-4x1.jpg" alt="site banner" style="width:100%;display:block;">
+</div>
+
+<header id="header" class="section">
+    <section class="container grid-lg">
+        <div class="columns header-grid-row">
+            <div class="column col-8 col-md-12 header-home-col">
+                
+<a class="site-logo" href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;pr&#x2F;19&#x2F;">home</a>
+
+            </div>
+
+            <div class="column col-4 hide-md header-menu-col">
+                <nav class="dropmenu animated hide-md">
+
+<ul><li>
+        <a href="https://www.kodachi.com/pr/19/tags">tags</a>
+    </li><li>
+        <a href="https://www.kodachi.com/pr/19/categories">categories</a>
+    </li><li>
+        <a href="https://www.kodachi.com/pr/19/about">about</a>
+    </li></ul>
+
+
+                    </nav>
+            </div>
+        </div>
+    </section>
+</header>
+
+
+<div class="mobile-menu">
+    <div class="button_container" id="toggle" onclick="openOverlay()">
+        <span class="top"></span>
+        <span class="middle"></span>
+        <span class="bottom"></span>
+    </div>
+</div><!--./mobile-menu-->
+
+
+<section id="start"><section id="body-wrapper" class="section">
+          <section class="container grid-lg">
+<div id="breadcrumbs" itemtype="http://schema.org/BreadcrumbList" class="hide-sm">
+    
+    
+    
+    <span><a href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;pr&#x2F;19&#x2F;">Home</a></span>
+    
+    
+    <span><a href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;pr&#x2F;19&#x2F;articles&#x2F;2024&#x2F;0208-on-scaling-nodes-and-startup-races&#x2F;">On Scaling Nodes and Startup Races</a></span>
+</div>
+<div class="columns">
+              <div id="item" class="column col-8 col-md-12 extra-spacing">
+<div class="card">
+
+    <div class="card-header">
+      <div class="card-title" style="margin-top: .25rem;"><div>
+          <h1 class="post-title">On Scaling Nodes and Startup Races</h1>
+          
+    <div class="post-meta" style="display: inline-flex">
+        <span class="blog-date" style="display: inline-flex;">
+          <i class="gg-calendar" style="margin-right: 5px;"></i><time datetime="2024.02.08">
+          2024.02.08
+          </time></span><span class="post-author" style="margin-left: 5px; display: inline-flex;">
+          - 
+    Flynn
+        </span></div>
+
+        </div></div>
+    </div><!--./card-header-->
+
+    <div class="card-body">
+      
+        <p><em>What really happens when all your nodes die?</em></p>
+<span id="continue-reading"></span>
+<hr />
+<p>I've been working with Kubernetes for awhile, and in that time I've
+largely managed to avoid doing things with nodes -- if you embrace the
+"whole clusters are cattle" philosophy, you don't need to worry about
+individual nodes, right? Just toss the entire cluster and get a new one
+if things are weird.</p>
+<p>But then a bug came over the transom that made me actually go take a
+closer look at nodes again: a Linkerd user using a GKE cluster was
+scaling the cluster's node pool down to 0 every night to save money, and
+when they scaled back up, their application pods were no longer meshed.</p>
+<p>Not gonna lie: my first thought was "just toss the whole cluster every
+night and get a new one", but it's true that there's a certain amount of
+automation that needs to happen for that to be really seamless. For
+example, tossing the cluster means that the IP address of any
+externally-facing services will be different when you spin it back up,
+which means you need to be worrying about DNS -- and as we all know, a
+day you have to think about DNS is not a great day. 😂</p>
+<p>Long story short, the whole thing piqued my interest, because the more I
+thought about it, the more it <em>should</em> work. I ended up reproducing it
+with <code>k3d</code> because that let me see the details of what was happening.</p>
+<h2 id="setting-up">Setting Up</h2>
+<p>To set everything up, we'll start with some scripting -- this should work
+for <code>bash</code> or <code>zsh</code>, but you'll need to check it if you use something
+else.</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #A0ADA0;"># Cluster management: create and delete a cluster</span></span>
+<span class="giallo-l"><span style="color: #59873A;">create_cluster</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #A0ADA0;">    # Three agent nodes, one server node</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    k3d</span><span style="color: #B56959;"> cluster create ffs</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #A65E2B;">        --agents</span><span style="color: #2F798A;"> 3</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #A65E2B;">        --servers</span><span style="color: #2F798A;"> 1</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #A65E2B;">        -p</span><span style="color: #B56959;"> 80:80@loadbalancer</span><span style="color: #A65E2B;"> -p</span><span style="color: #B56959;"> 443:443@loadbalancer</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #A65E2B;">        --k3s-arg --disable=local-storage,traefik@server:0</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;">    # Don&#39;t run application pods on the server node</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    kubectl</span><span style="color: #B56959;"> taint nodes k3d-ffs-server-0 node-role.kubernetes.io/master=:NoSchedule</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59873A;">delete_cluster</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    k3d</span><span style="color: #B56959;"> cluster delete ffs</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;"># Node management: drop all agent nodes</span></span>
+<span class="giallo-l"><span style="color: #59873A;">drop_nodes</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #B07D48;">    nodes</span><span style="color: #999999;">=$(</span></span>
+<span class="giallo-l"><span style="color: #59873A;">        kubectl</span><span style="color: #B56959;"> get node</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #AB5959;">          |</span><span style="color: #59873A;"> grep</span><span style="color: #A65E2B;"> -v</span><span style="color: #B56959;"> control-plane</span><span style="color: #AB5959;"> |</span><span style="color: #59873A;"> grep</span><span style="color: #A65E2B;"> -v</span><span style="color: #B56959;"> NAME</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #AB5959;">          |</span><span style="color: #59873A;"> awk</span><span style="color: #B5695977;"> &#39;</span><span style="color: #B56959;"> { print $1 }</span><span style="color: #B5695977;">&#39;</span></span>
+<span class="giallo-l"><span style="color: #999999;">    )</span></span>
+<span class="giallo-l"><span style="color: #998418;">    echo</span><span style="color: #B07D48;"> $nodes</span><span style="color: #AB5959;"> |</span><span style="color: #59873A;"> xargs</span><span style="color: #B56959;"> kubectl delete node</span></span>
+<span class="giallo-l"><span style="color: #998418;">    echo</span><span style="color: #B07D48;"> $nodes</span><span style="color: #AB5959;"> |</span><span style="color: #59873A;"> xargs</span><span style="color: #B56959;"> k3d node delete</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;"># Node management: re-add agent nodes</span></span>
+<span class="giallo-l"><span style="color: #59873A;">add_nodes</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    k3d</span><span style="color: #B56959;"> node create new0</span><span style="color: #A65E2B;"> --cluster</span><span style="color: #B56959;"> ffs</span><span style="color: #A65E2B;"> --role</span><span style="color: #B56959;"> agent</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    k3d</span><span style="color: #B56959;"> node create new1</span><span style="color: #A65E2B;"> --cluster</span><span style="color: #B56959;"> ffs</span><span style="color: #A65E2B;"> --role</span><span style="color: #B56959;"> agent</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    k3d</span><span style="color: #B56959;"> node create new2</span><span style="color: #A65E2B;"> --cluster</span><span style="color: #B56959;"> ffs</span><span style="color: #A65E2B;"> --role</span><span style="color: #B56959;"> agent</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;"># Install Linkerd</span></span>
+<span class="giallo-l"><span style="color: #59873A;">install_linkerd</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #1E754F;">    if</span><span style="color: #999999;"> [</span><span style="color: #A65E2B;"> \(</span><span style="color: #B5695977;"> &quot;</span><span style="color: #B56959;">$1</span><span style="color: #B5695977;">&quot;</span><span style="color: #AB5959;"> !=</span><span style="color: #B5695977;"> &quot;&quot;</span><span style="color: #A65E2B;"> \)</span><span style="color: #AB5959;"> -a</span><span style="color: #A65E2B;"> \(</span><span style="color: #B5695977;"> &quot;</span><span style="color: #B56959;">$1</span><span style="color: #B5695977;">&quot;</span><span style="color: #AB5959;"> !=</span><span style="color: #B5695977;"> &quot;</span><span style="color: #B56959;">--ha</span><span style="color: #B5695977;">&quot;</span><span style="color: #A65E2B;"> \)</span><span style="color: #999999;"> ];</span><span style="color: #1E754F;"> then</span></span>
+<span class="giallo-l"><span style="color: #998418;">        echo</span><span style="color: #B5695977;"> &quot;</span><span style="color: #B56959;">Usage: install_linkerd [--ha]</span><span style="color: #B5695977;">&quot;</span><span style="color: #AB5959;"> &gt;&amp;2</span></span>
+<span class="giallo-l"><span style="color: #1E754F;">    else</span></span>
+<span class="giallo-l"><span style="color: #59873A;">        linkerd</span><span style="color: #B56959;"> install</span><span style="color: #A65E2B;"> --crds</span><span style="color: #AB5959;"> |</span><span style="color: #59873A;"> kubectl</span><span style="color: #B56959;"> apply</span><span style="color: #A65E2B;"> -f</span><span style="color: #B56959;"> -</span></span>
+<span class="giallo-l"><span style="color: #59873A;">        linkerd</span><span style="color: #B56959;"> install</span><span style="color: #B07D48;"> $1</span><span style="color: #AB5959;"> |</span><span style="color: #59873A;"> kubectl</span><span style="color: #B56959;"> apply</span><span style="color: #A65E2B;"> -f</span><span style="color: #B56959;"> -</span></span>
+<span class="giallo-l"><span style="color: #59873A;">        linkerd</span><span style="color: #B56959;"> check</span></span>
+<span class="giallo-l"><span style="color: #1E754F;">    fi</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;"># Install Faces to play the role of our application</span></span>
+<span class="giallo-l"><span style="color: #59873A;">install_faces</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    kubectl</span><span style="color: #B56959;"> create ns faces</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    kubectl</span><span style="color: #B56959;"> annotate ns faces linkerd.io/inject=enabled</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59873A;">    helm</span><span style="color: #B56959;"> install</span><span style="color: #A65E2B;"> -n</span><span style="color: #B56959;"> faces</span><span style="color: #A65E2B;"> \</span></span>
+<span class="giallo-l"><span style="color: #A65E2B;">        --version</span><span style="color: #2F798A;"> 0.8.0</span><span style="color: #B56959;"> faces oci://registry-1.docker.io/dwflynn/faces-chart</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;"># See what&#39;s running (include on which node)</span></span>
+<span class="giallo-l"><span style="color: #59873A;">check_pods</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    kubectl</span><span style="color: #B56959;"> get pods</span><span style="color: #A65E2B;"> -n</span><span style="color: #B56959;"> linkerd</span><span style="color: #A65E2B;"> -o</span><span style="color: #B56959;"> wide</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    kubectl</span><span style="color: #B56959;"> get pods</span><span style="color: #A65E2B;"> -n</span><span style="color: #B56959;"> faces</span><span style="color: #A65E2B;"> -o</span><span style="color: #B56959;"> wide</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #A0ADA0;"># Watch new pods come up</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span><span style="color: #999999;"> () {</span></span>
+<span class="giallo-l"><span style="color: #59873A;">    watch</span><span style="color: #B5695977;"> &#39;</span><span style="color: #B56959;">sh -c &quot;kubectl get pods -n linkerd -o wide; kubectl get pods -n faces -o wide&quot;</span><span style="color: #B5695977;">&#39;</span></span>
+<span class="giallo-l"><span style="color: #999999;">}</span></span></code></pre>
+<p>Paste the functions above, then run this sequence to get started:</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">create_cluster</span></span>
+<span class="giallo-l"><span style="color: #59873A;">install_linkerd</span></span>
+<span class="giallo-l"><span style="color: #59873A;">install_faces</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
+<p>This will create our <code>k3d</code> cluster, install Linkerd, install our
+application (meshed), then start watching pods. Wait until all the pods
+are running (all the Faces pods should show two containers).</p>
+<p>This is the state of our user when they first get their GKE cluster
+running: everything is working correctly and they're happy.</p>
+<h2 id="breaking-the-world">Breaking the World</h2>
+<p>Since everything is working, it's clearly time to break things! 😂</p>
+<p>To do that, let's mimic scaling the node pool to zero by deleting all the
+<code>agent</code> nodes where our pods are actually running.</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">drop_nodes</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
+<p>Wait for the pods to go to <code>Pending</code> state, meaning that Kubernetes would
+like to schedule them, but has no running nodes onto which to schedule
+them. (This may take a bit.)</p>
+<p>At that point we can mimic scaling the node pool back up, by re-adding
+some <code>agent</code> nodes:</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">add_nodes</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
+<p>and you'll see that when the Faces pods come back, they'll have only one
+container, meaning that they're not actually meshed. 🤔</p>
+<h2 id="what-s-going-on">What's Going On?</h2>
+<p>Poke around looking at logs enough, and you'll see that the root cause
+here is a startup race.</p>
+<p>At the moment the nodes restart, <em>all</em> of our <code>Pending</code> pods become
+available for scheduling. Since three nodes quickly become available,
+that gives us enough CPU and memory for all the pods to in fact be
+scheduled, and when that happens there's a race: if the Linkerd proxy
+injector (which is a mutating webhook) isn't running at the moment an
+application Pod is created, that application Pod won't be brought into
+the mesh.</p>
+<p>Unfortunately for us, since the Pods are getting creating all at about
+the same time, the Linkerd proxy injector has effectively zero chance of
+starting in time to see the application Pods getting created. By the time
+the proxy injector does start running, it's missed its chance. The end
+result is that the Faces app starts running, but isn't meshed.</p>
+<h2 id="fixing-the-problem">Fixing the Problem</h2>
+<p>The fix is simple: turn on Linkerd high availability (HA) mode, which
+will block pods from starting if the proxy injector isn't running. First
+we'll delete and recreate the cluster:</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">delete_cluster</span></span>
+<span class="giallo-l"><span style="color: #59873A;">create_cluster</span></span></code></pre>
+<p>Then, we'll reinstall everything using Linkerd HA mode.</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">install_linkerd</span><span style="color: #A65E2B;"> --ha</span><span style="color: #A0ADA0;">    # &lt;= note this difference!</span></span>
+<span class="giallo-l"><span style="color: #59873A;">install_faces</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
+<p>Again, wait for all pods to be running. You'll note there there are a lot
+more Linkerd pods running, and that they're scattered evenly across the
+three <code>agent</code> nodes.</p>
+<p>After that, we can repeat our experiment of scaling down and back up.
+Scale down by deleting the <code>agent</code> nodes:</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">drop_nodes</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
+<p>Wait for <code>Pending</code> (or missing -- in my setup, the Faces pods are often
+gone entirely), then</p>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">add_nodes</span></span>
+<span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
+<p>and <em>this</em> time you'll see all the Linkerd pods start running before any
+of the Faces pods start, which guarantees that the proxy injector is
+running like it should be before the Faces pods start, which is what we
+need. When the Faces pods come up, they'll have two containers again,
+like they should.</p>
+<p>This is because one of the things that Linkerd's HA mode does is to force
+pod startup to wait for the proxy injector to be running, which is
+exactly what you want here.</p>
+<h2 id="a-webhook-problem">A Webhook Problem</h2>
+<p>It's important to be clear that we're using Linkerd to illustrate a
+problem with admission webhooks here, not a problem with meshes or
+sidecars. If you're using admission webhooks, you absolutely must have a
+way to <em>guarantee</em> that the things that rely on your webhook can't start
+running before the webhook processor has started.</p>
+<p>Kubernetes gives us a tool for this: you can configure admission webhooks
+with <code>failurePolicy: Fail</code> so that if the webhook provider doesn't
+respond when the API server is trying to admit a new resource, the API
+server will reject the request and the new resource won't be created.
+Linkerd does a couple of other things, as well, but <code>failurePolicy: Fail</code>
+is the big one: it takes advantage of Kubernetes to absolutely prevent
+new Pods from being created before the proxy injector is running.</p>
+<p>Interesting enough, treating your clusters as cattle might well fix this,
+too (we'll assume you have DNS wrangled). This isn't because
+clusters-as-cattle is really <em>better</em> at handling startup than scaling
+the node pool down and back up, it's that treating the clusters as cattle
+all but requires you to automate installing your application onto a new
+cluster in a way that handles dependencies. But, as noted before, this
+can be pricy too (as much as I kinda like the idea 😂).</p>
+<p>So the best way forward here is probably to realize that sure, scaling
+nodes to zero can be a great money-saving tool! Just pay attention to
+what your application and its infrastructure needs -- including webhooks.</p>
+
+      
+    </div><!--./card-body-->
+
+    <div class="card-footer">
+      <div class="columns">
+        <div class="column col-9 col-sm-7">
+          <div class="taxonomies text-left">
+            
+
+    <a class="label label-rounded label-secondary p-category" href="https://www.kodachi.com/pr/19/categories/craft-of-computing/">craft of computing</a>
+            
+    <a class="label label-rounded tag" href="https://www.kodachi.com/pr/19/tags/kubernetes/">#kubernetes</a>
+    <a class="label label-rounded tag" href="https://www.kodachi.com/pr/19/tags/linkerd/">#linkerd</a>
+    
+            
+        
+          </div>
+        </div><!--./col-6-->
+        
+        </div><!--./columns-->
+    </div><!--./card-footer-->
+</div><!--./card-->
+</div>
+              <div id="sidebar" class="column col-4 col-md-12">
+                <div class="sidebar-content">
+                  
+                  
+<div class="sidebar-widget">
+  <div class="tile">
+    <div class="tile-icon">
+      <figure class="avatar avatar-xl">
+        <img src="https://www.kodachi.com/pr/19/flynn-avatar.png" alt="author avatar image">
+      </figure>
+    </div>
+    <div class="tile-content">
+      <p class="tile-title" style="font-weight: 600;">Flynn</p>
+      <p class="tile-subtitle">Deep generalist, tech evangelist, professional cynic.  Unless otherwise stated, I&#x27;m speaking only for myself here, not any organization I&#x27;m a part of.</p>
+    </div>
+</div><!--./tile-->
+</div>
+
+                  
+                  
+<div class="sidebar-widget">
+  <strong>This not the home of <a href='https://kodachi.cloud'>Kodachi Linux</a>; they're an unaffiliated project.</strong><br/><br/>If you're looking for our historical <a href='covid'>Covid</a> graphs, they're still here.
+</div><!-- end text widget -->
+
+                  
+<div class="sidebar-widget syndicate">
+<h4>Feed</h4>
+<a class="btn" href="/[rss.xml]">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rss-fill" viewBox="0 0 16 16">
+  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+</svg>
+<span>RSS</span>
+</a>
+</div>
+
+                  </div><!--./sidebar-content-->
+              </div>
+            </div>
+            
+          </section>
+        </section></section>
+<section class="container grid-lg">
+<ul class="pagination paginator">
+  
+  
+</ul>
+</section>
+</div><!-- ./page-wrapper -->
+
+    
+<div class="mobile-container">
+    <div class="overlay" id="overlay">
+        <div class="overlay-home">
+            
+<a class="site-logo" href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;pr&#x2F;19&#x2F;">home</a>
+
+        </div>
+        <nav class="overlay-menu">
+            
+
+<ul class="tree treemenu treemenu-root"><li class="tree-empty">
+        <span class="toggler"></span>
+        <a href="https://www.kodachi.com/pr/19/tags">tags</a>
+    </li><li class="tree-empty">
+        <span class="toggler"></span>
+        <a href="https://www.kodachi.com/pr/19/categories">categories</a>
+    </li><li class="tree-empty">
+        <span class="toggler"></span>
+        <a href="https://www.kodachi.com/pr/19/about">about</a>
+    </li></ul>
+
+
+            </nav>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var overlay = document.getElementById('overlay');
+    var toggle = document.getElementById('toggle');
+
+    function openOverlay() {
+        // Open overlay
+        if (overlay.classList.contains("open")) {
+            overlay.classList.remove("open");
+            overlay.style.maxHeight = "0px";
+        }
+        else {
+            overlay.classList.add("open");
+            overlay.style.maxHeight = overlay.scrollHeight + "px";
+        }
+
+        // Button transition
+        if (toggle.classList.contains("active")) {
+            toggle.classList.remove("active");
+        }
+        else {
+            toggle.classList.add("active");
+        }
+    }
+</script>
+
+<section id="footer" class="bg-gray">
+    <div style="width: 100%; max-width: none; padding-left: .4rem; padding-right: .4rem;">
+        
+
+
+        <div class="columns">
+            
+            
+            <div class="column col-12 col-mx-auto" style="text-align: center;">
+                Powered by <a href="https://www.getzola.org/">Zola</a> using a modified <a href="https://github.com/kflynn/zhuia">Zhuia</a> theme
+                &nbsp;|&nbsp;
+                Last deploy: <span id="deploy-date">loading...</span>
+                (<a id="deploy-commit-link" href="#">commit <span id="deploy-commit">loading...</span></a>)
+            </div>
+            
+        </div>
+    </div>
+</section>
+<script type="module">
+    if (document.querySelector('.mermaid')) {
+        const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+        mermaid.initialize({ startOnLoad: false });
+        await mermaid.run({ querySelector: '.mermaid' });
+    }
+</script>
+<script>
+    (function () {
+        var dateEl = document.getElementById('deploy-date');
+        var commitEl = document.getElementById('deploy-commit');
+        var commitLinkEl = document.getElementById('deploy-commit-link');
+
+        if (!dateEl || !commitEl || !commitLinkEl) {
+            return;
+        }
+
+        function formatDisplayDate(value) {
+            var parsed = new Date(value);
+            if (isNaN(parsed.getTime())) {
+                return null;
+            }
+            return parsed.toISOString().replace('T', ' ').replace('.000Z', 'Z');
+        }
+
+        function setFallback() {
+            var localDate = formatDisplayDate(document.lastModified) || formatDisplayDate(new Date()) || 'not deployed yet';
+            dateEl.textContent = localDate;
+            commitEl.textContent = 'local-dev';
+            commitLinkEl.removeAttribute('href');
+        }
+
+        var deployMetaPath;
+        try {
+            var configuredRootPath = new URL('https://www.kodachi.com/pr/19').pathname;
+            configuredRootPath = configuredRootPath.replace(/\/+$/, '');
+            deployMetaPath = (configuredRootPath ? configuredRootPath : '') + '/deploy-meta.json';
+        } catch (error) {
+            deployMetaPath = '/deploy-meta.json';
+        }
+
+        fetch(deployMetaPath, { cache: 'no-store' })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('missing deploy metadata');
+                }
+                return response.json();
+            })
+            .then(function (meta) {
+                var deployedAt = formatDisplayDate(meta.deployed_at) || formatDisplayDate(new Date()) || 'not deployed yet';
+                var shortSha = meta.commit_short || 'local-dev';
+                var commitUrl = meta.commit_url || '';
+
+                dateEl.textContent = deployedAt;
+                commitEl.textContent = shortSha;
+
+                if (commitUrl) {
+                    commitLinkEl.href = commitUrl;
+                } else {
+                    commitLinkEl.removeAttribute('href');
+                }
+            })
+            .catch(function () {
+                setFallback();
+            });
+    })();
+
+    document.querySelectorAll('pre').forEach(function (pre) {
+        var btn = document.createElement('button');
+        btn.className = 'copy-code-btn';
+        btn.textContent = 'Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(btn);
+        btn.addEventListener('click', function () {
+            var code = pre.querySelector('code') || pre;
+            navigator.clipboard.writeText(code.innerText).then(function () {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+            });
+        });
+    });
+</script>
+</body>
+</html>
