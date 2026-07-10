@@ -1,7 +1,6 @@
 +++
 date = 2026-07-13
 title = "Shoggoths and Comprehensibility"
-draft = true
 
 [taxonomies]
 categories = [ "theory of computing", "crystal ball" ]
