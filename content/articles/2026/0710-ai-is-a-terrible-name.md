@@ -35,8 +35,8 @@ Any such consideration will reveal that "artificial intelligence" is a
 terrible name for our current crop of tools, because they are _not
 intelligent_ (even though they're obviously artificial).
 
-What we use right now are Large Language Models (LLMs), which I often
-call shoggoths. Glossing over a _huge_ amount of very important detail,
+Our current tools are Large Language Models (LLMs), which I often call
+shoggoths. Glossing over a _huge_ amount of very important detail,
 they're all basically glorified [Markov chains]: they take a godawful
 amount of training data, slice it up into features represented by tensors
 of absurdly high dimensionality, and generate output by looking at what
