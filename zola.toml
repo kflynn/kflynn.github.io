@@ -41,8 +41,8 @@ logo_image = "./logo.svg"
 hamburger_menu = true
 
 main_menu = [
-              {url="/tags/", name="tags"},
               {url="/categories/", name="categories"},
+              {url="/tags/", name="tags"},
               {url="/about", name="about"},
 ]
 
