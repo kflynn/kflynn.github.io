@@ -31,8 +31,8 @@ think about it. There are a lot of different ways you can approach this,
 but whatever you're naming, it's worth considering how you want people to
 think about it, and about how you should reflect that in its name.
 
-Sadly, any such consideration will reveal that "artificial intelligence"
-is a terrible name for our current crop of tools, because they are _not
+Any such consideration will reveal that "artificial intelligence" is a
+terrible name for our current crop of tools, because they are _not
 intelligent_ (even though they're obviously artificial).
 
 What we use right now are Large Language Models (LLMs), which I often
