@@ -215,6 +215,16 @@ a {
 // Article page title
 .card-header .post-title {
     color: $primary;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+@media (max-width: 600px) {
+    .card-header h1.post-title {
+        font-size: clamp(1.7rem, 9vw, 2.3rem);
+    }
 }
 
 // Keep wrapped list lines aligned with item text, not bullet markers.
