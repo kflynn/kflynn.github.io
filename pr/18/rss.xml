@@ -7,25 +7,7 @@
       <generator>Zola</generator>
       <language>en</language>
       <atom:link href="https://www.kodachi.com/pr/18/rss.xml" rel="self" type="application/rss+xml"/>
-      <lastBuildDate>Sat, 25 Jul 2026 00:00:00 +0000</lastBuildDate>
-      <item>
-          <title>About</title>
-          <pubDate>Sat, 25 Jul 2026 00:00:00 +0000</pubDate>
-          <author>Unknown</author>
-          <link>https://www.kodachi.com/pr/18/about/</link>
-          <guid>https://www.kodachi.com/pr/18/about/</guid>
-          <description xml:base="https://www.kodachi.com/pr/18/about/">&lt;p&gt;Most of what you&#x27;ll find here right now was produced by Flynn, who&#x27;s a
-tech evangelist at Buoyant, educating developers about Linkerd,
-Kubernetes, and cloud-native development in general. He has spent
-40+ years in software engineering (from the kernel up through
-distributed applications, with a common thread of communications
-and security throughout), and is a coauthor of Linkerd: Up and
-Running from O&#x27;Reilly, a co-lead of the Gateway API GAMMA
-initiative, and the original author and longest-serving maintainer
-of the Emissary-ingress API gateway. He is most easily found as
-@flynn on the CNCF or Linkerd Slacks.&lt;&#x2F;p&gt;
-</description>
-      </item>
+      <lastBuildDate>Mon, 13 Jul 2026 00:00:00 +0000</lastBuildDate>
       <item>
           <title>Shoggoths and Comprehensibility</title>
           <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
@@ -34,6 +16,27 @@ of the Emissary-ingress API gateway. He is most easily found as
           <guid>https://www.kodachi.com/pr/18/articles/2026/0713-shoggoths-and-comprehensibility/</guid>
           <description xml:base="https://www.kodachi.com/pr/18/articles/2026/0713-shoggoths-and-comprehensibility/">&lt;p&gt;&lt;em&gt;...the shoggoths of the sea, reproducing by fission and acquiring a dangerous degree of accidental intelligence, presented for a time a formidable problem.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;em&gt;-- H. P. Lovecraft, &quot;At the Mountains of Madness&quot;, 1931&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;</description>
+      </item>
+      <item>
+          <title>About</title>
+          <pubDate>Fri, 10 Jul 2026 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/18/about/</link>
+          <guid>https://www.kodachi.com/pr/18/about/</guid>
+          <description xml:base="https://www.kodachi.com/pr/18/about/">&lt;p&gt;So far, what you&#x27;ll find here is produced by Flynn, who was a deep
+generalist before the term existed and has worked in computing since
+1983. He&#x27;s pretty much run the gamut from the kernel up through
+distributed applications (with a common thread of communications and
+security throughout) as well as working roles from solo coder up through
+Silicon Valley VP.&lt;&#x2F;p&gt;
+&lt;p&gt;Since 2022, he&#x27;s been a tech evangelist at Buoyant, educating developers
+about Linkerd, Kubernetes, and cloud-native development in general. He&#x27;s
+a coauthor of &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.oreilly.com&#x2F;library&#x2F;view&#x2F;linkerd-up-and&#x2F;9781098142308&#x2F;&quot;&gt;Linkerd: Up and Running&lt;&#x2F;a&gt; from O&#x27;Reilly, a chair of the
+CNCF AI Gateway Working Group, a co-lead of Gateway API for mesh, and the
+original author and longest-serving maintainer of the Emissary-ingress
+API gateway.&lt;&#x2F;p&gt;
+&lt;p&gt;He is most easily found as @flynn on the CNCF or Linkerd Slacks.&lt;&#x2F;p&gt;
+</description>
       </item>
       <item>
           <title>&quot;AI&quot; is a Terrible Name</title>
