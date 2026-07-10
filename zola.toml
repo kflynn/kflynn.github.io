@@ -68,9 +68,9 @@ footer_credit = 'Powered by <a href="https://www.getzola.org/">Zola</a> using a 
 
 [extra.sidebar]
 active = true
-author_bio = "Unless otherwise stated, I'm speaking only for myself here, not any organization I'm a part of."
+author_bio = "Deep generalist, tech evangelist, professional cynic.  Unless otherwise stated, I'm speaking only for myself here, not any organization I'm a part of."
 author_avatar = "flynn-avatar.png"  # relative to static/
-text_snippet="<strong>This not the home of <a href='https://kodachi.cloud'>Kodachi Linux</a>; they're an unaffiliated project.<br/><br/>If you're looking for our historical <a href='covid'>Covid</a> graphs, they're still here."
+text_snippet="<strong>This not the home of <a href='https://kodachi.cloud'>Kodachi Linux</a>; they're an unaffiliated project.</strong><br/><br/>If you're looking for our historical <a href='covid'>Covid</a> graphs, they're still here."
 popular_tags=false
 archive=false
 related_posts=false #TODO
