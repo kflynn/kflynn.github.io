@@ -13,7 +13,7 @@ it A.I. Artificial intelligence."_
 _Hackworth allowed himself a tight, narrow, and brief smile. "Well,
 there's something to be said for cheekiness, I suppose."_
 
-_-- (Neal Stephenson, <strong>The Diamond Age</strong>)_
+_-- Neal Stephenson, </em>The Diamond Age<em>, 1995_
 
 <!-- more -->
 ---
