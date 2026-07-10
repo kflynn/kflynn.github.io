@@ -1,7 +1,6 @@
 +++
 date = 2026-07-10
 title = '"AI" is a Terrible Name'
-draft = true
 
 [taxonomies]
 categories = [ "theory of computing", "crystal ball" ]
