@@ -1,6 +1,6 @@
 +++
-date = 2026-07-05
-title = "On Incomprehensible Tools"
+date = 2026-07-13
+title = "Shoggoths and Comprehensibility"
 draft = true
 
 [taxonomies]
@@ -8,19 +8,12 @@ categories = [ "theory of computing", "crystal ball" ]
 tags = [ "shoggoth", "llm", "ai", "comprehensibility" ]
 +++
 
-_I saw a shoggoth - it changed shape... I can't stand it... I won't stand it._
-_(H. P. Lovecraft, "The Thing on the Doorstep", 1933)_
+_...the shoggoths of the sea, reproducing by fission and acquiring a dangerous degree of accidental intelligence, presented for a time a formidable problem._
+
+_-- H. P. Lovecraft, "At the Mountains of Madness", 1931_
 
 <!-- more -->
 ----
-
-  _...the shoggoths of the sea, reproducing by fission and acquiring a dangerous degree of accidental intelligence, presented for a time a formidable problem._ -- H. P. Lovecraft, _At the Mountains of Madness_, 1931
-
-  _They were infamous, nightmare sculptures even when telling of age-old, bygone things; for shoggoths and their work ought not to be seen by human beings or portrayed by any beings._
-
-  _Formless protoplasm able to mock and reflect all forms and organs and processes... more and more sullen, more and more intelligent, more and more amphibious, more and more imitative! Great God! What madness made even those blasphemous Old Ones willing to use and carve such things?_ -- H. P. Lovecraft, _At the Mountains of Madness_, 1931
-
-  _Formless protoplasm able to mock and reflect all forms and organs and processes—viscous agglutinations of bubbling cells—rubbery fifteen-foot spheroids infinitely plastic and ductile—slaves of suggestion, builders of cities—more and more sullen, more and more intelligent, more and more amphibious, more and more imitative—Great God! What madness made even those blasphemous Old Ones willing to use and to carve such things?_
 
 Not long ago, I attended a presentation on AI given by some engineers at a company working on self-driving cars.
 During the Q&A session, I asked them how many of the people at their company truly understood how exactly the LLMs they used worked.
