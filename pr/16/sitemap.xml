@@ -32,10 +32,20 @@
         <lastmod>2026-07-05</lastmod>
     </url>
     <url>
+        <loc>https://www.kodachi.com/pr/16/articles/2026/0710-ai-is-a-terrible-name/</loc>
+        <lastmod>2026-07-10</lastmod>
+    </url>
+    <url>
         <loc>https://www.kodachi.com/pr/16/categories/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/pr/16/categories/craft-of-computing/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/pr/16/categories/crystal-ball/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/pr/16/categories/theory-of-computing/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/pr/16/firmware/</loc>
@@ -44,10 +54,16 @@
         <loc>https://www.kodachi.com/pr/16/page/1/</loc>
     </url>
     <url>
+        <loc>https://www.kodachi.com/pr/16/page/2/</loc>
+    </url>
+    <url>
         <loc>https://www.kodachi.com/pr/16/pages/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/pr/16/tags/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/pr/16/tags/ai/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/pr/16/tags/best-practices/</loc>
@@ -62,7 +78,19 @@
         <loc>https://www.kodachi.com/pr/16/tags/linkerd/</loc>
     </url>
     <url>
+        <loc>https://www.kodachi.com/pr/16/tags/llm/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/pr/16/tags/naming-is-hard/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/pr/16/tags/pi/</loc>
+    </url>
+    <url>
         <loc>https://www.kodachi.com/pr/16/tags/release-management/</loc>
+    </url>
+    <url>
+        <loc>https://www.kodachi.com/pr/16/tags/shoggoth/</loc>
     </url>
     <url>
         <loc>https://www.kodachi.com/pr/16/tags/wisdom-of-the-ages/</loc>
