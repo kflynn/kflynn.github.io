@@ -40,21 +40,22 @@ intelligent_ (even though they're obviously artificial).
 
 Our current tools are Large Language Models (LLMs), which I've taken to
 calling "[shoggoths]". Glossing over a _huge_ amount of very important
-detail, they're all basically glorified [Markov chains]: they take a
+detail[^2], they're all basically glorified [Markov chains]: they take a
 godawful amount of training data, slice it up into features represented
 by tensors of absurdly high dimensionality, and generate output by
 looking at what sequences of these tensors happen in the training data.
 
 [shoggoths]: ../0713-shoggoths-and-comprehensibility/
+[^2]: The most important of which may be the [attention mechanism](https://en.wikipedia.org/wiki/Attention_(machine_learning)).
 
 Shoggoths can obviously do some really impressive things this way. A
 properly-trained shoggoth is far, far better than I am at writing CSS and
-JavaScript, for example[^2], and while shoggoths may or may not be
+JavaScript, for example[^3], and while shoggoths may or may not be
 _better_ than I am at Go, they're certainly far _faster_. This opens some
 really cool doors, but it's more about mechanical brute force than
 intelligence.
 
-[^2]: In fact, a shoggoth wrote most of the CSS customization for this
+[^3]: In fact, a shoggoth wrote most of the CSS customization for this
       website. Not coincidentally, I _hate_ CSS.
 
 We can draw an analogy to calculators here. A calculator is _far_ better
@@ -65,10 +66,10 @@ or a calculator program running on a computer, or the computer itself -
 is intelligent.
 
 Back in the early days, though, people _would_ talk about how the
-calculator or computer "could think"[^3]. It took awhile for the
+calculator or computer "could think"[^4]. It took awhile for the
 collective "us" to be educated enough to get past that.
 
-[^3]: Anyone remember the 80s-era supercomputer/AI firm [Thinking
+[^4]: Anyone remember the 80s-era supercomputer/AI firm [Thinking
       Machines]?
 
 I think that's pretty much where we are with LLMs right now. Lots of
