@@ -40,13 +40,12 @@ intelligent_ (even though they're obviously artificial).
 
 Our current tools are Large Language Models (LLMs), which I've taken to
 calling "[shoggoths]". Glossing over a _huge_ amount of very important
-detail[^2], they're all basically glorified [Markov chains]: they take a
+details[^2], they're all basically glorified [Markov chains]: they take a
 godawful amount of training data, slice it up into features represented
 by tensors of absurdly high dimensionality, and generate output by
 looking at what sequences of these tensors happen in the training data.
 
-[shoggoths]: ../0713-shoggoths-and-comprehensibility/
-[^2]: The most important of which may be the [attention mechanism](https://en.wikipedia.org/wiki/Attention_(machine_learning)).
+[^2]: The most important of which may be the [attention mechanism].
 
 Shoggoths can obviously do some really impressive things this way. A
 properly-trained shoggoth is far, far better than I am at writing CSS and
@@ -99,6 +98,8 @@ _[Cover image] original by [Steve A Johnson] on Unsplash_
 
 ----
 
+[shoggoths]: ../0713-shoggoths-and-comprehensibility/
 [Markov chains]: https://en.wikipedia.org/wiki/Markov_chain
+[attention mechanism]: https://en.wikipedia.org/wiki/Attention_(machine_learning)
 [Thinking Machines]: https://en.wikipedia.org/wiki/Thinking_Machines_Corporation
 [The Diamond Age]: https://www.amazon.com/Diamond-Age-Neal-Stephenson/dp/0553573314
