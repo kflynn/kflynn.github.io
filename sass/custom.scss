@@ -241,6 +241,16 @@ a {
     padding-top: 0.2rem;
 }
 
+// Listing cards include an overlay link as first child, so force cover flush to top.
+.blog-listing .card .card-image {
+    padding-top: 0;
+}
+
+.blog-listing .card .card-image img {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
 // Fenced code blocks: undo Spectre's pink label styling on <code> inside <pre>
 pre {
     overflow-x: auto;
