@@ -75,7 +75,7 @@ only get one of predictable cost and predictable quality.
 ## The Real World
 
 Here's the big problem: projects in the real world basically always have
-budget constraints, which means that project in the real world _always_
+budget constraints, which means that projects in the real world _always_
 have to choose to have a predictable cost. This is most dramatic with
 volunteer-led projects where the budget is basically zero, but it's a
 factor in basically any real-world situation.
