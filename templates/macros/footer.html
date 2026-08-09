@@ -1,7 +1,8 @@
-{% macro footer(grid_size) %}
+{% component footer.footer(grid_size, config) %}
 <section id="footer" class="bg-gray">
     <div style="width: 100%; max-width: none; padding-left: .4rem; padding-right: .4rem;">
-        {{ social_buttons::social_buttons() }}
+        {{
+        <social_buttons.social_buttons config={config} />}}
         <div class="columns">
             {% if config.extra.footer_tagline %}
             <div class="column col-12 col-mx-auto" style="text-align: center;">
@@ -53,7 +54,7 @@
 
         var deployMetaPath;
         try {
-            var configuredRootPath = new URL('{{ get_url(path="/") }}').pathname;
+            var configuredRootPath = new URL('{{ get_url(path=' / ') }}').pathname;
             configuredRootPath = configuredRootPath.replace(/\/+$/, '');
             deployMetaPath = (configuredRootPath ? configuredRootPath : '') + '/deploy-meta.json';
         } catch (error) {
@@ -101,4 +102,4 @@
         });
     });
 </script>
-{% endmacro footer %}
+{% endcomponent footer.footer %}
