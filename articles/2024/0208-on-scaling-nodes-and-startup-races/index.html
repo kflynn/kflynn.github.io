@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light" dir="ltr">
-  <head>
-    <title>On Scaling Nodes and Startup Races - </title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta name="description" content="What really happens when all your nodes die?"/>
 
-    <meta property="og:title" content=" -&nbsp;On Scaling Nodes and Startup Races" />
-    <meta property="og:type" content="website"/><meta property="og:url" content="https:&#x2F;&#x2F;www.kodachi.com&#x2F;articles&#x2F;2024&#x2F;0208-on-scaling-nodes-and-startup-races&#x2F;"/><meta property="og:description" content=""/>
+<head>
+<title>On Scaling Nodes and Startup Races - </title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="What really happens when all your nodes die?" />
+
+<meta property="og:title" content=" -&nbsp;On Scaling Nodes and Startup Races" />
+<meta property="og:type" content="website" /><meta property="og:url" content="https://www.kodachi.com/articles/2024/0208-on-scaling-nodes-and-startup-races/" /><meta property="og:description" content="What really happens when all your nodes die?" />
+<meta name="twitter:card" content="summary">
 
 
-    <meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://www.kodachi.com/spectre/spectre.css">
+<link rel="stylesheet" href="https://www.kodachi.com/theme.css"><link rel="stylesheet" href="https://www.kodachi.com/custom.css">
 
-
-    <link rel="stylesheet" href="https://www.kodachi.com/spectre/spectre.css">
-    <link rel="stylesheet" href="https://www.kodachi.com/theme.css"><link rel="stylesheet" href="https://www.kodachi.com/custom.css">
-    
 <link rel="alternate" type="application/rss+xml" title=" RSS" href="https://www.kodachi.com/rss.xml">
-        
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
+    integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
 
-    <!-- The loading of KaTeX is deferred to speed up page rendering -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"
+    integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"
+    crossorigin="anonymous"></script>
 
-    <!-- To automatically render math in text elements, include the auto-render extension: -->
-    <script>
-        function doRenderMath() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "$", right: "$", display: false},
-                {left: "\\(", right: "\\)", display: false},
-                {left: "\\begin{equation}", right: "\\end{equation}", display: true},
-                {left: "\\begin{align}", right: "\\end{align}", display: true},
-                {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
-                {left: "\\begin{gather}", right: "\\end{gather}", display: true},
-                {left: "\\begin{CD}", right: "\\end{CD}", display: true},
-                {left: "\\[", right: "\\]", display: true}
-                ]
-            });
-        }
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
-        onload="doRenderMath()"></script>
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script>
+    function doRenderMath() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\begin{equation}", right: "\\end{equation}", display: true },
+                { left: "\\begin{align}", right: "\\end{align}", display: true },
+                { left: "\\begin{alignat}", right: "\\end{alignat}", display: true },
+                { left: "\\begin{gather}", right: "\\end{gather}", display: true },
+                { left: "\\begin{CD}", right: "\\end{CD}", display: true },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });
+    }
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="doRenderMath()"></script>
 
-      </head>
-  <body id="top" class="sticky-footer"><div id="page-wrapper">
+  </head>
+
+<body id="top" class="sticky-footer"><div id="page-wrapper">
 
 <div id="banner">
     <img src="https://www.kodachi.com/KnH4V-4x1.jpg" alt="site banner" style="width:100%;display:block;">
@@ -56,7 +60,7 @@
         <div class="columns header-grid-row">
             <div class="column col-8 col-md-12 header-home-col">
                 
-<a class="site-logo" href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;">home</a>
+<a class="site-logo" href="https://www.kodachi.com/">home</a>
 
             </div>
 
@@ -89,39 +93,39 @@
 
 
 <section id="start"><section id="body-wrapper" class="section">
-          <section class="container grid-lg">
+        <section class="container grid-lg">
 <div id="breadcrumbs" itemtype="http://schema.org/BreadcrumbList" class="hide-sm">
     
     
     
-    <span><a href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;">Home</a></span>
+    <span><a href="https://www.kodachi.com/">Home</a></span>
     
     
-    <span><a href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;articles&#x2F;2024&#x2F;0208-on-scaling-nodes-and-startup-races&#x2F;">On Scaling Nodes and Startup Races</a></span>
+    <span><a href="https://www.kodachi.com/articles/2024/0208-on-scaling-nodes-and-startup-races/">On Scaling Nodes and Startup Races</a></span>
 </div>
 <div class="columns">
-              <div id="item" class="column col-8 col-md-12 extra-spacing">
-<div class="card">
+            <div id="item" class="column col-8 col-md-12 extra-spacing">
+              <div class="blog-listing">
+<div class="card card-full">
 
-    <div class="card-header">
-      <div class="card-title" style="margin-top: .25rem;"><div>
-          <h1 class="post-title">On Scaling Nodes and Startup Races</h1>
-          
-    <div class="post-meta" style="display: inline-flex">
-        <span class="blog-date" style="display: inline-flex;">
-          <i class="gg-calendar" style="margin-right: 5px;"></i><time datetime="2024.02.08">
-          2024.02.08
-          </time></span><span class="post-author" style="margin-left: 5px; display: inline-flex;">
-          - 
-    Flynn
-        </span></div>
+  <div class="card-header"><div class="card-title" style="margin-top: .25rem;"><div>
+        <h1 class="post-title">On Scaling Nodes and Startup Races</h1>
+        
+<div class="post-meta" style="display: inline-flex">
+  <span class="blog-date" style="display: inline-flex;">
+    <i class="gg-calendar" style="margin-right: 5px;"></i><time datetime="2024.02.08">
+      2024.02.08
+    </time></span><span class="post-author" style="margin-left: 5px; display: inline-flex;">
+    - 
+Flynn
+  </span></div>
 
-        </div></div>
-    </div><!--./card-header-->
+      </div></div>
+  </div><!--./card-header-->
 
-    <div class="card-body">
-      
-        <p><em>What really happens when all your nodes die?</em></p>
+  <div class="card-body">
+    
+    <p><em>What really happens when all your nodes die?</em></p>
 <span id="continue-reading"></span>
 <hr />
 <p>I've been working with Kubernetes for awhile, and in that time I've
@@ -147,7 +151,7 @@ with <code>k3d</code> because that let me see the details of what was happening.
 <p>To set everything up, we'll start with some scripting -- this should work
 for <code>bash</code> or <code>zsh</code>, but you'll need to check it if you use something
 else.</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #A0ADA0;"># Cluster management: create and delete a cluster</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #A0ADA0;"># Cluster management: create and delete a cluster</span></span>
 <span class="giallo-l"><span style="color: #59873A;">create_cluster</span><span style="color: #999999;"> () {</span></span>
 <span class="giallo-l"><span style="color: #A0ADA0;">    # Three agent nodes, one server node</span></span>
 <span class="giallo-l"><span style="color: #59873A;">    k3d</span><span style="color: #B56959;"> cluster create ffs</span><span style="color: #A65E2B;"> \</span></span>
@@ -213,7 +217,7 @@ else.</p>
 <span class="giallo-l"><span style="color: #59873A;">    watch</span><span style="color: #B5695977;"> &#39;</span><span style="color: #B56959;">sh -c &quot;kubectl get pods -n linkerd -o wide; kubectl get pods -n faces -o wide&quot;</span><span style="color: #B5695977;">&#39;</span></span>
 <span class="giallo-l"><span style="color: #999999;">}</span></span></code></pre>
 <p>Paste the functions above, then run this sequence to get started:</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">create_cluster</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">create_cluster</span></span>
 <span class="giallo-l"><span style="color: #59873A;">install_linkerd</span></span>
 <span class="giallo-l"><span style="color: #59873A;">install_faces</span></span>
 <span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
@@ -226,14 +230,14 @@ running: everything is working correctly and they're happy.</p>
 <p>Since everything is working, it's clearly time to break things! 😂</p>
 <p>To do that, let's mimic scaling the node pool to zero by deleting all the
 <code>agent</code> nodes where our pods are actually running.</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">drop_nodes</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">drop_nodes</span></span>
 <span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
 <p>Wait for the pods to go to <code>Pending</code> state, meaning that Kubernetes would
 like to schedule them, but has no running nodes onto which to schedule
 them. (This may take a bit.)</p>
 <p>At that point we can mimic scaling the node pool back up, by re-adding
 some <code>agent</code> nodes:</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">add_nodes</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">add_nodes</span></span>
 <span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
 <p>and you'll see that when the Faces pods come back, they'll have only one
 container, meaning that they're not actually meshed. 🤔</p>
@@ -256,10 +260,10 @@ result is that the Faces app starts running, but isn't meshed.</p>
 <p>The fix is simple: turn on Linkerd high availability (HA) mode, which
 will block pods from starting if the proxy injector isn't running. First
 we'll delete and recreate the cluster:</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">delete_cluster</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">delete_cluster</span></span>
 <span class="giallo-l"><span style="color: #59873A;">create_cluster</span></span></code></pre>
 <p>Then, we'll reinstall everything using Linkerd HA mode.</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">install_linkerd</span><span style="color: #A65E2B;"> --ha</span><span style="color: #A0ADA0;">    # &lt;= note this difference!</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">install_linkerd</span><span style="color: #A65E2B;"> --ha</span><span style="color: #A0ADA0;">    # &lt;= note this difference!</span></span>
 <span class="giallo-l"><span style="color: #59873A;">install_faces</span></span>
 <span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
 <p>Again, wait for all pods to be running. You'll note there there are a lot
@@ -267,11 +271,11 @@ more Linkerd pods running, and that they're scattered evenly across the
 three <code>agent</code> nodes.</p>
 <p>After that, we can repeat our experiment of scaling down and back up.
 Scale down by deleting the <code>agent</code> nodes:</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">drop_nodes</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">drop_nodes</span></span>
 <span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
 <p>Wait for <code>Pending</code> (or missing -- in my setup, the Faces pods are often
 gone entirely), then</p>
-<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">add_nodes</span></span>
+<pre class="giallo" style="color: #393A34; background-color: #FFFFFF;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59873A;">add_nodes</span></span>
 <span class="giallo-l"><span style="color: #59873A;">watch_pods</span></span></code></pre>
 <p>and <em>this</em> time you'll see all the Linkerd pods start running before any
 of the Faces pods start, which guarantees that the proxy injector is
@@ -305,29 +309,29 @@ can be pricy too (as much as I kinda like the idea 😂).</p>
 nodes to zero can be a great money-saving tool! Just pay attention to
 what your application and its infrastructure needs -- including webhooks.</p>
 
-      
     </div><!--./card-body-->
 
-    <div class="card-footer">
-      <div class="columns">
-        <div class="column col-9 col-sm-7">
-          <div class="taxonomies text-left">
-            
+  <div class="card-footer">
+    <div class="columns">
+      <div class="column col-9 col-sm-7">
+        <div class="taxonomies text-left">
+          
 
-    <a class="label label-rounded label-secondary p-category" href="https://www.kodachi.com/categories/craft-of-computing/">craft of computing</a>
-            
-    <a class="label label-rounded tag" href="https://www.kodachi.com/tags/kubernetes/">#kubernetes</a>
-    <a class="label label-rounded tag" href="https://www.kodachi.com/tags/linkerd/">#linkerd</a>
-    
-            
-        
-          </div>
-        </div><!--./col-6-->
-        
-        </div><!--./columns-->
-    </div><!--./card-footer-->
+<a class="label label-rounded label-secondary p-category" href="https://www.kodachi.com/categories/craft-of-computing/">craft of computing</a>
+
+<a class="label label-rounded tag" href="https://www.kodachi.com/tags/kubernetes/">#kubernetes</a>
+<a class="label label-rounded tag" href="https://www.kodachi.com/tags/linkerd/">#linkerd</a>
+
+
+
+        </div>
+      </div><!--./col-6-->
+      
+    </div><!--./columns-->
+  </div><!--./card-footer-->
 </div><!--./card-->
 </div>
+              </div>
               <div id="sidebar" class="column col-4 col-md-12">
                 <div class="sidebar-content">
                   
@@ -341,9 +345,9 @@ what your application and its infrastructure needs -- including webhooks.</p>
     </div>
     <div class="tile-content">
       <p class="tile-title" style="font-weight: 600;">Flynn</p>
-      <p class="tile-subtitle">Deep generalist, tech evangelist, professional cynic.  Unless otherwise stated, I&#x27;m speaking only for myself here, not any organization I&#x27;m a part of.</p>
+      <p class="tile-subtitle">Deep generalist, tech evangelist, professional cynic.  Unless otherwise stated, I&#39;m speaking only for myself here, not any organization I&#39;m a part of.</p>
     </div>
-</div><!--./tile-->
+  </div><!--./tile-->
 </div>
 
                   
@@ -354,35 +358,36 @@ what your application and its infrastructure needs -- including webhooks.</p>
 
                   
 <div class="sidebar-widget syndicate">
-<h4>Feed</h4>
-<a class="btn" href="/[rss.xml]">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rss-fill" viewBox="0 0 16 16">
-  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-</svg>
-<span>RSS</span>
-</a>
+  <h4>Feed</h4>
+  <a class="btn" href="/[&quot;rss.xml&quot;]">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rss-fill"
+      viewBox="0 0 16 16">
+      <path
+        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+    </svg>
+    <span>RSS</span>
+  </a>
 </div>
 
                   </div><!--./sidebar-content-->
               </div>
             </div>
-            
-          </section>
-        </section></section>
+            </section>
+      </section></section>
 <section class="container grid-lg">
-<ul class="pagination paginator">
-  
-  
-</ul>
+  <ul class="pagination paginator">
+    
+    
+  </ul>
 </section>
 </div><!-- ./page-wrapper -->
 
-    
+  
 <div class="mobile-container">
     <div class="overlay" id="overlay">
         <div class="overlay-home">
             
-<a class="site-logo" href="https:&#x2F;&#x2F;www.kodachi.com&#x2F;">home</a>
+<a class="site-logo" href="https://www.kodachi.com/">home</a>
 
         </div>
         <nav class="overlay-menu">
@@ -481,7 +486,7 @@ what your application and its infrastructure needs -- including webhooks.</p>
 
         var deployMetaPath;
         try {
-            var configuredRootPath = new URL('https://www.kodachi.com').pathname;
+            var configuredRootPath = new URL('https://www.kodachi.com/ / ').pathname;
             configuredRootPath = configuredRootPath.replace(/\/+$/, '');
             deployMetaPath = (configuredRootPath ? configuredRootPath : '') + '/deploy-meta.json';
         } catch (error) {
@@ -530,4 +535,5 @@ what your application and its infrastructure needs -- including webhooks.</p>
     });
 </script>
 </body>
+
 </html>
