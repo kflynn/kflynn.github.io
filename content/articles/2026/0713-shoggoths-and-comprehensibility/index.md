@@ -65,9 +65,9 @@ The reason is that shoggoths are incomprehensible to us humans.
 ## Understanding Shoggoths (or not)
 
 Obviously, saying that something created by humans is beyond human
-comprehension is not exactly free from controversy. It would be
-(obviously) absurd to argue no one understands how neural networks work,
-or that it's impossible for humans to understand how, say, autoregression
+comprehension is not exactly free from controversy. It would be patently
+absurd to argue that no one understands how neural networks work, or that
+it's impossible for humans to understand how, say, autoregression
 functions. It's pretty evident that we as a race are perfectly capable of
 comprehending these things.
 
@@ -77,9 +77,9 @@ will do at a given moment. Understanding a transistor is _easy_: you
 apply a current between these two terminals, and it makes the transistor
 allow a current to flow between those two. Add feedback loops (like
 flip-flops) and there's a sudden leap in complexity. Scale out to a
-billion transistors with an ALU, and it is _literally_ impossible to know
-what happens next unless you also know what software is in the computer's
-memory.
+billion transistors with memory and an ALU, and it is _literally_
+impossible to know what happens next unless you also know what software
+is in the computer's memory.
 
 This is the kind of comprehension I'm talking about. Understanding single
 neurons is easy. Understanding the theory of a neural network is
