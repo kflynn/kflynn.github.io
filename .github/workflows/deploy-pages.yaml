@@ -35,7 +35,7 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
         uses: taiki-e/install-action@v2
         with:
-          tool: zola
+          tool: zola@0.23.2
 
       - name: Build site with Zola
         if: github.event_name != 'pull_request' || github.event.action != 'closed'
