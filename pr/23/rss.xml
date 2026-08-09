@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title></title>
+      <link>https://www.kodachi.com/pr/23/</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://www.kodachi.com/pr/23/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Mon, 13 Jul 2026 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Shoggoths and Comprehensibility</title>
+          <pubDate>Mon, 13 Jul 2026 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/23/articles/2026/0713-shoggoths-and-comprehensibility/</link>
+          <guid>https://www.kodachi.com/pr/23/articles/2026/0713-shoggoths-and-comprehensibility/</guid>
+          <description xml:base="https://www.kodachi.com/pr/23/articles/2026/0713-shoggoths-and-comprehensibility/">&lt;p&gt;&lt;em&gt;...the shoggoths of the sea, reproducing by fission and acquiring a dangerous degree of accidental intelligence, presented for a time a formidable problem.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;-- H. P. Lovecraft, &quot;At the Mountains of Madness&quot;, 1931&lt;/em&gt;&lt;/p&gt;</description>
+      </item>
+      <item>
+          <title>About</title>
+          <pubDate>Fri, 10 Jul 2026 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/23/about/</link>
+          <guid>https://www.kodachi.com/pr/23/about/</guid>
+          <description xml:base="https://www.kodachi.com/pr/23/about/">&lt;p&gt;So far, what you&#39;ll find here is produced by Flynn, who was a deep
+generalist before the term existed and has worked in computing since
+1983. He&#39;s pretty much run the gamut from the kernel up through
+distributed applications (with a common thread of communications and
+security throughout) as well as working roles from solo coder up through
+Silicon Valley VP.&lt;/p&gt;
+&lt;p&gt;Since 2022, he&#39;s been a tech evangelist at Buoyant, educating developers
+about Linkerd, Kubernetes, and cloud-native development in general. He&#39;s
+a coauthor of &lt;a rel=&quot;external&quot; href=&quot;https://www.oreilly.com/library/view/linkerd-up-and/9781098142308/&quot;&gt;Linkerd: Up and Running&lt;/a&gt; from O&#39;Reilly, a chair of the
+CNCF AI Gateway Working Group, a co-lead of Gateway API for mesh, and the
+original author and longest-serving maintainer of the Emissary-ingress
+API gateway.&lt;/p&gt;
+&lt;p&gt;He is most easily found as @flynn on the CNCF or Linkerd Slacks.&lt;/p&gt;
+</description>
+      </item>
+      <item>
+          <title>&quot;AI&quot; is a Terrible Name</title>
+          <pubDate>Fri, 10 Jul 2026 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/23/articles/2026/0710-ai-is-a-terrible-name/</link>
+          <guid>https://www.kodachi.com/pr/23/articles/2026/0710-ai-is-a-terrible-name/</guid>
+          <description xml:base="https://www.kodachi.com/pr/23/articles/2026/0710-ai-is-a-terrible-name/">&lt;p&gt;&lt;em&gt;Finkle-McGraw brightened a bit. &quot;You know, when I was a lad they called
+it A.I. Artificial intelligence.&quot;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Hackworth allowed himself a tight, narrow, and brief smile. &quot;Well,
+there&#39;s something to be said for cheekiness, I suppose.&quot;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;-- Neal Stephenson, &lt;/em&gt;The Diamond Age&lt;em&gt;, 1995&lt;/em&gt;&lt;/p&gt;</description>
+      </item>
+      <item>
+          <title>On Shipping Software</title>
+          <pubDate>Sun, 05 Jul 2026 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/23/articles/2026/0705-on-shipping-software/</link>
+          <guid>https://www.kodachi.com/pr/23/articles/2026/0705-on-shipping-software/</guid>
+          <description xml:base="https://www.kodachi.com/pr/23/articles/2026/0705-on-shipping-software/">&lt;p&gt;&lt;em&gt;There are two kinds of software: software that ships, and software
+that&#39;s irrelevant.&lt;/em&gt;&lt;/p&gt;</description>
+      </item>
+      <item>
+          <title>On Scaling Nodes and Startup Races</title>
+          <pubDate>Thu, 08 Feb 2024 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/23/articles/2024/0208-on-scaling-nodes-and-startup-races/</link>
+          <guid>https://www.kodachi.com/pr/23/articles/2024/0208-on-scaling-nodes-and-startup-races/</guid>
+          <description xml:base="https://www.kodachi.com/pr/23/articles/2024/0208-on-scaling-nodes-and-startup-races/">&lt;p&gt;&lt;em&gt;What really happens when all your nodes die?&lt;/em&gt;&lt;/p&gt;</description>
+      </item>
+      <item>
+          <title>The Comment Manifesto</title>
+          <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://www.kodachi.com/pr/23/articles/2020/0101-comment-manifesto/</link>
+          <guid>https://www.kodachi.com/pr/23/articles/2020/0101-comment-manifesto/</guid>
+          <description xml:base="https://www.kodachi.com/pr/23/articles/2020/0101-comment-manifesto/">&lt;p&gt;&lt;em&gt;If this code ships and your comments aren&#39;t in it, you&#39;ll regret it -- maybe not today, maybe not tomorrow, but soon, and for the rest of your life.&lt;/em&gt;&lt;/p&gt;</description>
+      </item>
+    </channel>
+</rss>
