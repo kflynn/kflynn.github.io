@@ -1,4 +1,4 @@
-{% macro items(menu) %}
+{% component menu.items(menu) %}
 {%- set num = menu | length -%}
 {# Check if there are menu items to render, yes if > 0 #}
 
@@ -11,9 +11,9 @@
     {%- endfor-%}
 </ul>
 {% endif %}
-{% endmacro items %}
+{% endcomponent menu.items %}
 
-{% macro mobile_items(menu) %}
+{% component menu.mobile_items(menu) %}
 {%- set num = menu | length -%}
 {# Check if there are menu items to render, yes if > 0 #}
 
@@ -27,21 +27,23 @@
     {%- endfor-%}
 </ul>
 {% endif %}
-{% endmacro items %}
+{% endcomponent menu.mobile_items %}
 
-{% macro home() %}
+{% component menu.home(config) %}
 <a class="site-logo" href="{{ config.base_url }}">home</a>
-{% endmacro home %}
+{% endcomponent menu.home %}
 
-{% macro mobile() %}
+{% component menu.mobile(config) %}
 <div class="mobile-container">
     <div class="overlay" id="overlay">
         <div class="overlay-home">
-            {{ menu::home() }}
+            {{
+            <menu.home config={config} />}}
         </div>
         <nav class="overlay-menu">
             {% if config.extra.main_menu -%}
-            {{ menu::mobile_items(menu=config.extra.main_menu) }}
+            {{
+            <menu.mobile_items menu={config.extra.main_menu} />}}
             {% endif -%}
         </nav>
     </div>
@@ -71,4 +73,4 @@
         }
     }
 </script>
-{% endmacro mobile %}
+{% endcomponent menu.mobile %}

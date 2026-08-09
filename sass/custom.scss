@@ -221,6 +221,12 @@ a {
     hyphens: auto;
 }
 
+// Full article pages now render inside .blog-listing wrappers, so restore
+// the intended H1 size that listing cards intentionally downscale.
+.blog-listing .card.card-full .post-title {
+    font-size: 2.4rem;
+}
+
 @media (max-width: 600px) {
     .card-header h1.post-title {
         font-size: clamp(1.7rem, 9vw, 2.3rem);
@@ -234,8 +240,8 @@ a {
     padding-left: 1.2rem;
 }
 
-// Title-card blurbs in listing views.
-.blog-listing .card-body {
+// Title-card blurbs in listing views only.
+.blog-listing .card.card-list .card-body {
     font-style: italic;
     font-size: 90%;
     padding-top: 0.2rem;

@@ -1,4 +1,4 @@
-{% macro paginate(grid_size) %}
+{% component pagination.paginate(grid_size, paginator = none) %}
 <section class="container {{ grid_size }}">
     <ul class="pagination paginator">
         {% if paginator.previous %}
@@ -9,4 +9,4 @@
         {% endif %}
     </ul>
 </section>
-{% endmacro paginate %}
+{% endcomponent pagination.paginate %}
