@@ -1,0 +1,283 @@
+Hospital Name
+Addison Gilbert Hospital
+Anna Jaques Hospital
+Athol Memorial Hospital
+Baystate Franklin Medical Center
+Baystate Medical Center
+Baystate Noble Hospital
+Baystate Wing Hospital
+Berkshire Medical Center
+Beth Israel Deaconess Hospital - Milton
+Beth Israel Deaconess Hospital - Needham
+Beth Israel Deaconess Hospital - Plymouth
+Beth Israel Deaconess Medical Center
+Beverly Hospital
+Boston Childrens Hospital
+Boston Medical Center
+Brigham and Womens - Faulkner
+Brigham and Womens Hospital
+Brockton Hospital
+Cambridge Hospital
+Cape Cod Hospital
+Carney Hospital
+Clinton Hospital
+Cooley Dickinson Hospital
+Emerson Hospital
+Fairview Hospital
+Falmouth Hospital
+Good Samaritan Medical Center
+Harrington Hospital
+Health Alliance-Leominster
+Heywood Hospital
+Holy Family Hospital
+Holyoke Hospital
+Lahey Hospital Burlington
+Hospital county
+and zip code
+Essex - 01930
+Essex - 01950
+Worcester - 01331
+Franklin - 01301
+Hampden - 01199
+Hampden - 01085
+Hampden - 01069
+Berkshire - 01201
+Norfolk - 02186
+Norfolk - 02492
+Plymouth - 02360
+Suffolk - 02215
+Essex - 01915
+Suffolk - 02115
+Suffolk - 02118
+Suffolk - 02130
+Suffolk - 02115
+Plymouth - 02302
+Middlesex - 02139
+Barnstable - 02601
+Suffolk - 02124
+Worcester- 01510
+Hampshire - 01060
+Middlesex - 01742
+Berkshire - 01230
+Barnstable - 02540
+Plymouth - 02301
+Worcester - 01550
+Worcester - 01453
+Worcester - 01440
+Essex - 01844
+Hampden - 01040
+Middlesex - 01805
+Hospitalized Total COVID
+patients - suspected and
+confirmed (including ICU)
+0
+19
+0
+7
+91
+3
+9
+4
+44
+22
+66
+258
+91
+5
+227
+53
+155
+72
+66
+16
+66
+1
+24
+38
+3
+5
+80
+9
+24
+11
+67
+37
+127
+Hospitalized COVID Patients in
+ICU - suspected and confirmed
+0
+4
+0
+1
+15
+0
+0
+2
+6
+3
+2
+86
+8
+2
+54
+6
+71
+13
+22
+4
+15
+0
+6
+3
+0
+2
+11
+2
+3
+0
+25
+3
+50
+Occupancy/ availability as reported by hospitals to DPH. The following hospitals were contacted to validate data: North Shore Medical Center, New England Baptist Hospital, Baystate Franklin Medical Center, Heywood Hospital, Athol Memorial Hospital. Data reflects corrected
+updates where possible.
+17
+Hospital Name
+Lahey Hospital Peabody
+Lawrence General Hospital
+Lowell General Hospital
+Marlborough Hospital
+Marthas Vineyard Hospital
+Massachusetts General Hospital
+Melrose Wakefield Hospital
+Mercy Medical Center
+Merrimack Valley Hospital
+MetroWest Medical Center Framingham
+MetroWest Medical Center Natick
+Milford Regional Medical Center
+Morton Hospital
+Mount Auburn Hospital
+Nantucket Cottage Hospital
+Nashoba Valley Medical Center
+New England Baptist Hospital
+Newton-Wellesley Hospital
+North Shore Medical Center Salem
+Norwood Hospital
+Saint Vincent Hospital
+Saints Memorial Medical Center
+South Shore Hospital
+Southcoast Charlton Memorial Hospital
+St Annes Hospital
+St Elizabeths Medical Center
+St Lukes Hospital
+Sturdy Memorial Hospital
+Tobey Hospital
+Tufts Medical Center
+UMass Memorial-Memorial Campus
+UMass Memorial-University Campus
+Winchester Hospital
+Hospital county
+and zip code
+Essex - 01960
+Essex - 01841
+Middlesex - 01854
+Middlesex - 01752
+Dukes - 02557
+Suffolk - 02114
+Middlesex - 02176
+Hampden - 01104
+Essex - 01830
+Middlesex - 01702
+Middlesex - 01760
+Worcester - 01757
+Bristol - 02780
+Middlesex - 02138
+Nantucket - 02554
+Middlesex - 01432
+Suffolk - 02120
+Middlesex - 02462
+Essex - 01970
+Norfolk - 02062
+Worcester - 01608
+Middlesex - 01852
+Norfolk - 02190
+Bristol - 02720
+Bristol - 02721
+Suffolk - 02135
+Bristol - 02740
+Bristol - 02703
+Plymouth - 02571
+Suffolk - 02111
+Worcester - 01605
+Worcester - 01655
+Middlesex - 01890
+Hospitalized Total COVID
+patients - suspected and
+confirmed (including ICU)
+0
+60
+81
+21
+0
+360
+51
+35
+0
+58
+15
+44
+75
+67
+0
+0
+0
+77
+122
+42
+66
+0
+101
+44
+13
+48
+59
+40
+20
+95
+77
+107
+61
+Hospitalized COVID Patients in
+ICU - suspected and confirmed
+0
+20
+21
+10
+0
+125
+10
+11
+0
+7
+2
+8
+12
+10
+0
+0
+2
+13
+28
+7
+14
+0
+10
+9
+0
+20
+16
+4
+5
+51
+18
+50
+6
